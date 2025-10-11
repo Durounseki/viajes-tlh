@@ -133,7 +133,7 @@ function RouteComponent() {
       </section>
 
       <section className={styles["upcoming-trip-section"]}>
-        <h2>Nuestro Próximo destination</h2>
+        <h2>Nuestro Próximo Destino</h2>
         <div className={styles["trip-card"]}>
           <img
             src={viajeDestacado.imageSrc}
