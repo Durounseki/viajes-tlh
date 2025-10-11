@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ViajesRouteImport } from './routes/viajes'
 import { Route as TerminosYCondicionesRouteImport } from './routes/terminos-y-condiciones'
 import { Route as PreguntasFrecuentesRouteImport } from './routes/preguntas-frecuentes'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
@@ -25,11 +24,6 @@ import { Route as ViajesProximosRouteImport } from './routes/viajes/proximos'
 import { Route as ViajesPasadosRouteImport } from './routes/viajes/pasados'
 import { Route as ViajesViajeIdRouteImport } from './routes/viajes/$viajeId'
 
-const ViajesRoute = ViajesRouteImport.update({
-  id: '/viajes',
-  path: '/viajes',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TerminosYCondicionesRoute = TerminosYCondicionesRouteImport.update({
   id: '/terminos-y-condiciones',
   path: '/terminos-y-condiciones',
@@ -81,24 +75,24 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ViajesIndexRoute = ViajesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ViajesRoute,
+  id: '/viajes/',
+  path: '/viajes/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ViajesProximosRoute = ViajesProximosRouteImport.update({
-  id: '/proximos',
-  path: '/proximos',
-  getParentRoute: () => ViajesRoute,
+  id: '/viajes/proximos',
+  path: '/viajes/proximos',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ViajesPasadosRoute = ViajesPasadosRouteImport.update({
-  id: '/pasados',
-  path: '/pasados',
-  getParentRoute: () => ViajesRoute,
+  id: '/viajes/pasados',
+  path: '/viajes/pasados',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ViajesViajeIdRoute = ViajesViajeIdRouteImport.update({
-  id: '/$viajeId',
-  path: '/$viajeId',
-  getParentRoute: () => ViajesRoute,
+  id: '/viajes/$viajeId',
+  path: '/viajes/$viajeId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -112,11 +106,10 @@ export interface FileRoutesByFullPath {
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
-  '/viajes': typeof ViajesRouteWithChildren
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
-  '/viajes/': typeof ViajesIndexRoute
+  '/viajes': typeof ViajesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -146,7 +139,6 @@ export interface FileRoutesById {
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
-  '/viajes': typeof ViajesRouteWithChildren
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
@@ -165,11 +157,10 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
-    | '/viajes'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
-    | '/viajes/'
+    | '/viajes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -198,7 +189,6 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
-    | '/viajes'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
@@ -216,18 +206,14 @@ export interface RootRouteChildren {
   NosotrosRoute: typeof NosotrosRoute
   PreguntasFrecuentesRoute: typeof PreguntasFrecuentesRoute
   TerminosYCondicionesRoute: typeof TerminosYCondicionesRoute
-  ViajesRoute: typeof ViajesRouteWithChildren
+  ViajesViajeIdRoute: typeof ViajesViajeIdRoute
+  ViajesPasadosRoute: typeof ViajesPasadosRoute
+  ViajesProximosRoute: typeof ViajesProximosRoute
+  ViajesIndexRoute: typeof ViajesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/viajes': {
-      id: '/viajes'
-      path: '/viajes'
-      fullPath: '/viajes'
-      preLoaderRoute: typeof ViajesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terminos-y-condiciones': {
       id: '/terminos-y-condiciones'
       path: '/terminos-y-condiciones'
@@ -300,51 +286,34 @@ declare module '@tanstack/react-router' {
     }
     '/viajes/': {
       id: '/viajes/'
-      path: '/'
-      fullPath: '/viajes/'
+      path: '/viajes'
+      fullPath: '/viajes'
       preLoaderRoute: typeof ViajesIndexRouteImport
-      parentRoute: typeof ViajesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/viajes/proximos': {
       id: '/viajes/proximos'
-      path: '/proximos'
+      path: '/viajes/proximos'
       fullPath: '/viajes/proximos'
       preLoaderRoute: typeof ViajesProximosRouteImport
-      parentRoute: typeof ViajesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/viajes/pasados': {
       id: '/viajes/pasados'
-      path: '/pasados'
+      path: '/viajes/pasados'
       fullPath: '/viajes/pasados'
       preLoaderRoute: typeof ViajesPasadosRouteImport
-      parentRoute: typeof ViajesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/viajes/$viajeId': {
       id: '/viajes/$viajeId'
-      path: '/$viajeId'
+      path: '/viajes/$viajeId'
       fullPath: '/viajes/$viajeId'
       preLoaderRoute: typeof ViajesViajeIdRouteImport
-      parentRoute: typeof ViajesRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface ViajesRouteChildren {
-  ViajesViajeIdRoute: typeof ViajesViajeIdRoute
-  ViajesPasadosRoute: typeof ViajesPasadosRoute
-  ViajesProximosRoute: typeof ViajesProximosRoute
-  ViajesIndexRoute: typeof ViajesIndexRoute
-}
-
-const ViajesRouteChildren: ViajesRouteChildren = {
-  ViajesViajeIdRoute: ViajesViajeIdRoute,
-  ViajesPasadosRoute: ViajesPasadosRoute,
-  ViajesProximosRoute: ViajesProximosRoute,
-  ViajesIndexRoute: ViajesIndexRoute,
-}
-
-const ViajesRouteWithChildren =
-  ViajesRoute._addFileChildren(ViajesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -357,7 +326,10 @@ const rootRouteChildren: RootRouteChildren = {
   NosotrosRoute: NosotrosRoute,
   PreguntasFrecuentesRoute: PreguntasFrecuentesRoute,
   TerminosYCondicionesRoute: TerminosYCondicionesRoute,
-  ViajesRoute: ViajesRouteWithChildren,
+  ViajesViajeIdRoute: ViajesViajeIdRoute,
+  ViajesPasadosRoute: ViajesPasadosRoute,
+  ViajesProximosRoute: ViajesProximosRoute,
+  ViajesIndexRoute: ViajesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
