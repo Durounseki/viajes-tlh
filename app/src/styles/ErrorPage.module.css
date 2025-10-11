@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 8rem 2rem 4rem 2rem;
+  box-sizing: border-box;
+}
+
+.image {
+  max-width: 250px;
+  width: 100%;
+  margin-bottom: 2.5rem;
+  opacity: 0.8;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  max-width: 500px;
+  margin-bottom: 2.5rem;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 0.75em 1.5em;
+  text-decoration: none;
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border: solid 2px var(--color-primary);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.ctaButton:hover {
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+.errorCode {
+  background-color: var(--color-background);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 2rem;
+  max-width: 100%;
+  width: 600px;
+  overflow-x: auto;
+  text-align: left;
+  font-size: 0.85rem;
+  color: #c7254e;
+  white-space: pre-wrap;
+}
