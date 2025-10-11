@@ -1,0 +1,104 @@
+/* src/styles/Faq.module.css */
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem 2rem;
+}
+
+.page-title {
+  text-align: center;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.page-subtitle {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  opacity: 0.9;
+  max-width: 750px;
+  margin: 0 auto 3.5rem auto;
+  text-align: center;
+}
+
+/* --- Accordion Styles (similar to TripPage) --- */
+.accordion {
+  border-top: 1px solid #ddd;
+}
+.accordionItem {
+  border-bottom: 1px solid #ddd;
+}
+.accordionQuestion {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 1.5rem 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chevron {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  transition: transform 0.3s ease;
+  flex-shrink: 0; /* Prevents icon from shrinking */
+  margin-left: 1rem;
+}
+.chevron.open {
+  transform: rotate(180deg);
+}
+.accordionAnswer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out;
+}
+.accordionAnswer.open {
+  max-height: 500px; /* Adjust if content is longer */
+}
+.accordionInner {
+  padding: 0 1rem 1.5rem 1rem;
+  line-height: 1.7;
+}
+.accordionInner p {
+  margin: 0;
+}
+
+/* --- Reusing CTA styles --- */
+.ctaSection {
+  text-align: center;
+  margin-top: 5rem;
+  padding: 3rem 2rem;
+  background-color: var(--color-background);
+  border: 2px dashed var(--color-secondary);
+  border-radius: 15px;
+}
+.ctaSection h2 {
+  color: var(--color-primary);
+}
+.ctaSection p {
+  max-width: 600px;
+  margin: 1rem auto 2rem auto;
+}
+.cta-button {
+  display: inline-block;
+  padding: 0.75em 1.5em;
+  text-decoration: none;
+  border: solid 2px var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 5px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  font-weight: bold;
+}
+.cta-button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
