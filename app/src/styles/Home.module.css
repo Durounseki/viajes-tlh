@@ -1,0 +1,306 @@
+.hero-image {
+  margin: 0;
+  width: 100%;
+  height: 100dvh;
+  position: relative;
+  line-height: 0;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.overlay-caption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  background-color: #00000055;
+}
+
+.brand-name {
+  font-weight: bold;
+  font-size: clamp(3rem, 12vw, 9rem);
+  color: var(--color-background);
+}
+.brand-meaning {
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.75rem);
+  color: var(--color-background);
+}
+
+.hero-section,
+.about-snippet,
+.upcoming-trip-section,
+.other-trips-section,
+.past-trips-section,
+.testimonials-section {
+  padding: 3rem 1rem;
+  text-align: center;
+  font-size: larger;
+}
+.hero-section,
+.about-snippet {
+  padding-bottom: 0;
+}
+
+.hero-content,
+.about-snippet,
+.past-trips-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-section::after,
+.about-snippet::after {
+  content: "";
+  border-top: solid 1px var(--color-secondary);
+  margin-top: 3em;
+  width: 100%;
+  display: block;
+}
+
+.cta-button,
+.secondary-button {
+  margin-top: 1em;
+  padding: 0.75em 1.5em;
+  text-decoration: none;
+}
+.cta-button {
+  border: solid 2px var(--color-primary);
+  color: var(--color-primary);
+}
+
+.cta-button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.secondary-button {
+  color: var(--color-secondary);
+  border: solid 2px var(--color-secondary);
+}
+
+.secondary-button:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-background);
+}
+
+.upcoming-trip-section h2,
+.past-trips-section h2,
+.testimonials-section h2 {
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: 2rem;
+}
+
+.trip-card {
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.trip-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.trip-card-content {
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trip-card-content h3 {
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin-top: 0;
+}
+
+.trip-details {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin-bottom: 2rem;
+}
+
+.other-trips-section {
+  padding-top: 0;
+}
+
+.other-trips-section h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: 2.5rem;
+}
+
+.other-trips-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.small-trip-card {
+  position: relative;
+  background-color: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  text-decoration: none;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+}
+
+.small-trip-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.small-trip-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.price-tag {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  background-color: var(--color-primary);
+  color: var(--color-background);
+
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+
+  font-size: 0.9rem;
+  font-weight: bold;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+  user-select: none;
+}
+
+.small-trip-card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.small-trip-card-content h3 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  color: var(--color-text);
+}
+
+.small-trip-card-content p {
+  margin-bottom: 0;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.past-trips-section {
+  background-color: var(--color-secondary);
+  padding-inline: 0;
+}
+
+.past-trips-section h2 {
+  color: var(--color-background);
+}
+
+.trip-carousel {
+  padding-bottom: 3rem;
+  --swiper-pagination-color: var(--color-background);
+  --swiper-pagination-bullet-inactive-color: var(--color-text);
+  --swiper-pagination-bullet-inactive-opacity: 0.25;
+  --swiper-pagination-bullet-size: 10px;
+  --swiper-pagination-bullet-horizontal-gap: 6px;
+}
+
+.past-trip-slide {
+  width: 70%;
+  max-width: 300px;
+  height: 400px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.past-trip-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.past-trip-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: left;
+}
+
+.past-trips-section .secondary-button {
+  border-color: var(--color-background);
+  color: var(--color-background);
+}
+
+.past-trips-section .secondary-button:hover {
+  background-color: var(--color-background);
+  color: var(--color-secondary);
+}
+
+.testimonial-carousel {
+  padding: 0 40px 40px 40px;
+  max-width: 700px;
+  margin: 0 auto;
+  --swiper-navigation-color: var(--color-primary);
+  --swiper-navigation-size: 25px;
+  --swiper-pagination-color: var(--color-primary);
+  --swiper-pagination-bullet-inactive-color: #d3c5b7;
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-size: 10px;
+  --swiper-pagination-bullet-horizontal-gap: 6px;
+}
+
+.testimonial-quote {
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--color-text);
+  margin: 0 0 1rem 0;
+}
+
+.testimonial-author {
+  font-weight: bold;
+  color: var(--color-primary);
+  font-size: 1.1rem;
+}

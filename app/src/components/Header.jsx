@@ -1,5 +1,7 @@
+import styles from "../styles/Header.module.css";
+
 function Header() {
-  return <h1>Viajes TLH</h1>;
+  return <header className={styles["main-header"]}>Nehnemi</header>;
 }
 
 export default Header;

@@ -1,0 +1,7 @@
+.main-header {
+  width: 100%;
+  position: fixed;
+  background-color: none;
+  z-index: 1;
+  padding: 1em;
+}

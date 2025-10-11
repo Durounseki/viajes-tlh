@@ -1,3 +1,10 @@
+:root {
+  --color-background: #f9f6f1;
+  --color-text: #3d352e;
+  --color-primary: #c87a58;
+  --color-secondary: #8a9a8c;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -9,6 +16,9 @@ body {
   max-width: 100%;
   overflow-x: hidden;
   min-height: 100dvh;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 #root {
