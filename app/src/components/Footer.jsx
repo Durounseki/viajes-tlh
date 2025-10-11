@@ -1,7 +1,96 @@
-function Footer() {
+import { Link } from "@tanstack/react-router";
+import styles from "../styles/Footer.module.css";
+import { FaFacebookSquare, FaInstagram, FaWhatsapp } from "react-icons/fa";
+
+export function Footer() {
   return (
-    <footer>
-      <p>&copy; 2025 ELWeb</p>
+    <footer className={styles.footer}>
+      <div className={styles["footer-content"]}>
+        <div className={styles["footer-brand"]}>
+          {/* <img src={logo} alt="Logo Nehnemi" className={styles.logo} /> */}
+          <h3 className={styles["footer-logo-text"]}>Nehnemi</h3>
+          <p>
+            Creamos viajes para mujeres donde la seguridad, la comodidad y las
+            buenas conversaciones son lo más importante.
+          </p>
+          <h4>Síguenos en la aventura:</h4>
+          <div className={styles["social-icons"]}>
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
+              <FaFacebookSquare />
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="https://wa.me/5215500000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+            >
+              <FaWhatsapp />
+            </a>
+          </div>
+        </div>
+
+        <div className={styles["footer-links"]}>
+          <h4>Mapa del Sitio</h4>
+          <ul>
+            <li>
+              <Link to="/">Inicio</Link>
+            </li>
+            <li>
+              <Link to="/viajes">Próximos Viajes</Link>
+            </li>
+            <li>
+              <Link to="/galeria">Galería</Link>
+            </li>
+            <li>
+              <Link to="/nosotros">Nosotros</Link>
+            </li>
+            <li>
+              <Link to="/contacto">Contacto</Link>
+            </li>
+            <li>
+              <Link to="/preguntas-frecuentes">Preguntas Frecuentes</Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className={styles["footer-contact"]}>
+          <h4>¿Hablamos?</h4>
+          <p>
+            ¿Lista para tu próxima aventura o tienes alguna duda? ¡Contáctanos!
+          </p>
+          <ul>
+            <li>
+              <FaWhatsapp /> <span>55 1234 5678</span>
+            </li>
+            <li>
+              ✉️ <span>contacto@nehnemi.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className={styles["footer-bottom"]}>
+        <p>
+          © {new Date().getFullYear()} Nehnemi. Todos los derechos reservados.
+        </p>
+        <p className={styles["legal-links"]}>
+          <Link to="/terminos-y-condiciones">Términos y Condiciones</Link> |{" "}
+          <Link to="/aviso-de-privacidad">Aviso de Privacidad</Link> |{" "}
+          <Link to="/creditos">Créditos de Imágenes</Link>
+        </p>
+      </div>
     </footer>
   );
 }

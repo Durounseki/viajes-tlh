@@ -10,16 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ViajesRouteImport } from './routes/viajes'
+import { Route as TerminosYCondicionesRouteImport } from './routes/terminos-y-condiciones'
 import { Route as PreguntasFrecuentesRouteImport } from './routes/preguntas-frecuentes'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as GaleriaRouteImport } from './routes/galeria'
+import { Route as CreditosRouteImport } from './routes/creditos'
 import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as AvisoDePrivacidadRouteImport } from './routes/aviso-de-privacidad'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ViajesRoute = ViajesRouteImport.update({
   id: '/viajes',
   path: '/viajes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TerminosYCondicionesRoute = TerminosYCondicionesRouteImport.update({
+  id: '/terminos-y-condiciones',
+  path: '/terminos-y-condiciones',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PreguntasFrecuentesRoute = PreguntasFrecuentesRouteImport.update({
@@ -37,9 +46,24 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GaleriaRoute = GaleriaRouteImport.update({
+  id: '/galeria',
+  path: '/galeria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreditosRoute = CreditosRouteImport.update({
+  id: '/creditos',
+  path: '/creditos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactoRoute = ContactoRouteImport.update({
   id: '/contacto',
   path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvisoDePrivacidadRoute = AvisoDePrivacidadRouteImport.update({
+  id: '/aviso-de-privacidad',
+  path: '/aviso-de-privacidad',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -56,29 +80,41 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/contacto': typeof ContactoRoute
+  '/creditos': typeof CreditosRoute
+  '/galeria': typeof GaleriaRoute
   '/login': typeof LoginRoute
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
+  '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/viajes': typeof ViajesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/contacto': typeof ContactoRoute
+  '/creditos': typeof CreditosRoute
+  '/galeria': typeof GaleriaRoute
   '/login': typeof LoginRoute
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
+  '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/viajes': typeof ViajesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/contacto': typeof ContactoRoute
+  '/creditos': typeof CreditosRoute
+  '/galeria': typeof GaleriaRoute
   '/login': typeof LoginRoute
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
+  '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/viajes': typeof ViajesRoute
 }
 export interface FileRouteTypes {
@@ -86,38 +122,54 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/aviso-de-privacidad'
     | '/contacto'
+    | '/creditos'
+    | '/galeria'
     | '/login'
     | '/nosotros'
     | '/preguntas-frecuentes'
+    | '/terminos-y-condiciones'
     | '/viajes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
+    | '/aviso-de-privacidad'
     | '/contacto'
+    | '/creditos'
+    | '/galeria'
     | '/login'
     | '/nosotros'
     | '/preguntas-frecuentes'
+    | '/terminos-y-condiciones'
     | '/viajes'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/aviso-de-privacidad'
     | '/contacto'
+    | '/creditos'
+    | '/galeria'
     | '/login'
     | '/nosotros'
     | '/preguntas-frecuentes'
+    | '/terminos-y-condiciones'
     | '/viajes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  AvisoDePrivacidadRoute: typeof AvisoDePrivacidadRoute
   ContactoRoute: typeof ContactoRoute
+  CreditosRoute: typeof CreditosRoute
+  GaleriaRoute: typeof GaleriaRoute
   LoginRoute: typeof LoginRoute
   NosotrosRoute: typeof NosotrosRoute
   PreguntasFrecuentesRoute: typeof PreguntasFrecuentesRoute
+  TerminosYCondicionesRoute: typeof TerminosYCondicionesRoute
   ViajesRoute: typeof ViajesRoute
 }
 
@@ -128,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/viajes'
       fullPath: '/viajes'
       preLoaderRoute: typeof ViajesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terminos-y-condiciones': {
+      id: '/terminos-y-condiciones'
+      path: '/terminos-y-condiciones'
+      fullPath: '/terminos-y-condiciones'
+      preLoaderRoute: typeof TerminosYCondicionesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/preguntas-frecuentes': {
@@ -151,11 +210,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/galeria': {
+      id: '/galeria'
+      path: '/galeria'
+      fullPath: '/galeria'
+      preLoaderRoute: typeof GaleriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creditos': {
+      id: '/creditos'
+      path: '/creditos'
+      fullPath: '/creditos'
+      preLoaderRoute: typeof CreditosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contacto': {
       id: '/contacto'
       path: '/contacto'
       fullPath: '/contacto'
       preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aviso-de-privacidad': {
+      id: '/aviso-de-privacidad'
+      path: '/aviso-de-privacidad'
+      fullPath: '/aviso-de-privacidad'
+      preLoaderRoute: typeof AvisoDePrivacidadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -178,10 +258,14 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  AvisoDePrivacidadRoute: AvisoDePrivacidadRoute,
   ContactoRoute: ContactoRoute,
+  CreditosRoute: CreditosRoute,
+  GaleriaRoute: GaleriaRoute,
   LoginRoute: LoginRoute,
   NosotrosRoute: NosotrosRoute,
   PreguntasFrecuentesRoute: PreguntasFrecuentesRoute,
+  TerminosYCondicionesRoute: TerminosYCondicionesRoute,
   ViajesRoute: ViajesRoute,
 }
 export const routeTree = rootRouteImport

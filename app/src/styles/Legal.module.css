@@ -1,0 +1,15 @@
+.container {
+  max-width: 800px;
+  margin: 3em auto;
+  padding: 2em;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+.title {
+  color: var(--color-primary);
+  margin-bottom: 2rem;
+}
+.subtitle {
+  color: var(--color-secondary);
+  margin-top: 2.5rem;
+}
