@@ -1,10 +1,4 @@
 function formatTripDate(startDateStr, endDateStr) {
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  };
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 
