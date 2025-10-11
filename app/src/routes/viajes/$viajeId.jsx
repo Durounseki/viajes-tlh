@@ -1,9 +1,156 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { useState } from "react";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { trips } from "../../data/viajes-data";
+import { formatTripDate } from "../../utils/tripDate";
 
-export const Route = createFileRoute('/viajes/$viajeId')({
+import styles from "../../styles/TripPage.module.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { HiChevronDown } from "react-icons/hi";
+import IncludesList from "../../components/IncludesList";
+
+export const Route = createFileRoute("/viajes/$viajeId")({
+  loader: async ({ params }) => {
+    const trip = trips.filter((t) => t.id === params.viajeId)[0];
+    if (!trip) {
+      throw notFound();
+    }
+    return trip;
+  },
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/viajes/$viajeId"!</div>
+  const trip = Route.useLoaderData();
+
+  const [openItem, setOpenItem] = useState(null);
+
+  const isPastTrip = new Date(trip.endDate) < new Date();
+
+  const otherTrips = trips.filter(
+    (t) => t.id !== trip.id && new Date(t.endDate) >= new Date()
+  );
+
+  const accordionData = [
+    { title: "Cuándo", content: formatTripDate(trip.startDate, trip.endDate) },
+    { title: "Itinerario", content: trip.itinerary },
+    {
+      title: "Qué Incluye",
+      content: <IncludesList includes={trip.includes} styles={styles} />,
+    },
+    { title: "Formas de Pago", content: trip.paymentMethods },
+    { title: "Recomendaciones", content: trip.recommendations },
+    { title: "Políticas", content: trip.policies },
+  ];
+
+  if (!isPastTrip) {
+    accordionData.push({
+      title: "Reservar Ahora",
+      content: "¡Asegura tu lugar en esta increíble aventura!",
+    });
+  }
+
+  const handleToggle = (index) => {
+    setOpenItem(openItem === index ? null : index);
+  };
+
+  return (
+    <main className={styles.container}>
+      <div className={styles.carouselContainer}>
+        <Swiper
+          modules={[Navigation, Pagination]}
+          navigation
+          pagination={{ clickable: true }}
+          loop={true}
+          className={styles.tripCarousel}
+        >
+          {trip.images.map((image, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={image}
+                alt={`${trip.destination} - imagen ${index + 1}`}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        {isPastTrip && (
+          <div className={styles.concludedOverlay}>
+            <span>Este Viaje ya Concluyó</span>
+          </div>
+        )}
+      </div>
+
+      <section className={styles.introSection}>
+        <h1>{trip.destination}</h1>
+        <p className={styles.tripDate}>
+          {formatTripDate(trip.startDate, trip.endDate)}
+        </p>
+        <p className={styles.tripDescription}>{trip.description}</p>
+      </section>
+
+      <section className={styles.accordion}>
+        {accordionData.map((item, index) => (
+          <div key={index} className={styles.accordionItem}>
+            <button
+              onClick={() => handleToggle(index)}
+              className={styles.accordionTitle}
+            >
+              <span>{item.title}</span>
+              <HiChevronDown
+                className={`${styles.chevron} ${openItem === index ? styles.open : ""}`}
+              />
+            </button>
+            <div
+              className={`${styles.accordionContent} ${openItem === index ? styles.open : ""}`}
+            >
+              <div className={styles.accordionInner}>
+                {item.title === "Reservar Ahora" ? (
+                  <>
+                    <p>{item.content}</p>
+                    <a
+                      href="https://wa.me/5215500000000"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.ctaButton}
+                    >
+                      Contactar por WhatsApp
+                    </a>
+                  </>
+                ) : (
+                  <div>{item.content}</div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {otherTrips.length > 0 && (
+        <section className={styles.otherTripsSection}>
+          <h2>Descubre Otros Destinos</h2>
+          <div className={styles.otherTripsGrid}>
+            {otherTrips.slice(0, 3).map((otherTrip) => (
+              <Link
+                to={`/viajes/${otherTrip.id}`}
+                key={otherTrip.id}
+                className={styles.smallTripCard}
+              >
+                <img
+                  src={otherTrip.images[otherTrip.thumbnailIndex]}
+                  alt={otherTrip.destination}
+                />
+                <div className={styles.priceTag}>{otherTrip.price}</div>
+                <div className={styles.smallTripCardContent}>
+                  <h3>{otherTrip.destination}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+    </main>
+  );
 }
