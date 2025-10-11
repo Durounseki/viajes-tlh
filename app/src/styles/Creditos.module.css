@@ -1,0 +1,71 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem 2rem;
+}
+
+.title {
+  text-align: center;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  opacity: 0.9;
+  max-width: 750px;
+  margin: 0 auto 3.5rem auto;
+  text-align: center;
+}
+
+.creditSection {
+  margin-bottom: 3.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.creditSection:last-child {
+  border-bottom: none;
+}
+
+.creditSection h2 {
+  font-size: 1.8rem;
+  color: var(--color-secondary);
+  margin-bottom: 1rem;
+}
+
+.creditSection p {
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.portfolioLink {
+  font-weight: bold;
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.creditList {
+  list-style: none;
+  padding-left: 0;
+}
+
+.creditList li {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.creditList a {
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--color-secondary);
+  transition: color 0.3s ease;
+}
+
+.creditList a:hover {
+  color: var(--color-primary);
+}

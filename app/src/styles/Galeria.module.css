@@ -1,0 +1,51 @@
+.container {
+  padding: 8rem 2rem 4rem 2rem;
+}
+
+.content {
+  max-width: 650px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 15px;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  opacity: 0.9;
+  margin-bottom: 2.5rem;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 0.75em 1.5em;
+  text-decoration: none;
+  border: solid 2px var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 8px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  font-weight: bold;
+}
+
+.ctaButton:hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
