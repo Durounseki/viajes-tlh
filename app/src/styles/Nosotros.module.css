@@ -1,0 +1,132 @@
+.container {
+  padding-top: 5rem;
+}
+
+.hero {
+  background-color: var(--color-background);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: var(--color-primary);
+}
+.hero p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 1rem auto 0 auto;
+  color: var(--color-text);
+  opacity: 0.9;
+}
+
+.storySection {
+  padding: 4rem 2rem;
+  background-color: #fff;
+}
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .content {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.textBlock h2 {
+  font-size: 2rem;
+  color: var(--color-secondary);
+  margin-bottom: 1.5rem;
+}
+.textBlock p {
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.imageBlock img {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+.imageCaption {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--color-background);
+  border-radius: 10px;
+  border-left: 5px solid var(--color-primary);
+}
+.imageCaption h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-text);
+}
+.imageCaption p {
+  margin: 0;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.philosophySection {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.philosophySection h2 {
+  font-size: 2.2rem;
+  color: var(--color-primary);
+  margin-bottom: 3rem;
+}
+.philosophyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: left;
+}
+.philosophyItem {
+  padding: 2rem;
+  border: 1px solid #eee;
+  border-radius: 15px;
+}
+.philosophyItem h3 {
+  color: var(--color-secondary);
+  margin: 0 0 1rem 0;
+}
+.philosophyItem p {
+  line-height: 1.7;
+  margin: 0;
+}
+
+.ctaSection {
+  text-align: center;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  background-color: var(--color-background);
+}
+.ctaSection h2 {
+  font-size: 2rem;
+  color: var(--color-primary);
+}
+.ctaSection p {
+  max-width: 600px;
+  margin: 1rem auto 2rem auto;
+}
+.cta-button {
+  display: inline-block;
+  padding: 0.75em 1.5em;
+  text-decoration: none;
+  border: solid 2px var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 5px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  font-weight: bold;
+}
+.cta-button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
