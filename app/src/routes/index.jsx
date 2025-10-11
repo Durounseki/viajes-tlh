@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroImage from "../assets/miranda-garside-Ux2le0HiXwE-unsplash.jpg";
-import { proximosViajes, viajesPasados } from "../data/viajes-data";
+import { trips, testimonials } from "../data/viajes-data";
 import styles from "../styles/Home.module.css";
+
+import { formatTripDate } from "../utils/tripDate";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -9,31 +11,23 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const testimonios = [
-  {
-    id: 1,
-    cita: "Fue mi primer viaje sola y me sentí segura y acompañada en todo momento. Teresa es una excelente anfitriona. ¡Ya quiero que sea el siguiente!",
-    autora: "Laura G.",
-  },
-  {
-    id: 2,
-    cita: "Increíble organización y los lugares que visitamos fueron mágicos. Hice nuevas amigas y me traje recuerdos para toda la vida.",
-    autora: "Carmen R.",
-  },
-  {
-    id: 3,
-    cita: "Recomiendo Nehnemi al 100%. Los viajes son cómodos, bien planeados y el ambiente del grupo es maravilloso.",
-    autora: "Isabel M.",
-  },
-];
-
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const viajeDestacado = proximosViajes[0];
-  const siguientesViajes = proximosViajes.slice(1);
+  const now = new Date();
+  const upcomingTrips = trips
+    .filter((trip) => new Date(trip.endDate) >= now)
+    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+  const pastTrips = trips
+    .filter((trip) => new Date(trip.endDate) < now)
+    .sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+
+  const featuredTrip =
+    upcomingTrips.length > 0 ? upcomingTrips[0] : pastTrips[0];
+  const nextTrips = upcomingTrips.slice(1);
 
   return (
     <main>
@@ -83,17 +77,18 @@ function RouteComponent() {
         <h2>Nuestro Próximo Destino</h2>
         <div className={styles["trip-card"]}>
           <img
-            src={viajeDestacado.imageSrc}
-            alt={`Viaje a ${viajeDestacado.destination}`}
+            src={featuredTrip.images[featuredTrip.thumbnailIndex]}
+            alt={`Viaje a ${featuredTrip.destination}`}
           />
           <div className={styles["trip-card-content"]}>
-            <h3>{viajeDestacado.destination}</h3>
+            <h3>{featuredTrip.destination}</h3>
             <p className={styles["trip-details"]}>
-              📅 {viajeDestacado.date} <br />
-              💲 {viajeDestacado.price} por persona
+              📅 {formatTripDate(featuredTrip.startDate, featuredTrip.endDate)}{" "}
+              <br />
+              💲 {featuredTrip.price} por persona
             </p>
             <Link
-              to={`/viajes/${viajeDestacado.id}`}
+              to={`/viajes/${featuredTrip.id}`}
               className={styles["cta-button"]}
             >
               Ver Detalles del Viaje
@@ -102,21 +97,24 @@ function RouteComponent() {
         </div>
       </section>
 
-      {proximosViajes.length > 1 && (
+      {nextTrips.length > 0 && (
         <section className={styles["other-trips-section"]}>
           <h2>Más Aventuras Próximamente</h2>
           <div className={styles["other-trips-list"]}>
-            {siguientesViajes.map((trip) => (
+            {nextTrips.map((trip) => (
               <Link
                 to={`/viajes/${trip.id}`}
                 key={trip.id}
                 className={styles["small-trip-card"]}
               >
-                <img src={trip.imageSrc} alt={`Viaje a ${trip.destination}`} />
+                <img
+                  src={trip.images[trip.thumbnailIndex]}
+                  alt={`Viaje a ${trip.destination}`}
+                />
                 <div className={styles["price-tag"]}>{trip.price}</div>
                 <div className={styles["small-trip-card-content"]}>
                   <h3>{trip.destination}</h3>
-                  <p>{trip.date}</p>
+                  <p>{formatTripDate(trip.startDate, trip.endDate)}</p>
                 </div>
               </Link>
             ))}
@@ -135,11 +133,14 @@ function RouteComponent() {
           loop={true}
           className={styles["trip-carousel"]}
         >
-          {viajesPasados.map((viaje) => (
-            <SwiperSlide key={viaje.id} className={styles["past-trip-slide"]}>
-              <img src={viaje.imageSrc} alt={viaje.destination} />
+          {pastTrips.map((trip) => (
+            <SwiperSlide key={trip.id} className={styles["past-trip-slide"]}>
+              <img
+                src={trip.images[trip.thumbnailIndex]}
+                alt={trip.destination}
+              />
               <div className={styles["past-trip-overlay"]}>
-                <p>{viaje.destination}</p>
+                <p>{trip.destination}</p>
               </div>
             </SwiperSlide>
           ))}
@@ -160,13 +161,13 @@ function RouteComponent() {
           loop={true}
           className={styles["testimonial-carousel"]}
         >
-          {testimonios.map((testimonio) => (
-            <SwiperSlide key={testimonio.id}>
+          {testimonials.map((testimonial) => (
+            <SwiperSlide key={testimonial.id}>
               <blockquote className={styles["testimonial-quote"]}>
-                "{testimonio.cita}"
+                "{testimonial.cita}"
               </blockquote>
               <p className={styles["testimonial-author"]}>
-                - {testimonio.autora}
+                - {testimonial.autora}
               </p>
             </SwiperSlide>
           ))}
