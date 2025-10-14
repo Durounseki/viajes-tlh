@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import logo from "../assets/viajeras-x-siempre.png";
+import logo from "../assets/viajeras-x-siempre-light.png";
 import styles from "../styles/Header.module.css";
 import { HiMenu, HiX } from "react-icons/hi";
 

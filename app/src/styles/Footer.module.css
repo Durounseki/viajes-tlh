@@ -1,7 +1,7 @@
 .footer {
   background-color: var(--color-text);
   color: var(--color-background);
-  padding: 4rem 2rem 1rem 2rem;
+  padding: 3rem 1rem 1rem 1rem;
   font-size: 1rem;
 }
 
@@ -26,11 +26,25 @@
   line-height: 1.6;
 }
 
+.logo {
+  justify-self: center;
+  align-self: center;
+  text-decoration: none;
+  height: 60px;
+  width: 150px;
+  overflow: hidden;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
 .footer-logo-text {
-  font-family: "Times New Roman", serif;
-  font-size: 2.5rem;
+  font-size: 2 rem;
   color: var(--color-primary);
-  margin: 0 0 1rem 0;
 }
 
 .footer h4 {

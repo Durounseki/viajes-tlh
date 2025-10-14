@@ -11,6 +11,8 @@
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
+    "@prisma/adapter-d1": "^6.17.1",
+    "@prisma/client": "^6.17.1",
     "@tanstack/react-router": "^1.132.47",
     "@tanstack/react-router-devtools": "^1.132.51",
     "hono": "^4.9.10",

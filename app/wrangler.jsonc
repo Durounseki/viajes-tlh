@@ -13,6 +13,13 @@
   "observability": {
     "enabled": true,
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "viajeras-por-siempre-prod",
+      "database_id": "5427f91f-7f43-4988-834f-1d60209a45b9",
+    },
+  ],
   /**
    * Smart Placement
    * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import styles from "../styles/Footer.module.css";
+import logo from "../assets/viajeras-x-siempre-dark.png";
 import { FaFacebookSquare, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 export function Footer() {
@@ -7,7 +8,9 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={styles["footer-content"]}>
         <div className={styles["footer-brand"]}>
-          {/* <img src={logo} alt="Logo Viajeras por Siempre" className={styles.logo} /> */}
+          <Link to="/" className={styles.logo}>
+            <img src={logo} alt="Logo Viajeras por Siempre" />
+          </Link>
           <h3 className={styles["footer-logo-text"]}>Viajeras por Siempre</h3>
           <p>
             Creamos viajes para mujeres donde la seguridad, la comodidad y las
@@ -83,7 +86,8 @@ export function Footer() {
       </div>
       <div className={styles["footer-bottom"]}>
         <p>
-          © {new Date().getFullYear()} Viajeras por Siempre. Todos los derechos reservados.
+          © {new Date().getFullYear()} Viajeras por Siempre. Todos los derechos
+          reservados.
         </p>
         <p className={styles["legal-links"]}>
           <Link to="/terminos-y-condiciones">Términos y Condiciones</Link> |{" "}

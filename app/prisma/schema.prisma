@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Trip {
+  id              String         @id @default(cuid())
+  destination     String
+  startDate       DateTime
+  endDate         DateTime
+  price           Int
+  currency        String         @default("MXN")
+  description     String
+  itinerary       String
+  recommendations String
+  policies        String
+  thumbnailId     String?
+  includedItems   IncludedItem[]
+  notes           String?
+  paymentPlanId   String?
+  paymentPlan     PaymentPlan?   @relation(fields: [paymentPlanId], references: [id])
+  images          Image[]
+  bookings        Booking[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model IncludedItem {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  trips       Trip[]
+}
+
+model PaymentPlan {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  description  String?
+  installments Installment[]
+  trips        Trip[]
+}
+
+model Installment {
+  id             String      @id @default(cuid())
+  description    String
+  percentage     Int
+  daysBeforeTrip Int
+  paymentPlanId  String
+  paymentPlan    PaymentPlan @relation(fields: [paymentPlanId], references: [id], onDelete: Cascade)
+}
+
+model Image {
+  id     String  @id @default(cuid())
+  src    String  @unique
+  alt    String?
+  tripId String
+  trip   Trip    @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id          String    @id @default(cuid())
+  email       String    @unique
+  name        String
+  phone       String?
+  createdAt   DateTime  @default(now())
+  bookings    Booking[]
+  isSuscribed Boolean   @default(true)
+}
+
+model Booking {
+  bookingDate DateTime  @default(now())
+  notes       String?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tripId      String
+  trip        Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  payments    Payment[]
+
+  @@id([userId, tripId])
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  amount        Int
+  paymentDate   DateTime @default(now())
+  method        String
+  reference     String?
+  bookingUserId String
+  bookingTripId String
+  booking       Booking  @relation(fields: [bookingUserId, bookingTripId], references: [userId, tripId], onDelete: Cascade)
+}
