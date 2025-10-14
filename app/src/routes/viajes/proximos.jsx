@@ -22,7 +22,7 @@ function RouteComponent() {
       ctaTitle="¿No encontraste tu destino ideal?"
       ctaSubtitle="¡Tu opinión es muy importante! Queremos saber qué lugares de México te
           gustaría explorar. Tus sugerencias nos ayudan a crear las próximas
-          aventuras de Nehnemi."
+          aventuras de Viajeras por Siempre."
       ctaText="Enviar una Sugerencia"
     />
   );

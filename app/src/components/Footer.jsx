@@ -7,8 +7,8 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={styles["footer-content"]}>
         <div className={styles["footer-brand"]}>
-          {/* <img src={logo} alt="Logo Nehnemi" className={styles.logo} /> */}
-          <h3 className={styles["footer-logo-text"]}>Nehnemi</h3>
+          {/* <img src={logo} alt="Logo Viajeras por Siempre" className={styles.logo} /> */}
+          <h3 className={styles["footer-logo-text"]}>Viajeras por Siempre</h3>
           <p>
             Creamos viajes para mujeres donde la seguridad, la comodidad y las
             buenas conversaciones son lo más importante.
@@ -76,14 +76,14 @@ export function Footer() {
               <FaWhatsapp /> <span>55 1234 5678</span>
             </li>
             <li>
-              ✉️ <span>contacto@nehnemi.com</span>
+              ✉️ <span>contacto@viajerasporsiempre.com</span>
             </li>
           </ul>
         </div>
       </div>
       <div className={styles["footer-bottom"]}>
         <p>
-          © {new Date().getFullYear()} Nehnemi. Todos los derechos reservados.
+          © {new Date().getFullYear()} Viajeras por Siempre. Todos los derechos reservados.
         </p>
         <p className={styles["legal-links"]}>
           <Link to="/terminos-y-condiciones">Términos y Condiciones</Link> |{" "}

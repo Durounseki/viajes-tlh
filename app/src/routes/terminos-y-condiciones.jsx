@@ -14,7 +14,7 @@ function RouteComponent() {
       </p>
 
       <p>
-        Bienvenida a Nehnemi. Al reservar un viaje o utilizar nuestro sitio web,
+        Bienvenida a Viajeras por Siempre. Al reservar un viaje o utilizar nuestro sitio web,
         usted acepta los siguientes términos y condiciones. Por favor, léalos
         con atención.
       </p>
@@ -40,7 +40,7 @@ function RouteComponent() {
           con menos de 30 días de anticipación no serán reembolsables.
         </li>
         <li>
-          <strong>Cancelación por parte de Nehnemi:</strong> Si Nehnemi se ve en
+          <strong>Cancelación por parte de Viajeras por Siempre:</strong> Si Viajeras por Siempre se ve en
           la necesidad de cancelar un viaje por no alcanzar el mínimo de
           participantes o por causas de fuerza mayor, se le notificará a la
           brevedad y se le ofrecerá un reembolso completo del 100% de lo pagado
@@ -60,7 +60,7 @@ function RouteComponent() {
           guías y personal de servicio.
         </li>
         <li>
-          Cuidar sus pertenencias personales. Nehnemi no se hace responsable por
+          Cuidar sus pertenencias personales. Viajeras por Siempre no se hace responsable por
           pérdidas o robos.
         </li>
         <li>
@@ -70,7 +70,7 @@ function RouteComponent() {
 
       <h2 className={styles.subtitle}>4. Cambios en el Itinerario</h2>
       <p>
-        Aunque nos esforzamos por seguir el itinerario publicado, Nehnemi se
+        Aunque nos esforzamos por seguir el itinerario publicado, Viajeras por Siempre se
         reserva el derecho de modificar rutas, horarios o actividades por causas
         de fuerza mayor, condiciones climáticas o cualquier otra situación que
         pudiera poner en riesgo la seguridad del grupo.
@@ -78,7 +78,7 @@ function RouteComponent() {
 
       <h2 className={styles.subtitle}>5. Limitación de Responsabilidad</h2>
       <p>
-        Nehnemi actúa como intermediario entre usted y los proveedores de
+        Viajeras por Siempre actúa como intermediario entre usted y los proveedores de
         servicios (hoteles, transporte, etc.). No nos hacemos responsables por
         actos, omisiones, negligencia o accidentes causados por dichos terceros.
       </p>

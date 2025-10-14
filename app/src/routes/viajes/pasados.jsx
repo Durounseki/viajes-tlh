@@ -15,7 +15,7 @@ function RouteComponent() {
   return (
     <TripsLayout
       title="Archivo de Viajes Pasados"
-      subtitle="Nuestra historia se cuenta a través de los lugares que hemos visitado y las sonrisas que hemos compartido. Explora nuestro archivo de aventuras para inspirarte y ver la magia de viajar con Nehnemi."
+      subtitle="Nuestra historia se cuenta a través de los lugares que hemos visitado y las sonrisas que hemos compartido. Explora nuestro archivo de aventuras para inspirarte y ver la magia de viajar con Viajeras por Siempre."
       trips={pastTrips}
       ctaTitle="¿Te gustó alguno de nuestros destinos?"
       ctaSubtitle="Muchos de nuestros viajes más queridos se repiten. Si te interesa una aventura que ya concluyó, ¡dinos cuál! Nos ayuda a planificar las próximas salidas y podemos avisarte si lo volvemos a agendar."

@@ -34,14 +34,17 @@ function RouteComponent() {
       <figure className={styles["hero-image"]}>
         <img src={heroImage} alt="San Miguel de Ayende" />
         <figcaption className={styles["overlay-caption"]}>
-          <h1 className={styles["brand-name"]}>NEHNEMI</h1>
-          <p className={styles["brand-meaning"]}>Del Náhuatl: "Viajar"</p>
+          <h1 className={styles["brand-name"]}>
+            Viajeras
+            <wbr /> por
+            <wbr /> Siempre
+          </h1>
         </figcaption>
       </figure>
 
       <section className={styles["hero-section"]}>
         <div className={styles["hero-content"]}>
-          <h2>Nehnemi: Viajar entre amigas.</h2>
+          <h2>Viajeras por Siempre</h2>
           <p>
             Creamos experiencias inolvidables pensadas para nosotras. Viaja a tu
             propio ritmo, siéntete segura y acompañada, y regresa a casa con
@@ -56,20 +59,21 @@ function RouteComponent() {
       <section className={styles["about-snippet"]}>
         <h2>Una Viajera Apasionada, como Tú</h2>
         <p>
-          Nehnemi nació de una convicción: la aventura no tiene edad y la mejor
-          forma de vivirla es en buena compañía. Soy Teresa, fundadora de
-          Nehnemi y, ante todo, una viajera apasionada.
+          Viajeras por Siempre nació de una convicción: la aventura no tiene
+          edad y la mejor forma de vivirla es en buena compañía. Soy Teresa,
+          fundadora de Viajeras por Siempre y, ante todo, una viajera
+          apasionada.
         </p>
         <p>
           Durante años, organicé viajes para mi círculo cercano, siempre con la
           idea de crear un ambiente donde todas nos sintiéramos cómodas, seguras
-          y libres para disfrutar. Hoy, esa es la promesa de Nehnemi: ofrecerte
-          viajes perfectamente planeados para que tú solo te ocupes de vivir el
-          momento. Aquí no eres una turista, eres una compañera de aventura.
-          ¡Bienvenida!
+          y libres para disfrutar. Hoy, esa es la promesa de Viajeras por
+          Siempre: ofrecerte viajes perfectamente planeados para que tú solo te
+          ocupes de vivir el momento. Aquí no eres una turista, eres una
+          compañera de aventura. ¡Bienvenida!
         </p>
         <Link to="/nosotros" className={styles["secondary-button"]}>
-          Conoce más sobre Nehnemi
+          Conoce más sobre Viajeras por Siempre
         </Link>
       </section>
 

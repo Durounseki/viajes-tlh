@@ -14,7 +14,7 @@ function RouteComponent() {
       </p>
 
       <p>
-        En Nehnemi, con domicilio fiscal en [Dirección Fiscal de tu Mamá,
+        En Viajeras por Siempre, con domicilio fiscal en [Dirección Fiscal de tu Mamá,
         Ciudad, Estado], estamos comprometidos con la protección de sus datos
         personales. El presente Aviso de Privacidad tiene como finalidad
         informarle sobre el tratamiento que se le da a su información.
@@ -62,7 +62,7 @@ function RouteComponent() {
       </ul>
       <p>
         De manera adicional, podremos utilizar su información para enviarle
-        promociones sobre futuros viajes y noticias de Nehnemi. Si no desea
+        promociones sobre futuros viajes y noticias de Viajeras por Siempre. Si no desea
         recibir estas comunicaciones, puede solicitarlo en cualquier momento.
       </p>
 
@@ -87,7 +87,7 @@ function RouteComponent() {
       </p>
       <p>
         Para el ejercicio de cualquiera de los derechos ARCO, por favor envíe
-        una solicitud al correo electrónico: <strong>hola@nehnemi.com</strong>.
+        una solicitud al correo electrónico: <strong>hola@viajerasporsiempre.com</strong>.
       </p>
 
       <h2 className={styles.subtitle}>5. Cambios al Aviso de Privacidad</h2>

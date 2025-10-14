@@ -260,7 +260,7 @@ export const testimonials = [
   },
   {
     id: 3,
-    cita: "Recomiendo Nehnemi al 100%. Los viajes son cómodos, bien planeados y el ambiente del grupo es maravilloso.",
+    cita: "Recomiendo Viajeras por Siempre al 100%. Los viajes son cómodos, bien planeados y el ambiente del grupo es maravilloso.",
     autora: "Isabel M.",
   },
 ];

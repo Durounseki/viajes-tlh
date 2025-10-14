@@ -13,7 +13,7 @@ function RouteComponent() {
         <div className={styles["hero-text"]}>
           <h1>Una Aventura Hecha para Nosotras</h1>
           <p>
-            Nehnemi es más que una agencia de viajes; es una comunidad de
+            Viajeras por Siempre es más que una agencia de viajes; es una comunidad de
             mujeres exploradoras, un espacio seguro para descubrir México y a
             nosotras mismas.
           </p>
@@ -25,7 +25,7 @@ function RouteComponent() {
           <div className={styles.textBlock}>
             <h2>Nuestra Historia</h2>
             <p>
-              Nehnemi nació de una convicción: la aventura no tiene edad y la
+              Viajeras por Siempre nació de una convicción: la aventura no tiene edad y la
               mejor forma de vivirla es en buena compañía. Lo que comenzó hace
               años como viajes informales entre amigas, hoy se ha convertido en
               una misión: ofrecer experiencias auténticas, seguras y bien
@@ -39,7 +39,7 @@ function RouteComponent() {
             </p>
           </div>
           <div className={styles.imageBlock}>
-            <img src={teresaImage} alt="Teresa, fundadora de Nehnemi" />
+            <img src={teresaImage} alt="Teresa, fundadora de Viajeras por Siempre" />
             <div className={styles.imageCaption}>
               <h3>Conoce a Teresa</h3>
               <p>

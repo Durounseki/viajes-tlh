@@ -110,10 +110,10 @@ function RouteComponent() {
               </a>
             </li>
             <li>
-              <a href="mailto:contacto@nehnemi.com">
+              <a href="mailto:contacto@viajerasporsiempre.com">
                 <HiOutlineMail />{" "}
                 <span>
-                  <strong>Email:</strong> contacto@nehnemi.com
+                  <strong>Email:</strong> contacto@viajerasporsiempre.com
                 </span>
               </a>
             </li>

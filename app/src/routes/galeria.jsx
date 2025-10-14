@@ -20,7 +20,7 @@ function RouteComponent() {
         <p className={styles.subtitle}>
           Estamos seleccionando con mucho cariño las mejores fotos y momentos de
           nuestras aventuras pasadas. Vuelve pronto para revivir la magia y la
-          amistad de los viajes de Nehnemi.
+          amistad de los viajes de Viajeras por Siempre.
         </p>
         <Link to="/viajes/proximos" className={styles.ctaButton}>
           Ver Próximos Viajes

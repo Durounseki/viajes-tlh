@@ -15,7 +15,7 @@ const faqData = [
       "¡Absolutamente! De hecho, muchas de nuestras viajeras vienen solas. Fomentamos un ambiente de comunidad y respeto donde todas se sienten seguras y acompañadas. Teresa, la fundadora, está presente en cada viaje para coordinar y cuidar al grupo.",
   },
   {
-    question: "¿Qué tipo de mujeres viajan con Nehnemi?",
+    question: "¿Qué tipo de mujeres viajan con Viajeras por Siempre?",
     answer:
       "Nuestra comunidad está formada por mujeres, en su mayoría de 50 años en adelante, que comparten el amor por descubrir México. Son mujeres curiosas, respetuosas y con ganas de vivir nuevas experiencias y hacer nuevas amigas.",
   },

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import logo from "../assets/viajeras-x-siempre.png";
 import styles from "../styles/Header.module.css";
 import { HiMenu, HiX } from "react-icons/hi";
 
 function Logo() {
   return (
     <Link to="/" className={styles.logo}>
-      <span>Nehnemi</span>
+      <img src={logo} alt="Viajeras por Siempre Logo" />
     </Link>
   );
 }
