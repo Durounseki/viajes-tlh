@@ -249,3 +249,57 @@ export const testimonials = [
     autora: "Isabel M.",
   },
 ];
+
+export const users = [
+  {
+    id: "user_1",
+    name: "Laura García",
+    email: "laura@email.com",
+    phone: "5512345678",
+  },
+  {
+    id: "user_2",
+    name: "Carmen Rodríguez",
+    email: "carmen@email.com",
+    phone: "5587654321",
+  },
+  {
+    id: "user_3",
+    name: "Isabel Martínez",
+    email: "isabel@email.com",
+    phone: "5555555555",
+  },
+];
+
+export const bookings = [
+  {
+    userId: "user_1",
+    tripId: "zacatlan",
+    bookingDate: "2025-09-15T10:00:00.000Z",
+    payments: [
+      {
+        amount: 1000,
+        paymentDate: "2025-09-15T10:00:00.000Z",
+        method: "Transferencia",
+      },
+    ],
+  },
+  {
+    userId: "user_2",
+    tripId: "zacatlan",
+    bookingDate: "2025-09-18T14:30:00.000Z",
+    payments: [
+      {
+        amount: 2600,
+        paymentDate: "2025-09-18T14:30:00.000Z",
+        method: "Tarjeta",
+      },
+    ],
+  },
+  {
+    userId: "user_3",
+    tripId: "xochimilco",
+    bookingDate: "2025-10-01T11:00:00.000Z",
+    payments: [],
+  },
+];

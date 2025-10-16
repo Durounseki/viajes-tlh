@@ -36,7 +36,7 @@ function RouteComponent() {
       <nav className={styles.mobileNav}>
         <AdminLink to="/admin">🏠 Inicio</AdminLink>
         <AdminLink to="/admin/viajes">✈️ Viajes</AdminLink>
-        <AdminLink to="/admin/bookings">🎟️ Reservaciones</AdminLink>
+        <AdminLink to="/admin/reservaciones">🎟️ Reservaciones</AdminLink>
         <AdminLink to="/admin/users">👥 Usuarios</AdminLink>
       </nav>
     </main>

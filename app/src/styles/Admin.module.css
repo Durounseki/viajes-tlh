@@ -218,3 +218,219 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+.filterBar {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 500px;
+}
+
+.filterBar label {
+  font-weight: bold;
+  color: var(--color-secondary);
+}
+
+.filterBar select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: #fff;
+}
+
+.bookingList {
+  margin-top: 2rem;
+}
+
+.bookingListItem {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.bookingListItem:has(:focus-within) {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bookingHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex-grow: 1;
+}
+
+.bookingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bookingUserName {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.bookingDate {
+  color: var(--color-secondary);
+  font-size: 0.9rem;
+}
+
+.bookingActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.whatsappIconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 8px;
+  border: 1px solid;
+
+  font-size: 1.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+
+  background-color: #25d366;
+  border-color: #25d366;
+  color: #ffffff;
+}
+
+.whatsappIconButton:hover {
+  background-color: #1dae54;
+  border-color: #1dae54;
+}
+
+.bookingDetails {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-background);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.paymentList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.paymentList li {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--color-background);
+}
+.paymentList li span {
+  color: var(--color-secondary);
+}
+.paymentList li strong {
+  color: var(--color-text);
+}
+
+.paymentSummary p {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+}
+.paymentSummary p strong {
+  color: var(--color-text);
+}
+.paidStatus strong {
+  color: var(--color-secondary);
+}
+.pendingStatus strong {
+  color: var(--color-primary);
+}
+
+.addPaymentForm h4,
+.paymentDetails h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+.addPaymentForm {
+  background-color: var(--color-background);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.addPaymentForm .formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.addPaymentForm input,
+.addPaymentForm select {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.addPaymentForm .primaryButton {
+  width: 100%;
+}
+
+.closeButton {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-align: center;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  background-color: transparent;
+  color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+@media (min-width: 768px) {
+  .bookingListItem {
+    flex-direction: row;
+    align-items: center;
+  }
+  .bookingInfo {
+    flex-grow: 1;
+  }
+  .bookingHeader {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .bookingDetails {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .addPaymentForm .formRow {
+    flex-direction: row;
+  }
+}
