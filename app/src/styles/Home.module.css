@@ -164,6 +164,10 @@
   margin: 0 auto;
 }
 
+.other-trips-list a {
+  text-decoration: none;
+}
+
 .small-trip-card {
   position: relative;
   background-color: #fff;

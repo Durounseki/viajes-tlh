@@ -1,9 +1,7 @@
-/* src/styles/Faq.module.css */
-
 .container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 8rem 2rem 4rem 2rem;
+  padding: 5rem 1rem 4rem 1rem;
 }
 
 .page-title {
@@ -23,7 +21,6 @@
   text-align: center;
 }
 
-/* --- Accordion Styles (similar to TripPage) --- */
 .accordion {
   border-top: 1px solid #ddd;
 }
@@ -48,7 +45,7 @@
   font-size: 1.5rem;
   color: var(--color-primary);
   transition: transform 0.3s ease;
-  flex-shrink: 0; /* Prevents icon from shrinking */
+  flex-shrink: 0;
   margin-left: 1rem;
 }
 .chevron.open {
@@ -60,7 +57,7 @@
   transition: max-height 0.4s ease-in-out;
 }
 .accordionAnswer.open {
-  max-height: 500px; /* Adjust if content is longer */
+  max-height: 500px;
 }
 .accordionInner {
   padding: 0 1rem 1.5rem 1rem;
@@ -70,7 +67,6 @@
   margin: 0;
 }
 
-/* --- Reusing CTA styles --- */
 .ctaSection {
   text-align: center;
   margin-top: 5rem;

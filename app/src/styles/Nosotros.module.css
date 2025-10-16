@@ -1,10 +1,10 @@
 .container {
-  padding-top: 5rem;
+  padding-top: 3rem;
 }
 
 .hero {
   background-color: var(--color-background);
-  padding: 4rem 2rem;
+  padding: 2rem 1rem;
   text-align: center;
 }
 .hero h1 {
@@ -20,7 +20,7 @@
 }
 
 .storySection {
-  padding: 4rem 2rem;
+  padding: 4rem 1rem;
   background-color: #fff;
 }
 .content {
@@ -70,7 +70,7 @@
 }
 
 .philosophySection {
-  padding: 4rem 2rem;
+  padding: 4rem 1rem;
   text-align: center;
 }
 .philosophySection h2 {
@@ -87,7 +87,7 @@
   text-align: left;
 }
 .philosophyItem {
-  padding: 2rem;
+  padding: 1rem;
   border: 1px solid #eee;
   border-radius: 15px;
 }
@@ -103,7 +103,7 @@
 .ctaSection {
   text-align: center;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 3rem 1rem;
   background-color: var(--color-background);
 }
 .ctaSection h2 {
