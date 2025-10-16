@@ -24,6 +24,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ViajesProximosRouteImport } from './routes/viajes/proximos'
 import { Route as ViajesPasadosRouteImport } from './routes/viajes/pasados'
 import { Route as ViajesViajeIdRouteImport } from './routes/viajes/$viajeId'
+import { Route as AdminUsuariosRouteImport } from './routes/admin/usuarios'
 import { Route as AdminReservacionesRouteImport } from './routes/admin/reservaciones'
 import { Route as AdminViajesIndexRouteImport } from './routes/admin/viajes/index'
 import { Route as AdminViajesNuevoRouteImport } from './routes/admin/viajes/nuevo'
@@ -104,6 +105,11 @@ const ViajesViajeIdRoute = ViajesViajeIdRouteImport.update({
   path: '/viajes/$viajeId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminUsuariosRoute = AdminUsuariosRouteImport.update({
+  id: '/usuarios',
+  path: '/usuarios',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminReservacionesRoute = AdminReservacionesRouteImport.update({
   id: '/reservaciones',
   path: '/reservaciones',
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
     | '/admin/reservaciones'
+    | '/admin/usuarios'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
     | '/admin/reservaciones'
+    | '/admin/usuarios'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
     | '/admin/reservaciones'
+    | '/admin/usuarios'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
@@ -378,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViajesViajeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/usuarios': {
+      id: '/admin/usuarios'
+      path: '/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AdminUsuariosRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/reservaciones': {
       id: '/admin/reservaciones'
       path: '/reservaciones'
@@ -411,6 +430,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminReservacionesRoute: typeof AdminReservacionesRoute
+  AdminUsuariosRoute: typeof AdminUsuariosRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminViajesNuevoRoute: typeof AdminViajesNuevoRoute
   AdminViajesIndexRoute: typeof AdminViajesIndexRoute
@@ -419,6 +439,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminReservacionesRoute: AdminReservacionesRoute,
+  AdminUsuariosRoute: AdminUsuariosRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminViajesNuevoRoute: AdminViajesNuevoRoute,
   AdminViajesIndexRoute: AdminViajesIndexRoute,

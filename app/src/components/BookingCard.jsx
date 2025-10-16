@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import styles from "../styles/Admin.module.css";
-import { BsWhatsapp } from "react-icons/bs";
+import { FaWhatsapp } from "react-icons/fa";
 import { formatPrice } from "../utils/tripPrice";
 
 function BookingCard({ booking, tripPrice }) {
@@ -52,7 +52,7 @@ function BookingCard({ booking, tripPrice }) {
             aria-label="Enviar WhatsApp"
             onClick={(e) => e.stopPropagation()}
           >
-            <BsWhatsapp />
+            <FaWhatsapp />
           </a>
           <button
             onClick={() => setIsExpanded(!isExpanded)}

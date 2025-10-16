@@ -37,7 +37,7 @@ function RouteComponent() {
         <AdminLink to="/admin">🏠 Inicio</AdminLink>
         <AdminLink to="/admin/viajes">✈️ Viajes</AdminLink>
         <AdminLink to="/admin/reservaciones">🎟️ Reservaciones</AdminLink>
-        <AdminLink to="/admin/users">👥 Usuarios</AdminLink>
+        <AdminLink to="/admin/usuarios">👥 Usuarios</AdminLink>
       </nav>
     </main>
   );

@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import styles from "../../styles/Admin.module.css";
 import { trips, users, bookings } from "../../data/viajes-data";
-import { FaWhatsapp } from "react-icons/fa";
 import BookingCard from "../../components/BookingCard";
 
 export const Route = createFileRoute("/admin/reservaciones")({
