@@ -1,30 +1,32 @@
-function IncludesList({ includes, styles }) {
-  const labels = {
-    transporteRedondo: "Transporte Redondo",
-    hospedaje: "Hospedaje",
-    coordinadorViaje: "Coordinador de Viaje",
-    entradas: "Entradas a sitios mencionados",
-    seguroViajero: "Seguro de Viajero",
-    desayunoIncluido: "Desayuno(s) Incluido(s)",
-  };
+import { HiCheckCircle, HiXCircle } from "react-icons/hi";
+import { initialItems } from "../data/viajes-options";
+
+function IncludesList({ includedItems, notes, styles }) {
+  console.log(includedItems);
+  const includedIds = new Set(includedItems.map((item) => item.id));
 
   return (
     <div className={styles.includesContent}>
       <ul className={styles.includesList}>
-        {Object.entries(includes).map(([key, value]) => {
-          if (typeof value === "boolean" && labels[key]) {
-            return (
-              <li key={key} data-included={value}>
-                {value ? "✅" : "❌"} {labels[key]}
-              </li>
-            );
-          }
-          return null;
-        })}
+        {initialItems.map((item) => (
+          <li
+            key={item.id}
+            className={
+              includedIds.has(item.id) ? styles.included : styles.notIncluded
+            }
+          >
+            {includedIds.has(item.id) ? (
+              <HiCheckCircle className={styles.includeIcon} />
+            ) : (
+              <HiXCircle className={styles.excludeIcon} />
+            )}
+            <span>{item.name}</span>
+          </li>
+        ))}
       </ul>
-      {includes.notes && (
-        <p className={styles.includesNotes}>
-          <strong>Notas:</strong> {includes.notes}
+      {notes && (
+        <p className={styles.includeNotes}>
+          <strong>Notas:</strong> {notes}
         </p>
       )}
     </div>

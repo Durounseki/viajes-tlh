@@ -17,9 +17,9 @@ function RouteComponent() {
         </div>
         <nav className={styles.desktopNav}>
           <AdminLink to="/admin">🏠 Inicio</AdminLink>
-          <AdminLink to="/admin/trips">✈️ Viajes</AdminLink>
-          <AdminLink to="/admin/bookings">🎟️ Reservaciones</AdminLink>
-          <AdminLink to="/admin/users">👥 Usuarios</AdminLink>
+          <AdminLink to="/admin/viajes">✈️ Viajes</AdminLink>
+          <AdminLink to="/admin/reservaciones">🎟️ Reservaciones</AdminLink>
+          <AdminLink to="/admin/usuarios">👥 Usuarios</AdminLink>
         </nav>
       </aside>
 
@@ -35,7 +35,7 @@ function RouteComponent() {
 
       <nav className={styles.mobileNav}>
         <AdminLink to="/admin">🏠 Inicio</AdminLink>
-        <AdminLink to="/admin/trips">✈️ Viajes</AdminLink>
+        <AdminLink to="/admin/viajes">✈️ Viajes</AdminLink>
         <AdminLink to="/admin/bookings">🎟️ Reservaciones</AdminLink>
         <AdminLink to="/admin/users">👥 Usuarios</AdminLink>
       </nav>

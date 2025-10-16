@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { trips } from "../../data/viajes-data";
+import { initialPlans } from "../../data/viajes-options";
 import { formatTripDate } from "../../utils/tripDate";
 
 import styles from "../../styles/TripPage.module.css";
@@ -11,13 +12,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { HiChevronDown } from "react-icons/hi";
 import IncludesList from "../../components/IncludesList";
+import { formatPrice } from "../../utils/tripPrice";
 
 export const Route = createFileRoute("/viajes/$viajeId")({
   loader: async ({ params }) => {
-    const trip = trips.filter((t) => t.id === params.viajeId)[0];
+    const trip = trips.find((t) => t.id === params.viajeId);
     if (!trip) {
       throw notFound();
     }
+    console.log(trip);
     return trip;
   },
   component: RouteComponent,
@@ -34,14 +37,27 @@ function RouteComponent() {
     (t) => t.id !== trip.id && new Date(t.endDate) >= new Date()
   );
 
+  const paymentPlan = initialPlans.find((p) => p.id === trip.paymentPlanId);
+
   const accordionData = [
     { title: "Cuándo", content: formatTripDate(trip.startDate, trip.endDate) },
     { title: "Itinerario", content: trip.itinerary },
     {
       title: "Qué Incluye",
-      content: <IncludesList includes={trip.includes} styles={styles} />,
+      content: (
+        <IncludesList
+          includedItems={trip.includedItems}
+          notes={trip.notes}
+          styles={styles}
+        />
+      ),
     },
-    { title: "Formas de Pago", content: trip.paymentMethods },
+    {
+      title: "Formas de Pago",
+      content: paymentPlan
+        ? paymentPlan.description
+        : "Consulta las opciones de pago",
+    },
     { title: "Recomendaciones", content: trip.recommendations },
     { title: "Políticas", content: trip.policies },
   ];
@@ -68,10 +84,10 @@ function RouteComponent() {
           className={styles.tripCarousel}
         >
           {trip.images.map((image, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={image.id}>
               <img
-                src={image}
-                alt={`${trip.destination} - imagen ${index + 1}`}
+                src={image.src}
+                alt={image.alt || `${trip.destination} - imagen ${index + 1}`}
               />
             </SwiperSlide>
           ))}
@@ -132,22 +148,33 @@ function RouteComponent() {
         <section className={styles.otherTripsSection}>
           <h2>Descubre Otros Destinos</h2>
           <div className={styles.otherTripsGrid}>
-            {otherTrips.slice(0, 3).map((otherTrip) => (
-              <Link
-                to={`/viajes/${otherTrip.id}`}
-                key={otherTrip.id}
-                className={styles.smallTripCard}
-              >
-                <img
-                  src={otherTrip.images[otherTrip.thumbnailIndex]}
-                  alt={otherTrip.destination}
-                />
-                <div className={styles.priceTag}>{otherTrip.price}</div>
-                <div className={styles.smallTripCardContent}>
-                  <h3>{otherTrip.destination}</h3>
-                </div>
-              </Link>
-            ))}
+            {otherTrips.slice(0, 3).map((otherTrip) => {
+              const thumbnail =
+                otherTrip.images.find(
+                  (img) => img.id === otherTrips.thumbnailId
+                ) || otherTrip.images[0];
+              const formattedPrice = formatPrice(
+                otherTrip.price,
+                otherTrip.currency
+              );
+
+              return (
+                <Link
+                  to={`/viajes/${otherTrip.id}`}
+                  key={otherTrip.id}
+                  className={styles.smallTripCard}
+                >
+                  <img
+                    src={thumbnail.src}
+                    alt={thumbnail.alt || otherTrip.destination}
+                  />
+                  <div className={styles.priceTag}>{formattedPrice}</div>
+                  <div className={styles.smallTripCardContent}>
+                    <h3>{otherTrip.destination}</h3>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}

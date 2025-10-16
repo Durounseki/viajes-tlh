@@ -26,4 +26,9 @@ function formatTripDate(startDateStr, endDateStr) {
   return `${startDay} de ${startMonth} al ${endDay} de ${endMonth}, ${year}`;
 }
 
-export { formatTripDate };
+function formatDateForInput(dateString) {
+  if (!dateString) return "";
+  return new Date(dateString).toISOString().split("T")[0];
+}
+
+export { formatTripDate, formatDateForInput };

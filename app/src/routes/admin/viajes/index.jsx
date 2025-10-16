@@ -1,9 +1,9 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import styles from "../../styles/Admin.module.css";
-import { trips } from "../../data/viajes-data";
-import TripCard from "../../components/TripCard";
+import styles from "../../../styles/Admin.module.css";
+import { trips } from "../../../data/viajes-data";
+import TripCard from "../../../components/TripCard";
 
-export const Route = createFileRoute("/admin/trips")({
+export const Route = createFileRoute("/admin/viajes/")({
   component: TripsAdminComponent,
 });
 

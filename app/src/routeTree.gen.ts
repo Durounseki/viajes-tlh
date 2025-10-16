@@ -24,7 +24,9 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ViajesProximosRouteImport } from './routes/viajes/proximos'
 import { Route as ViajesPasadosRouteImport } from './routes/viajes/pasados'
 import { Route as ViajesViajeIdRouteImport } from './routes/viajes/$viajeId'
-import { Route as AdminTripsRouteImport } from './routes/admin/trips'
+import { Route as AdminViajesIndexRouteImport } from './routes/admin/viajes/index'
+import { Route as AdminViajesNuevoRouteImport } from './routes/admin/viajes/nuevo'
+import { Route as AdminViajesViajeIdEditarRouteImport } from './routes/admin/viajes/$viajeId/editar'
 
 const TerminosYCondicionesRoute = TerminosYCondicionesRouteImport.update({
   id: '/terminos-y-condiciones',
@@ -101,11 +103,22 @@ const ViajesViajeIdRoute = ViajesViajeIdRouteImport.update({
   path: '/viajes/$viajeId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminTripsRoute = AdminTripsRouteImport.update({
-  id: '/trips',
-  path: '/trips',
+const AdminViajesIndexRoute = AdminViajesIndexRouteImport.update({
+  id: '/viajes/',
+  path: '/viajes/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminViajesNuevoRoute = AdminViajesNuevoRouteImport.update({
+  id: '/viajes/nuevo',
+  path: '/viajes/nuevo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminViajesViajeIdEditarRoute =
+  AdminViajesViajeIdEditarRouteImport.update({
+    id: '/viajes/$viajeId/editar',
+    path: '/viajes/$viajeId/editar',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -118,12 +131,14 @@ export interface FileRoutesByFullPath {
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
-  '/admin/trips': typeof AdminTripsRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
   '/admin/': typeof AdminIndexRoute
   '/viajes': typeof ViajesIndexRoute
+  '/admin/viajes/nuevo': typeof AdminViajesNuevoRoute
+  '/admin/viajes': typeof AdminViajesIndexRoute
+  '/admin/viajes/$viajeId/editar': typeof AdminViajesViajeIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -135,12 +150,14 @@ export interface FileRoutesByTo {
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
-  '/admin/trips': typeof AdminTripsRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
   '/admin': typeof AdminIndexRoute
   '/viajes': typeof ViajesIndexRoute
+  '/admin/viajes/nuevo': typeof AdminViajesNuevoRoute
+  '/admin/viajes': typeof AdminViajesIndexRoute
+  '/admin/viajes/$viajeId/editar': typeof AdminViajesViajeIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -154,12 +171,14 @@ export interface FileRoutesById {
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
-  '/admin/trips': typeof AdminTripsRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
   '/admin/': typeof AdminIndexRoute
   '/viajes/': typeof ViajesIndexRoute
+  '/admin/viajes/nuevo': typeof AdminViajesNuevoRoute
+  '/admin/viajes/': typeof AdminViajesIndexRoute
+  '/admin/viajes/$viajeId/editar': typeof AdminViajesViajeIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -174,12 +193,14 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
-    | '/admin/trips'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
     | '/admin/'
     | '/viajes'
+    | '/admin/viajes/nuevo'
+    | '/admin/viajes'
+    | '/admin/viajes/$viajeId/editar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -191,12 +212,14 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
-    | '/admin/trips'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
     | '/admin'
     | '/viajes'
+    | '/admin/viajes/nuevo'
+    | '/admin/viajes'
+    | '/admin/viajes/$viajeId/editar'
   id:
     | '__root__'
     | '/'
@@ -209,12 +232,14 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
-    | '/admin/trips'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
     | '/admin/'
     | '/viajes/'
+    | '/admin/viajes/nuevo'
+    | '/admin/viajes/'
+    | '/admin/viajes/$viajeId/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -341,24 +366,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViajesViajeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/trips': {
-      id: '/admin/trips'
-      path: '/trips'
-      fullPath: '/admin/trips'
-      preLoaderRoute: typeof AdminTripsRouteImport
+    '/admin/viajes/': {
+      id: '/admin/viajes/'
+      path: '/viajes'
+      fullPath: '/admin/viajes'
+      preLoaderRoute: typeof AdminViajesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/viajes/nuevo': {
+      id: '/admin/viajes/nuevo'
+      path: '/viajes/nuevo'
+      fullPath: '/admin/viajes/nuevo'
+      preLoaderRoute: typeof AdminViajesNuevoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/viajes/$viajeId/editar': {
+      id: '/admin/viajes/$viajeId/editar'
+      path: '/viajes/$viajeId/editar'
+      fullPath: '/admin/viajes/$viajeId/editar'
+      preLoaderRoute: typeof AdminViajesViajeIdEditarRouteImport
       parentRoute: typeof AdminRoute
     }
   }
 }
 
 interface AdminRouteChildren {
-  AdminTripsRoute: typeof AdminTripsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminViajesNuevoRoute: typeof AdminViajesNuevoRoute
+  AdminViajesIndexRoute: typeof AdminViajesIndexRoute
+  AdminViajesViajeIdEditarRoute: typeof AdminViajesViajeIdEditarRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminTripsRoute: AdminTripsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminViajesNuevoRoute: AdminViajesNuevoRoute,
+  AdminViajesIndexRoute: AdminViajesIndexRoute,
+  AdminViajesViajeIdEditarRoute: AdminViajesViajeIdEditarRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
