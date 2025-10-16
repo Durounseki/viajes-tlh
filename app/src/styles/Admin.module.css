@@ -1,0 +1,220 @@
+.adminLayout {
+  display: flex;
+  flex-direction: column;
+  padding-top: 3rem;
+  padding-bottom: 80px;
+}
+
+.mainContent {
+  width: 100%;
+  padding: 1.5rem;
+}
+
+.mainHeader {
+  margin-bottom: 2rem;
+}
+
+.mainHeader h2 {
+  margin: 0 0 0.25rem 0;
+  color: var(--color-text);
+  font-size: 1.8rem;
+}
+
+.mainHeader p {
+  margin: 0;
+  color: var(--color-secondary);
+  font-size: 1rem;
+}
+
+.sidebar {
+  display: none;
+}
+
+.mobileNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  z-index: 1000;
+}
+
+.mobileNav a,
+.desktopNav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  color: var(--color-secondary);
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.mobileNav a.activeLink,
+.desktopNav a.activeLink {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+/* --- Dashboard Page Styles (/admin) --- */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.statCard {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.statCard h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 3rem;
+  color: var(--color-primary);
+}
+
+.statCard p {
+  margin: 0;
+  color: var(--color-secondary);
+}
+
+/* --- Trips Page Styles (/admin/trips) --- */
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.pageHeader h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.adminTripsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.adminTripCard {
+  background-color: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.adminTripActions {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.primaryButton,
+.editButton,
+.deleteButton {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-align: center;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.primaryButton {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.editButton {
+  flex: 1;
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: #ffffff;
+}
+.editButton:hover {
+  background-color: #7a8a7c;
+  border-color: #7a8a7c;
+}
+
+.deleteButton {
+  flex: 1;
+  background-color: transparent;
+  color: #d9534f;
+  border-color: #d9534f;
+}
+.deleteButton:hover {
+  background-color: #d9534f;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .adminLayout {
+    flex-direction: row;
+    padding-top: 3rem;
+    padding-bottom: 0;
+  }
+
+  .mobileNav {
+    display: none;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    background-color: #ffffff;
+    border-right: 1px solid var(--color-background);
+    padding: 1.5rem;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .sidebarHeader h3 {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+  }
+
+  .desktopNav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .desktopNav a {
+    flex-direction: row;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+  }
+  .desktopNav a.activeLink {
+    background-color: var(--color-background);
+  }
+
+  .mainContent {
+    flex: 1;
+    padding: 2.5rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -38,6 +38,15 @@
   gap: 2.5rem;
 }
 
+.trips-grid a {
+  text-decoration: none;
+}
+
+.trips-grid a:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
 .past-trips-section {
   text-align: center;
   background-color: #f7f7f7;

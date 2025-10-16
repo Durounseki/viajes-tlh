@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import styles from "../styles/TripCard.module.css";
 import { formatTripDate } from "../utils/tripDate";
 
@@ -8,7 +7,7 @@ function TripCard({ trip }) {
     ? `${styles["trip-card"]} ${styles["past-trip-card"]}`
     : styles["trip-card"];
   return (
-    <Link to={`/viajes/${trip.id}`} className={cardClass}>
+    <div className={cardClass}>
       <img
         src={trip.images[trip.thumbnailIndex]}
         alt={`Viaje a ${trip.destination}`}
@@ -18,7 +17,7 @@ function TripCard({ trip }) {
         <h3>{trip.destination}</h3>
         {!isPastTrip && <p>{formatTripDate(trip.startDate, trip.endDate)}</p>}
       </div>
-    </Link>
+    </div>
   );
 }
 

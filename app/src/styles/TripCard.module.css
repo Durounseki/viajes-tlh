@@ -7,15 +7,9 @@
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  text-decoration: none;
   color: var(--color-text);
   display: flex;
   flex-direction: column;
-}
-
-.trip-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
 .trip-card img {

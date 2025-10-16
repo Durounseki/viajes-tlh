@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import styles from "../styles/Viajes.module.css";
 import TripCard from "./TripCard";
 
@@ -15,7 +16,9 @@ function TripsLayout({
       <p className={styles["page-subtitle"]}>{subtitle}</p>
       <div className={styles["trips-grid"]}>
         {trips.map((trip) => (
-          <TripCard key={trip.id} trip={trip} />
+          <Link to={`/viajes/${trip.id}`}>
+            <TripCard key={trip.id} trip={trip} />
+          </Link>
         ))}
       </div>
       <section className={styles["cta-section"]}>

@@ -27,12 +27,14 @@ function RouteComponent() {
         <h2 className={styles["section-title"]}>Próximos Viajes</h2>
         <div className={styles["trips-grid"]}>
           {upcomingTrips.slice(0, limit).map((trip) => (
-            <TripCard key={trip.id} trip={trip} />
+            <Link to={`/viajes/${trip.id}`}>
+              <TripCard key={trip.id} trip={trip} />
+            </Link>
           ))}
         </div>
         {upcomingTrips.length > limit && (
-          <Link to="/viajes" className={styles["cta-button"]}>
-            Ver Todos los Viajes
+          <Link to="/viajes/proximos" className={styles["cta-button"]}>
+            Ver Todos
           </Link>
         )}
       </section>
@@ -44,12 +46,14 @@ function RouteComponent() {
         </p>
         <div className={styles["trips-grid"]}>
           {pastTrips.slice(0, limit).map((trip) => (
-            <TripCard key={trip.id} trip={trip} />
+            <Link to={`/viajes/${trip.id}`}>
+              <TripCard key={trip.id} trip={trip} />
+            </Link>
           ))}
         </div>
         {pastTrips.length > limit && (
-          <Link to="/galeria" className={styles["cta-button"]}>
-            Ver Galería Completa
+          <Link to="/viajes/pasados" className={styles["cta-button"]}>
+            Ver Todos
           </Link>
         )}
       </section>

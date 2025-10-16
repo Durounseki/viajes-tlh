@@ -20,9 +20,11 @@ import { Route as AvisoDePrivacidadRouteImport } from './routes/aviso-de-privaci
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ViajesIndexRouteImport } from './routes/viajes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ViajesProximosRouteImport } from './routes/viajes/proximos'
 import { Route as ViajesPasadosRouteImport } from './routes/viajes/pasados'
 import { Route as ViajesViajeIdRouteImport } from './routes/viajes/$viajeId'
+import { Route as AdminTripsRouteImport } from './routes/admin/trips'
 
 const TerminosYCondicionesRoute = TerminosYCondicionesRouteImport.update({
   id: '/terminos-y-condiciones',
@@ -79,6 +81,11 @@ const ViajesIndexRoute = ViajesIndexRouteImport.update({
   path: '/viajes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ViajesProximosRoute = ViajesProximosRouteImport.update({
   id: '/viajes/proximos',
   path: '/viajes/proximos',
@@ -94,10 +101,15 @@ const ViajesViajeIdRoute = ViajesViajeIdRouteImport.update({
   path: '/viajes/$viajeId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminTripsRoute = AdminTripsRouteImport.update({
+  id: '/trips',
+  path: '/trips',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/contacto': typeof ContactoRoute
   '/creditos': typeof CreditosRoute
@@ -106,14 +118,15 @@ export interface FileRoutesByFullPath {
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/admin/trips': typeof AdminTripsRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
+  '/admin/': typeof AdminIndexRoute
   '/viajes': typeof ViajesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/contacto': typeof ContactoRoute
   '/creditos': typeof CreditosRoute
@@ -122,15 +135,17 @@ export interface FileRoutesByTo {
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/admin/trips': typeof AdminTripsRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
+  '/admin': typeof AdminIndexRoute
   '/viajes': typeof ViajesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/contacto': typeof ContactoRoute
   '/creditos': typeof CreditosRoute
@@ -139,9 +154,11 @@ export interface FileRoutesById {
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/admin/trips': typeof AdminTripsRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
+  '/admin/': typeof AdminIndexRoute
   '/viajes/': typeof ViajesIndexRoute
 }
 export interface FileRouteTypes {
@@ -157,14 +174,15 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
+    | '/admin/trips'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
+    | '/admin/'
     | '/viajes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/aviso-de-privacidad'
     | '/contacto'
     | '/creditos'
@@ -173,9 +191,11 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
+    | '/admin/trips'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
+    | '/admin'
     | '/viajes'
   id:
     | '__root__'
@@ -189,15 +209,17 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/preguntas-frecuentes'
     | '/terminos-y-condiciones'
+    | '/admin/trips'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
     | '/viajes/proximos'
+    | '/admin/'
     | '/viajes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AvisoDePrivacidadRoute: typeof AvisoDePrivacidadRoute
   ContactoRoute: typeof ContactoRoute
   CreditosRoute: typeof CreditosRoute
@@ -291,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViajesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/viajes/proximos': {
       id: '/viajes/proximos'
       path: '/viajes/proximos'
@@ -312,12 +341,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViajesViajeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/trips': {
+      id: '/admin/trips'
+      path: '/trips'
+      fullPath: '/admin/trips'
+      preLoaderRoute: typeof AdminTripsRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminTripsRoute: typeof AdminTripsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminTripsRoute: AdminTripsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AvisoDePrivacidadRoute: AvisoDePrivacidadRoute,
   ContactoRoute: ContactoRoute,
   CreditosRoute: CreditosRoute,
