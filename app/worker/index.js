@@ -1,14 +1,73 @@
 import { Hono } from "hono";
+import createPrismaClient from "./db/client.js";
+
 const app = new Hono();
 
-app.post("/api/contacto", async (c) => {
+app.use("*", async (c, next) => {
+  c.set("prisma", createPrismaClient(c.env));
+  await next();
+});
+
+app.post("/api/viajes", async (c) => {
   try {
-    const body = await c.req.json();
-    console.log(body);
-    return c.json({ message: "Recibido" });
+    const tripInfo = await c.req.json();
+    console.log(tripInfo);
+    const prisma = c.get("prisma");
+    console.log("creating trip");
+    const newTripId = await prisma.trip.createTrip(tripInfo);
+    console.log("trip created:", newTripId);
+    return c.json({ message: "Nuevo viaje creado", id: newTripId }, 201);
   } catch (error) {
-    console.log("Error submitting the form.");
-    return c.json({ message: error }, 500);
+    console.error("Error creating trip:", error);
+    return c.json({ error: "Failed to create trip" }, 500);
   }
 });
+
+app.get("/api/payment-plans", async (c) => {
+  try {
+    const prisma = c.get("prisma");
+    const plans = await prisma.paymentPlan.getPlans();
+    return c.json(plans);
+  } catch (error) {
+    console.error("Error fetching payment plans:", error);
+    return c.json({ error: "Failed to fetch payment plans" }, 500);
+  }
+});
+
+app.post("/api/payment-plans", async (c) => {
+  try {
+    const planData = await c.req.json();
+    const prisma = c.get("prisma");
+    const newPlanId = await prisma.paymentPlan.createPlan(planData);
+    return c.json({ message: "Nuevo plan de pago creado", id: newPlanId }, 201);
+  } catch (error) {
+    console.error("Error creating payment plan:", error);
+    return c.json({ error: "Failed to create payment plan" }, 500);
+  }
+});
+
+app.get("/api/included-items", async (c) => {
+  try {
+    const prisma = c.get("prisma");
+    const items = await prisma.includedItem.getItems();
+    console.log(items);
+    return c.json(items);
+  } catch (error) {
+    console.error("Error fetching included items:", error);
+    return c.json({ error: "Failed to fetch included items" }, 500);
+  }
+});
+
+app.post("/api/included-items", async (c) => {
+  try {
+    const itemData = await c.req.json();
+    const prisma = c.get("prisma");
+    const newItemId = await prisma.includedItem.createItem(itemData);
+    return c.json({ message: 'Nuevo "incluye" creado', id: newItemId }, 201);
+  } catch (error) {
+    console.error("Error creating included item:", error);
+    return c.json({ error: "Failed to create included item" }, 500);
+  }
+});
+
 export default app;

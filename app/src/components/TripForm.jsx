@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import styles from "../styles/AdminForm.module.css";
-import { initialItems, initialPlans } from "../data/viajes-options";
+import { usePaymentPlans, useCreatePaymentPlan } from "../data/paymentPlans";
+import { useIncludedItems, useCreateIncludedItem } from "../data/includedItems";
 import { formatDateForInput } from "../utils/tripDate";
 
 function TripForm({ initialData, onSubmit, isEditing = false }) {
   const navigate = useNavigate();
-
+  const { data: availablePlans = [] } = usePaymentPlans();
+  const createPaymentPlanMutation = useCreatePaymentPlan();
+  const { data: availableItems = [] } = useIncludedItems();
+  const createIncludedItemMutation = useCreateIncludedItem();
   const [formData, setFormData] = useState({
     destination: "",
     startDate: "",
@@ -33,8 +37,6 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
   }, [initialData, isEditing]);
 
   const [formErrors, setFormErrors] = useState({});
-  const [availableItems, setAvailableItems] = useState(initialItems);
-  const [availablePlans, setAvailablePlans] = useState(initialPlans);
   const [newItemName, setNewItemName] = useState("");
   const [isPlanModalOpen, setPlanModalOpen] = useState(false);
   const [newPlanName, setNewPlanName] = useState("");
@@ -98,13 +100,37 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
 
   const handleAddNewItem = () => {
     if (!newItemName.trim()) return;
-    const newItem = { id: Date.now().toString(), name: newItemName };
-    setAvailableItems([...availableItems, newItem]);
-    setFormData({
-      ...formData,
-      includedItems: [...formData.includedItems, newItem.id],
+    const existingItem = availableItems.find(
+      (item) => item.name.toLowerCase() === newItemName.toLowerCase()
+    );
+    if (existingItem) {
+      alert("El item ya existe.");
+      if (!formData.includedItems.includes(existingItem.id)) {
+        setFormData({
+          ...formData,
+          includedItems: [...formData.includedItems, existingItem.id],
+        });
+      }
+      setNewItemName("");
+      return;
+    }
+
+    const newItemData = { name: newItemName };
+    console.log("Submitting new item:", newItemData);
+    createIncludedItemMutation.mutate(newItemData, {
+      onSuccess: (newItem) => {
+        console.log("New item created:", newItem);
+        setFormData({
+          ...formData,
+          includedItems: [...formData.includedItems, newItem.id],
+        });
+        setNewItemName("");
+      },
+      onError: (error) => {
+        console.error("Failed to create included item:", error);
+        alert("No se pudo guardar el item. Intentalo de nuevo.");
+      },
     });
-    setNewItemName("");
   };
 
   const addInstallment = () => {
@@ -148,8 +174,7 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
       }
     }
 
-    const newPlan = {
-      id: Date.now().toString(),
+    const newPlanData = {
       name: newPlanName,
       installments: installments.map((inst) => ({
         description: inst.description,
@@ -158,19 +183,23 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
       })),
     };
 
-    console.log("Submitting new payment plan:", newPlan);
+    console.log("Submitting new payment plan:", newPlanData);
 
-    setAvailablePlans([
-      ...availablePlans,
-      { id: newPlan.id, name: newPlan.name },
-    ]);
-    setFormData({ ...formData, paymentPlanId: newPlan.id });
-    setPlanModalOpen(false);
-
-    setNewPlanName("");
-    setInstallments([
-      { description: "Anticipo", percentage: 50, daysBeforeTrip: 90 },
-    ]);
+    createPaymentPlanMutation.mutate(newPlanData, {
+      onSuccess: (newPlan) => {
+        console.log("New plan created:", newPlan);
+        setFormData({ ...formData, paymentPlanId: newPlan.id });
+        setPlanModalOpen(false);
+        setNewPlanName("");
+        setInstallments([
+          { description: "Anticipo", percentage: 50, daysBeforeTrip: 90 },
+        ]);
+      },
+      onError: (error) => {
+        console.error("Failed to create payment plan:", error);
+        alert("No se pudo guardar el plan de pago. Intentalo de nuevo.");
+      },
+    });
   };
 
   const handleSave = async (isDraft = false) => {

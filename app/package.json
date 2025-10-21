@@ -13,8 +13,10 @@
   "dependencies": {
     "@prisma/adapter-d1": "^6.17.1",
     "@prisma/client": "^6.17.1",
+    "@tanstack/react-query": "^5.90.5",
     "@tanstack/react-router": "^1.132.47",
     "@tanstack/react-router-devtools": "^1.132.51",
+    "@tanstack/react-router-ssr-query": "^1.133.20",
     "hono": "^4.9.10",
     "prisma": "^6.17.1",
     "react": "^19.1.1",
@@ -25,6 +27,7 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.13.12",
     "@eslint/js": "^9.33.0",
+    "@tanstack/eslint-plugin-query": "^5.91.2",
     "@tanstack/router-plugin": "^1.132.51",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
