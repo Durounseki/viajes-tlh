@@ -11,12 +11,29 @@ app.use("*", async (c, next) => {
 app.post("/api/viajes", async (c) => {
   try {
     const tripInfo = await c.req.json();
-    console.log(tripInfo);
+    const draftsKV = c.env.DRAFTS;
     const prisma = c.get("prisma");
-    console.log("creating trip");
-    const newTripId = await prisma.trip.createTrip(tripInfo);
-    console.log("trip created:", newTripId);
-    return c.json({ message: "Nuevo viaje creado", id: newTripId }, 201);
+
+    if (tripInfo.status === "DRAFT") {
+      const draftId = tripInfo.id || crypto.randomUUID();
+      const draftData = {
+        ...tripInfo,
+        id: draftId,
+      };
+      await draftsKV.put(`draft:${draftId}`, JSON.stringify(draftData), {
+        metadata: {
+          id: draftId,
+          destination: draftData.destination,
+        },
+      });
+      return c.json(draftData, 201);
+    } else {
+      const newTripId = await prisma.trip.createTrip(tripInfo);
+      if (tripInfo.id) {
+        await draftsKV.delete(`draft:${tripInfo.id}`);
+      }
+      return c.json({ message: "Nuevo viaje creado", id: newTripId }, 201);
+    }
   } catch (error) {
     console.error("Error creating trip:", error);
     return c.json({ error: "Failed to create trip" }, 500);
@@ -50,7 +67,6 @@ app.get("/api/included-items", async (c) => {
   try {
     const prisma = c.get("prisma");
     const items = await prisma.includedItem.getItems();
-    console.log(items);
     return c.json(items);
   } catch (error) {
     console.error("Error fetching included items:", error);

@@ -18,9 +18,10 @@ export const Route = createFileRoute("/admin/viajes/nuevo")({
 });
 
 function RouteComponent() {
-  const navigate = useNavigate();
-
   const handleCreateTrip = async (formData, isDraft) => {
+    const includedItems = isDraft
+      ? formData.includedItems
+      : { connect: formData.includedItems.map((id) => ({ id })) };
     const data = {
       ...formData,
       status: isDraft ? "DRAFT" : "PUBLISHED",
@@ -31,7 +32,7 @@ function RouteComponent() {
       endDate: formData.endDate
         ? new Date(formData.endDate).toISOString()
         : null,
-      includedItems: { connect: formData.includedItems.map((id) => ({ id })) },
+      includedItems: includedItems,
     };
     console.log("CREATING new trip:", JSON.stringify(data, null, 2));
     const response = await fetch(`/api/viajes`, {
@@ -46,7 +47,7 @@ function RouteComponent() {
     }
     const responseData = await response.json();
     console.log(responseData);
-    // navigate({ to: "/admin/viajes" });
+    return responseData;
   };
 
   return <TripForm onSubmit={handleCreateTrip} isEditing={false} />;

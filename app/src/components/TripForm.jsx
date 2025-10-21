@@ -235,7 +235,23 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
       JSON.stringify(dataToSubmit, null, 2)
     );
 
-    onSubmit(formData, isDraft);
+    try {
+      const responseData = await onSubmit(formData, isDraft);
+      if (isDraft && responseData && responseData.id) {
+        setFormData({
+          ...responseData,
+          startDate: formatDateForInput(responseData.startDate),
+          endDate: formatDateForInput(responseData.endDate),
+        });
+        alert("Borrador guardado con éxito.");
+      } else if (!isDraft) {
+        alert("Viaje publicado.");
+        navigate({ to: "/admin/viajes" });
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("No se pudo guardar los datos. Intentalo de nuevo.");
+    }
   };
 
   return (
