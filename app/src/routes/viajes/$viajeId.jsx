@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { trips } from "../../data/viajes-data";
-import { initialPlans } from "../../data/viajes-options";
+import {
+  tripsQueryOptions,
+  useTrips,
+  tripQueryOptions,
+  useTrip,
+} from "../../data/trips";
+import {
+  includedItemsQueryOptions,
+  useIncludedItems,
+} from "../../data/includedItems";
 import { formatTripDate } from "../../utils/tripDate";
 
 import styles from "../../styles/TripPage.module.css";
@@ -12,41 +20,59 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { HiChevronDown } from "react-icons/hi";
 import IncludesList from "../../components/IncludesList";
-import { formatPrice } from "../../utils/tripPrice";
+import TripCard from "../../components/TripCard";
+import TripPendingComponent from "../../components/TripPendingComponent";
+
+import PaymentPlan from "../../components/PaymentPlan";
 
 export const Route = createFileRoute("/viajes/$viajeId")({
-  loader: async ({ params }) => {
-    const trip = trips.find((t) => t.id === params.viajeId);
+  loader: async ({ context, params }) => {
+    const queryClient = context.queryClient;
+    await Promise.all([
+      queryClient.ensureQueryData(tripsQueryOptions),
+      queryClient.ensureQueryData(tripQueryOptions(params.viajeId)),
+      queryClient.ensureQueryData(includedItemsQueryOptions),
+    ]);
+
+    const trip = queryClient.getQueryData(
+      tripQueryOptions(params.viajeId).queryKey
+    );
     if (!trip) {
       throw notFound();
     }
-    console.log(trip);
-    return trip;
+    return {};
   },
+  pendingComponent: TripPendingComponent,
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const trip = Route.useLoaderData();
+  const { viajeId } = Route.useParams();
+  const { data: trip } = useTrip(viajeId);
+  const { data: trips = [] } = useTrips();
+  const { data: allItems = [] } = useIncludedItems();
 
   const [openItem, setOpenItem] = useState(null);
 
   const isPastTrip = new Date(trip.endDate) < new Date();
 
-  const otherTrips = trips.filter(
-    (t) => t.id !== trip.id && new Date(t.endDate) >= new Date()
-  );
-
-  const paymentPlan = initialPlans.find((p) => p.id === trip.paymentPlanId);
+  const otherTrips = useMemo(() => {
+    const now = new Date();
+    return trips.filter((t) => t.id !== trip.id && new Date(t.endDate) >= now);
+  }, [trips, trip.id]);
 
   const accordionData = [
     { title: "Cuándo", content: formatTripDate(trip.startDate, trip.endDate) },
-    { title: "Itinerario", content: trip.itinerary },
+    {
+      title: "Itinerario",
+      content: <p className={styles["preserve-lines"]}>{trip.itinerary}</p>,
+    },
     {
       title: "Qué Incluye",
       content: (
         <IncludesList
           includedItems={trip.includedItems}
+          allItems={allItems}
           notes={trip.notes}
           styles={styles}
         />
@@ -54,12 +80,18 @@ function RouteComponent() {
     },
     {
       title: "Formas de Pago",
-      content: paymentPlan
-        ? paymentPlan.description
-        : "Consulta las opciones de pago",
+      content: <PaymentPlan plan={trip.paymentPlan} />,
     },
-    { title: "Recomendaciones", content: trip.recommendations },
-    { title: "Políticas", content: trip.policies },
+    {
+      title: "Recomendaciones",
+      content: (
+        <p className={styles["preserve-lines"]}>{trip.recommendations}</p>
+      ),
+    },
+    {
+      title: "Políticas",
+      content: <p className={styles["preserve-lines"]}>{trip.policies}</p>,
+    },
   ];
 
   if (!isPastTrip) {
@@ -86,7 +118,7 @@ function RouteComponent() {
           {trip.images.map((image, index) => (
             <SwiperSlide key={image.id}>
               <img
-                src={image.src}
+                src={`/api/images/${image.src}`}
                 alt={image.alt || `${trip.destination} - imagen ${index + 1}`}
               />
             </SwiperSlide>
@@ -148,33 +180,11 @@ function RouteComponent() {
         <section className={styles.otherTripsSection}>
           <h2>Descubre Otros Destinos</h2>
           <div className={styles.otherTripsGrid}>
-            {otherTrips.slice(0, 3).map((otherTrip) => {
-              const thumbnail =
-                otherTrip.images.find(
-                  (img) => img.id === otherTrips.thumbnailId
-                ) || otherTrip.images[0];
-              const formattedPrice = formatPrice(
-                otherTrip.price,
-                otherTrip.currency
-              );
-
-              return (
-                <Link
-                  to={`/viajes/${otherTrip.id}`}
-                  key={otherTrip.id}
-                  className={styles.smallTripCard}
-                >
-                  <img
-                    src={thumbnail.src}
-                    alt={thumbnail.alt || otherTrip.destination}
-                  />
-                  <div className={styles.priceTag}>{formattedPrice}</div>
-                  <div className={styles.smallTripCardContent}>
-                    <h3>{otherTrip.destination}</h3>
-                  </div>
-                </Link>
-              );
-            })}
+            {otherTrips.slice(0, 3).map((otherTrip) => (
+              <Link to={`/viajes/${otherTrip.id}`} key={otherTrip.id}>
+                <TripCard trip={otherTrip} />
+              </Link>
+            ))}
           </div>
         </section>
       )}

@@ -177,6 +177,10 @@
   gap: 1.5rem;
 }
 
+.otherTripsGrid a {
+  text-decoration: none;
+}
+
 .smallTripCard {
   position: relative;
   background-color: #fff;
@@ -218,4 +222,8 @@
 .smallTripCardContent h3 {
   margin: 0;
   font-size: 1.1rem;
+}
+
+.preserve-lines {
+  white-space: pre-line;
 }

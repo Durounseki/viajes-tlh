@@ -106,12 +106,18 @@ export async function deleteUser(userId) {
 export async function getTrips() {
   try {
     const trips = await this.findMany({
-      include: {
-        images: true,
-        includedItems: true,
-        paymentPlan: {
-          include: {
-            installments: true,
+      select: {
+        id: true,
+        destination: true,
+        startDate: true,
+        endDate: true,
+        price: true,
+        currency: true,
+        images: {
+          select: {
+            id: true,
+            src: true,
+            alt: true,
           },
         },
       },
@@ -123,6 +129,27 @@ export async function getTrips() {
   } catch (error) {
     console.error("Error fetching trips:", error);
     throw new Error("Failed to fetch trips");
+  }
+}
+
+export async function getTrip(tripId) {
+  try {
+    const trip = await this.findUnique({
+      where: { id: tripId },
+      include: {
+        images: true,
+        includedItems: true,
+        paymentPlan: {
+          include: {
+            installments: true,
+          },
+        },
+      },
+    });
+    return trip;
+  } catch (error) {
+    console.error("Error fetching trip:", error);
+    throw new Error("Failed to fetch trip");
   }
 }
 

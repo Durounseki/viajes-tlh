@@ -6,6 +6,8 @@ const app = new Hono();
 
 app.use("*", async (c, next) => {
   c.set("prisma", createPrismaClient(c.env));
+  const prisma = c.get("prisma");
+  await prisma.$connect();
   await next();
 });
 
@@ -19,6 +21,18 @@ app.get("/api/viajes", async (c) => {
   } catch (error) {
     console.error("Error fetching trips:", error);
     return c.json({ error: "Failed to fetch trips" }, 500);
+  }
+});
+
+app.get("/api/viajes/:id", async (c) => {
+  try {
+    const { id } = c.req.param();
+    const prisma = c.get("prisma");
+    const trip = await prisma.trip.getTrip(id);
+    return c.json(trip);
+  } catch (error) {
+    console.error("Error fetching trip:", error);
+    return c.json({ error: "Failed to fetch trip" }, 500);
   }
 });
 

@@ -17,3 +17,21 @@ export const tripsQueryOptions = {
 export const useTrips = () => {
   return useQuery(tripsQueryOptions);
 };
+
+const fetchTrip = async (tripId) => {
+  const response = await fetch(`/api/viajes/${tripId}`, {
+    method: "GET",
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to fetch trip: ${response.status}`);
+  }
+  return response.json();
+};
+
+export const tripQueryOptions = (tripId) => ({
+  queryKey: ["trips", tripId],
+  queryFn: () => fetchTrip(tripId),
+});
+export const useTrip = (tripId) => {
+  return useQuery(tripQueryOptions(tripId));
+};

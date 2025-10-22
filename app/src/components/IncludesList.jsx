@@ -1,14 +1,12 @@
 import { HiCheckCircle, HiXCircle } from "react-icons/hi";
-import { initialItems } from "../data/viajes-options";
 
-function IncludesList({ includedItems, notes, styles }) {
-  console.log(includedItems);
+function IncludesList({ includedItems, allItems, notes, styles }) {
   const includedIds = new Set(includedItems.map((item) => item.id));
 
   return (
     <div className={styles.includesContent}>
       <ul className={styles.includesList}>
-        {initialItems.map((item) => (
+        {allItems.map((item) => (
           <li
             key={item.id}
             className={
