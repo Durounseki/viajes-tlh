@@ -1,13 +1,21 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import styles from "../../../styles/Admin.module.css";
-import { trips } from "../../../data/viajes-data";
+import { tripsQueryOptions, useTrips } from "../../../data/trips";
 import TripCard from "../../../components/TripCard";
+import TripsAdminPendingComponent from "../../../components/TripsAdminPendingComponent";
 
 export const Route = createFileRoute("/admin/viajes/")({
   component: TripsAdminComponent,
+  loader: async ({ context }) => {
+    const queryClient = context.queryClient;
+    await queryClient.ensureQueryData(tripsQueryOptions);
+    return {};
+  },
+  pendingComponent: TripsAdminPendingComponent,
 });
 
 function TripsAdminComponent() {
+  const { data: trips = [] } = useTrips();
   const handleDelete = (trip) => {
     if (
       confirm(
