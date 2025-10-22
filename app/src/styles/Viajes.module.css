@@ -131,3 +131,9 @@
   font-size: 1.5rem;
   flex-shrink: 0;
 }
+
+.no-trips-message {
+  font-size: 1.5rem;
+  text-align: center;
+  color: var(--color-primary);
+}

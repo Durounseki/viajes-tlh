@@ -21,6 +21,9 @@ function TripsLayout({
           </Link>
         ))}
       </div>
+      {trips.length === 0 && (
+        <p className={styles["no-trips-message"]}>No hay viajes aun.</p>
+      )}
       <section className={styles["cta-section"]}>
         <h2>{ctaTitle}</h2>
         <p>{ctaSubtitle}</p>

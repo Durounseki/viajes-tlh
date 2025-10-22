@@ -1,23 +1,38 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import styles from "../../styles/Viajes.module.css";
-import { trips } from "../../data/viajes-data";
+import { tripsQueryOptions, useTrips } from "../../data/trips";
 import TripCard from "../../components/TripCard";
+import TripsPendingComponent from "../../components/TripsPendingComponent";
 
 export const Route = createFileRoute("/viajes/")({
   component: RouteComponent,
+  pendingComponent: TripsPendingComponent,
+  loader: async ({ context }) => {
+    const queryClient = context.queryClient;
+    await queryClient.ensureQueryData(tripsQueryOptions);
+    return {};
+  },
 });
 
 function RouteComponent() {
-  const now = new Date();
   const limit = 3;
 
-  const upcomingTrips = trips
-    .filter((trip) => new Date(trip.endDate) >= now)
-    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+  const { data: trips = [] } = useTrips();
 
-  const pastTrips = trips
-    .filter((trip) => new Date(trip.endDate) < now)
-    .sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+  const { upcomingTrips, pastTrips } = useMemo(() => {
+    const now = new Date();
+
+    const upcoming = trips
+      .filter((trip) => new Date(trip.endDate) >= now)
+      .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+    const past = trips
+      .filter((trip) => new Date(trip.endDate) < now)
+      .sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+
+    return { upcomingTrips: upcoming, pastTrips: past };
+  }, [trips]);
 
   return (
     <main className={styles["page-container"]}>
@@ -27,11 +42,14 @@ function RouteComponent() {
         <h2 className={styles["section-title"]}>Próximos Viajes</h2>
         <div className={styles["trips-grid"]}>
           {upcomingTrips.slice(0, limit).map((trip) => (
-            <Link to={`/viajes/${trip.id}`}>
-              <TripCard key={trip.id} trip={trip} />
+            <Link key={trip.id} to={`/viajes/${trip.id}`}>
+              <TripCard trip={trip} />
             </Link>
           ))}
         </div>
+        {upcomingTrips.length === 0 && (
+          <p>No hay viajes programados por el momento. ¡Vuelve pronto!</p>
+        )}
         {upcomingTrips.length > limit && (
           <Link to="/viajes/proximos" className={styles["cta-button"]}>
             Ver Todos
@@ -46,8 +64,8 @@ function RouteComponent() {
         </p>
         <div className={styles["trips-grid"]}>
           {pastTrips.slice(0, limit).map((trip) => (
-            <Link to={`/viajes/${trip.id}`}>
-              <TripCard key={trip.id} trip={trip} />
+            <Link key={trip.id} to={`/viajes/${trip.id}`}>
+              <TripCard trip={trip} />
             </Link>
           ))}
         </div>

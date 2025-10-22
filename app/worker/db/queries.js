@@ -103,6 +103,29 @@ export async function deleteUser(userId) {
   }
 }
 
+export async function getTrips() {
+  try {
+    const trips = await this.findMany({
+      include: {
+        images: true,
+        includedItems: true,
+        paymentPlan: {
+          include: {
+            installments: true,
+          },
+        },
+      },
+      orderBy: {
+        startDate: "asc",
+      },
+    });
+    return trips;
+  } catch (error) {
+    console.error("Error fetching trips:", error);
+    throw new Error("Failed to fetch trips");
+  }
+}
+
 export async function createTrip(tripInfo) {
   try {
     const newTrip = await this.create({

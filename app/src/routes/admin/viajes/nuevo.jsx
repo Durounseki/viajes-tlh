@@ -7,12 +7,10 @@ export const Route = createFileRoute("/admin/viajes/nuevo")({
   component: RouteComponent,
   loader: async ({ context }) => {
     const queryClient = context.queryClient;
-    console.log(queryClient);
     await Promise.all([
       queryClient.ensureQueryData(paymentPlansQueryOptions),
       queryClient.ensureQueryData(includedItemsQueryOptions),
     ]);
-    console.log("data fetched");
     return {};
   },
 });

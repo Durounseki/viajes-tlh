@@ -17,6 +17,7 @@ export default function createPrismaClient(env) {
       },
       trip: {
         createTrip: queries.createTrip,
+        getTrips: queries.getTrips,
       },
       paymentPlan: {
         getPlans: queries.getPlans,

@@ -11,6 +11,17 @@ app.use("*", async (c, next) => {
 
 app.route("/api/images", imageApp);
 
+app.get("/api/viajes", async (c) => {
+  try {
+    const prisma = c.get("prisma");
+    const trips = await prisma.trip.getTrips();
+    return c.json(trips);
+  } catch (error) {
+    console.error("Error fetching trips:", error);
+    return c.json({ error: "Failed to fetch trips" }, 500);
+  }
+});
+
 app.post("/api/viajes", async (c) => {
   try {
     const tripInfo = await c.req.json();
