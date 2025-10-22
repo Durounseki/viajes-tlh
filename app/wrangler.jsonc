@@ -27,6 +27,13 @@
       "id": "04921b2417b740aead29d2829e89e57e",
     },
   ],
+  "r2_buckets": [
+    {
+      "bucket_name": "viajeras-por-siempre-bucket",
+      "binding": "BUCKET",
+      "remote": true,
+    },
+  ],
   /**
    * Smart Placement
    * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

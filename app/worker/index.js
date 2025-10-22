@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import createPrismaClient from "./db/client.js";
+import imageApp from "./images/images.js";
 
 const app = new Hono();
 
@@ -7,6 +8,8 @@ app.use("*", async (c, next) => {
   c.set("prisma", createPrismaClient(c.env));
   await next();
 });
+
+app.route("/api/images", imageApp);
 
 app.post("/api/viajes", async (c) => {
   try {

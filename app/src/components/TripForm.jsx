@@ -25,6 +25,10 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
     paymentPlanId: "",
   });
 
+  const [imageFiles, setImageFiles] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [imagesToRemove, setImagesToRemove] = useState([]);
+
   useEffect(() => {
     if (isEditing && initialData) {
       setFormData({
@@ -32,7 +36,10 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
         startDate: formatDateForInput(initialData.startDate),
         endDate: formatDateForInput(initialData.endDate),
         includedItems: initialData.includedItems?.map((item) => item.id) || [],
+        images: undefined,
+        paymentPlan: undefined,
       });
+      setExistingImages(initialData.images || []);
     }
   }, [initialData, isEditing]);
 
@@ -202,6 +209,27 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
     });
   };
 
+  const handleFileChange = (e) => {
+    const newFiles = Array.from(e.target.files);
+    setImageFiles((prevFiles) => {
+      const existingFileNames = prevFiles.map((file) => file.name);
+      const uniqueFiles = newFiles.filter(
+        (file) => !existingFileNames.includes(file.name)
+      );
+      return [...prevFiles, ...uniqueFiles];
+    });
+    e.target.value = null;
+  };
+
+  const handleRemoveNewImage = (filename) => {
+    setImageFiles(imageFiles.filter((file) => file.name !== filename));
+  };
+
+  const handleRemoveExistingImage = (imageId) => {
+    setImagesToRemove([...imagesToRemove, imageId]);
+    setExistingImages(existingImages.filter((image) => image.id !== imageId));
+  };
+
   const handleSave = async (isDraft = false) => {
     const errors = {};
     Object.keys(formData).forEach((name) => {
@@ -215,42 +243,37 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
       return;
     }
 
-    const dataToSubmit = {
-      ...formData,
-      status: isDraft ? "DRAFT" : "PUBLISHED",
-      price: parseInt(formData.price, 10) || 0,
-      startDate: formData.startDate
-        ? new Date(formData.startDate).toISOString()
-        : null,
-      endDate: formData.endDate
-        ? new Date(formData.endDate).toISOString()
-        : null,
-      includedItems: {
-        connect: formData.includedItems.map((id) => ({ id })),
-      },
-    };
+    if (isDraft) {
+      if (isEditing) return;
+      await onSubmit(formData, true, [], []);
+      return;
+    }
 
-    console.log(
-      `Saving as ${dataToSubmit.status}:`,
-      JSON.stringify(dataToSubmit, null, 2)
-    );
-
-    try {
-      const responseData = await onSubmit(formData, isDraft);
-      if (isDraft && responseData && responseData.id) {
-        setFormData({
-          ...responseData,
-          startDate: formatDateForInput(responseData.startDate),
-          endDate: formatDateForInput(responseData.endDate),
+    let newImagePayload = [];
+    if (imageFiles.length > 0) {
+      const uploadFormData = new FormData();
+      imageFiles.forEach((file) => {
+        uploadFormData.append("images", file);
+      });
+      try {
+        const response = await fetch("/api/images", {
+          method: "POST",
+          body: uploadFormData,
         });
-        alert("Borrador guardado con éxito.");
-      } else if (!isDraft) {
-        alert("Viaje publicado.");
-        navigate({ to: "/admin/viajes" });
+        if (!response.ok) {
+          throw new Error("Error uploading images");
+        }
+        newImagePayload = await response.json();
+      } catch (error) {
+        console.error("Error uploading images:", error);
+        alert("No se pudo subir las imágenes. Intentalo de nuevo.");
+        return;
       }
+    }
+    try {
+      await onSubmit(formData, false, newImagePayload, imagesToRemove);
     } catch (error) {
       console.error("Error saving data:", error);
-      alert("No se pudo guardar los datos. Intentalo de nuevo.");
     }
   };
 
@@ -368,6 +391,62 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
         </fieldset>
 
         <fieldset>
+          <legend>Imágenes</legend>
+          <div className={styles.formGroup}>
+            <label htmlFor="images">Añadir Nuevas Imágenes</label>
+            <input
+              type="file"
+              id="images"
+              name="images"
+              onChange={handleFileChange}
+              multiple
+              accept="image/png, image/jpeg, image/webp, image/avif"
+            />
+          </div>
+
+          {imageFiles.length > 0 && (
+            <div className={styles.imagePreviewContainer}>
+              <p>Nuevas imágenes (pendientes de subir):</p>
+              {imageFiles.map((file, index) => (
+                <div key={index} className={styles.imagePreviewItem}>
+                  <span>{file.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveNewImage(file.name)}
+                    className={styles.deleteButtonSmall}
+                  >
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {isEditing && existingImages.length > 0 && (
+            <div className={styles.imagePreviewContainer}>
+              <p>Imágenes actuales:</p>
+              {existingImages.map((image) => (
+                <div key={image.id} className={styles.imagePreviewItem}>
+                  <img
+                    src={`/images/${image.src}?size=thumbnail`}
+                    alt={image.alt || "thumbnail"}
+                    className={styles.imageThumbnail}
+                  />
+                  <span>{image.alt || image.src}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveExistingImage(image.id)}
+                    className={styles.deleteButtonSmall}
+                  >
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </fieldset>
+
+        <fieldset>
           <legend>¿Qué Incluye?</legend>
           <div className={styles.checkboxGroup}>
             {availableItems.map((item) => (
@@ -471,13 +550,15 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
           <button type="submit" className={styles.primaryButton}>
             {isEditing ? "Guardar Cambios" : "Publicar Viaje"}
           </button>
-          <button
-            type="button"
-            onClick={() => handleSave(true)}
-            className={styles.draftButton}
-          >
-            Guardar Borrador
-          </button>
+          {!isEditing && (
+            <button
+              type="button"
+              onClick={() => handleSave(true)}
+              className={styles.draftButton}
+            >
+              Guardar Borrador
+            </button>
+          )}
           <button
             type="button"
             className={styles.secondaryButton}

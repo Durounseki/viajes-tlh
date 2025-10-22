@@ -36,9 +36,11 @@ legend {
   margin-bottom: 0.5rem;
 }
 
+/* UPDATED: Added input[type="file"] */
 .formGroup input[type="text"],
 .formGroup input[type="date"],
 .formGroup input[type="number"],
+.formGroup input[type="file"],
 .formGroup textarea,
 .formGroup select {
   width: 100%;
@@ -48,6 +50,25 @@ legend {
   font-size: 1rem;
   font-family: inherit;
   background-color: #fff;
+  /* Ensures inputs with internal parts (like file/date) align */
+  box-sizing: border-box;
+}
+
+/* NEW: Style for the file input's button */
+.formGroup input[type="file"]::file-selector-button {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px; /* Match form rounding */
+  padding: 0.5rem 1rem; /* Slightly smaller than input padding */
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 1rem;
+  transition: opacity 0.2s ease;
+}
+
+.formGroup input[type="file"]::file-selector-button:hover {
+  opacity: 0.9;
 }
 
 .formGroup input:focus,
@@ -275,6 +296,58 @@ legend {
 .deleteButtonSmall:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+/* --- NEW: Image Preview Styles --- */
+.imagePreviewContainer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  /* Matches .inlineAddForm for consistency */
+  border-top: 1px solid var(--color-background);
+}
+
+.imagePreviewContainer > p {
+  /* Matches legend styling */
+  font-weight: bold;
+  color: var(--color-secondary);
+  margin: 0 0 1rem 0;
+}
+
+.imagePreviewItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #f9f9f9; /* A very light grey */
+  border: 1px solid #eee;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.imageThumbnail {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px; /* Match form rounding */
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.imagePreviewItem span {
+  flex-grow: 1;
+  font-size: 0.9rem;
+  /* Truncate long filenames */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Contextual override for the delete button */
+.imagePreviewItem .deleteButtonSmall {
+  font-size: 1.25rem;
+  padding: 0.25rem 0.75rem;
+  flex-shrink: 0; /* Prevent button from shrinking */
 }
 
 /* --- DESKTOP STYLES --- */

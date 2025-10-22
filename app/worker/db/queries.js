@@ -116,6 +116,7 @@ export async function createTrip(tripInfo) {
         recommendations: tripInfo.recommendations,
         policies: tripInfo.policies,
         includedItems: tripInfo.includedItems,
+        images: tripInfo.images,
         notes: tripInfo.notes,
         paymentPlanId: tripInfo.paymentPlanId,
       },
