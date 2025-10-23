@@ -35,3 +35,49 @@ export const tripQueryOptions = (tripId) => ({
 export const useTrip = (tripId) => {
   return useQuery(tripQueryOptions(tripId));
 };
+
+export const useCreateTrip = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (tripData) => {
+      const response = await fetch(`/api/viajes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tripData),
+      });
+      if (!response.ok) {
+        throw new Error(`Error creating trip ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trips"] });
+    },
+  });
+};
+
+export const useUpdateTrip = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (variables) => {
+      const { tripData, tripId } = variables;
+      const response = await fetch(`/api/viajes/${tripId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tripData),
+      });
+      if (!response.ok) {
+        throw new Error(`Error updating trip ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    },
+    onSuccess: (data, variables, context) => {
+      const { tripId } = variables;
+      queryClient.invalidateQueries({ queryKey: ["trips"] });
+      queryClient.invalidateQueries({ queryKey: ["trips", tripId] });
+    },
+  });
+};

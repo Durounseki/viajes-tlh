@@ -1,22 +1,36 @@
 import { Hono } from "hono";
-import createPrismaClient from "./db/client.js";
 import imageApp from "./images/images.js";
+import { PrismaClient } from "@prisma/client";
+import { PrismaD1 } from "@prisma/adapter-d1";
 
 const app = new Hono();
-
-app.use("*", async (c, next) => {
-  c.set("prisma", createPrismaClient(c.env));
-  const prisma = c.get("prisma");
-  await prisma.$connect();
-  await next();
-});
 
 app.route("/api/images", imageApp);
 
 app.get("/api/viajes", async (c) => {
   try {
-    const prisma = c.get("prisma");
-    const trips = await prisma.trip.getTrips();
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    const trips = await prisma.trip.findMany({
+      select: {
+        id: true,
+        destination: true,
+        startDate: true,
+        endDate: true,
+        price: true,
+        currency: true,
+        images: {
+          select: {
+            id: true,
+            src: true,
+            alt: true,
+          },
+        },
+      },
+      orderBy: {
+        startDate: "asc",
+      },
+    });
     return c.json(trips);
   } catch (error) {
     console.error("Error fetching trips:", error);
@@ -26,9 +40,21 @@ app.get("/api/viajes", async (c) => {
 
 app.get("/api/viajes/:id", async (c) => {
   try {
-    const { id } = c.req.param();
-    const prisma = c.get("prisma");
-    const trip = await prisma.trip.getTrip(id);
+    const { id: tripId } = c.req.param();
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    const trip = await prisma.trip.findUnique({
+      where: { id: tripId },
+      include: {
+        images: true,
+        includedItems: true,
+        paymentPlan: {
+          include: {
+            installments: true,
+          },
+        },
+      },
+    });
     return c.json(trip);
   } catch (error) {
     console.error("Error fetching trip:", error);
@@ -36,32 +62,38 @@ app.get("/api/viajes/:id", async (c) => {
   }
 });
 
+app.put("/api/viajes/:id", async (c) => {
+  try {
+    const { id: tripId } = c.req.param();
+    const tripData = await c.req.json();
+    delete tripData.id;
+    delete tripData.createdAt;
+    delete tripData.updatedAt;
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    const updatedTrip = await prisma.trip.update({
+      where: { id: tripId },
+      data: tripData,
+    });
+    return c.json(updatedTrip);
+  } catch (error) {
+    console.error("Error updating trip:", error);
+    return c.json({ error: "Failed to update trip" }, 500);
+  }
+});
+
 app.post("/api/viajes", async (c) => {
   try {
     const tripInfo = await c.req.json();
-    const draftsKV = c.env.DRAFTS;
-    const prisma = c.get("prisma");
-
-    if (tripInfo.status === "DRAFT") {
-      const draftId = tripInfo.id || crypto.randomUUID();
-      const draftData = {
-        ...tripInfo,
-        id: draftId,
-      };
-      await draftsKV.put(`draft:${draftId}`, JSON.stringify(draftData), {
-        metadata: {
-          id: draftId,
-          destination: draftData.destination,
-        },
-      });
-      return c.json(draftData, 201);
-    } else {
-      const newTripId = await prisma.trip.createTrip(tripInfo);
-      if (tripInfo.id) {
-        await draftsKV.delete(`draft:${tripInfo.id}`);
-      }
-      return c.json({ message: "Nuevo viaje creado", id: newTripId }, 201);
-    }
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    const newTripId = await prisma.trip.create({
+      data: tripInfo,
+      select: {
+        id: true,
+      },
+    });
+    return c.json({ id: newTripId.id }, 201);
   } catch (error) {
     console.error("Error creating trip:", error);
     return c.json({ error: "Failed to create trip" }, 500);
@@ -70,8 +102,9 @@ app.post("/api/viajes", async (c) => {
 
 app.get("/api/payment-plans", async (c) => {
   try {
-    const prisma = c.get("prisma");
-    const plans = await prisma.paymentPlan.getPlans();
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    const plans = await prisma.paymentPlan.findMany();
     return c.json(plans);
   } catch (error) {
     console.error("Error fetching payment plans:", error);
@@ -82,8 +115,21 @@ app.get("/api/payment-plans", async (c) => {
 app.post("/api/payment-plans", async (c) => {
   try {
     const planData = await c.req.json();
-    const prisma = c.get("prisma");
-    const newPlanId = await prisma.paymentPlan.createPlan(planData);
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    const newPlanId = await prisma.paymentPlan.create({
+      data: {
+        name: planData.name,
+        installments: {
+          createMany: {
+            data: planData.installments,
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
     return c.json({ message: "Nuevo plan de pago creado", id: newPlanId }, 201);
   } catch (error) {
     console.error("Error creating payment plan:", error);
@@ -93,8 +139,9 @@ app.post("/api/payment-plans", async (c) => {
 
 app.get("/api/included-items", async (c) => {
   try {
-    const prisma = c.get("prisma");
-    const items = await prisma.includedItem.getItems();
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    const items = await prisma.includedItem.findMany();
     return c.json(items);
   } catch (error) {
     console.error("Error fetching included items:", error);
@@ -105,9 +152,17 @@ app.get("/api/included-items", async (c) => {
 app.post("/api/included-items", async (c) => {
   try {
     const itemData = await c.req.json();
-    const prisma = c.get("prisma");
-    const newItemId = await prisma.includedItem.createItem(itemData);
-    return c.json({ message: 'Nuevo "incluye" creado', id: newItemId }, 201);
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    const newItemId = await prisma.includedItem.create({
+      data: {
+        name: itemData.name,
+      },
+      select: {
+        id: true,
+      },
+    });
+    return c.json({ message: 'Nuevo "incluye" creado', id: newItemId.id }, 201);
   } catch (error) {
     console.error("Error creating included item:", error);
     return c.json({ error: "Failed to create included item" }, 500);

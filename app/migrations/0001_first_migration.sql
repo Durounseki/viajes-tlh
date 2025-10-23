@@ -2,14 +2,15 @@
 CREATE TABLE "Trip" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "destination" TEXT NOT NULL,
-    "startDate" DATETIME NOT NULL,
-    "endDate" DATETIME NOT NULL,
-    "price" INTEGER NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'DRAFT',
+    "startDate" DATETIME,
+    "endDate" DATETIME,
+    "price" INTEGER,
     "currency" TEXT NOT NULL DEFAULT 'MXN',
-    "description" TEXT NOT NULL,
-    "itinerary" TEXT NOT NULL,
-    "recommendations" TEXT NOT NULL,
-    "policies" TEXT NOT NULL,
+    "description" TEXT,
+    "itinerary" TEXT,
+    "recommendations" TEXT,
+    "policies" TEXT,
     "thumbnailId" TEXT,
     "notes" TEXT,
     "paymentPlanId" TEXT,
@@ -69,8 +70,8 @@ CREATE TABLE "Booking" (
     "tripId" TEXT NOT NULL,
 
     PRIMARY KEY ("userId", "tripId"),
-    CONSTRAINT "Booking_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "Booking_tripId_fkey" FOREIGN KEY ("tripId") REFERENCES "Trip" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "Booking_tripId_fkey" FOREIGN KEY ("tripId") REFERENCES "Trip" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Booking_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable

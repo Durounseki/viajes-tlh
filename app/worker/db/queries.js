@@ -156,20 +156,7 @@ export async function getTrip(tripId) {
 export async function createTrip(tripInfo) {
   try {
     const newTrip = await this.create({
-      data: {
-        destination: tripInfo.destination,
-        startDate: tripInfo.startDate,
-        endDate: tripInfo.endDate,
-        price: tripInfo.price,
-        description: tripInfo.description,
-        itinerary: tripInfo.itinerary,
-        recommendations: tripInfo.recommendations,
-        policies: tripInfo.policies,
-        includedItems: tripInfo.includedItems,
-        images: tripInfo.images,
-        notes: tripInfo.notes,
-        paymentPlanId: tripInfo.paymentPlanId,
-      },
+      data: tripInfo,
       select: {
         id: true,
       },
@@ -178,6 +165,19 @@ export async function createTrip(tripInfo) {
   } catch (error) {
     console.error("Error creating new trip:", error);
     throw new Error("Failed to create trip");
+  }
+}
+
+export async function updateTrip(tripId, tripData) {
+  try {
+    const updatedTrip = await this.update({
+      where: { id: tripId },
+      data: tripData,
+    });
+    return updatedTrip;
+  } catch (error) {
+    console.error("Error updating trip:", error);
+    throw new Error("Failed to update trip");
   }
 }
 

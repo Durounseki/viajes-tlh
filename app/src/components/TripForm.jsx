@@ -5,7 +5,12 @@ import { usePaymentPlans, useCreatePaymentPlan } from "../data/paymentPlans";
 import { useIncludedItems, useCreateIncludedItem } from "../data/includedItems";
 import { formatDateForInput } from "../utils/tripDate";
 
-function TripForm({ initialData, onSubmit, isEditing = false }) {
+function TripForm({
+  initialData,
+  onSubmit,
+  isPending = false,
+  isEditing = false,
+}) {
   const navigate = useNavigate();
   const { data: availablePlans = [] } = usePaymentPlans();
   const createPaymentPlanMutation = useCreatePaymentPlan();
@@ -123,10 +128,8 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
     }
 
     const newItemData = { name: newItemName };
-    console.log("Submitting new item:", newItemData);
     createIncludedItemMutation.mutate(newItemData, {
       onSuccess: (newItem) => {
-        console.log("New item created:", newItem);
         setFormData({
           ...formData,
           includedItems: [...formData.includedItems, newItem.id],
@@ -190,11 +193,8 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
       })),
     };
 
-    console.log("Submitting new payment plan:", newPlanData);
-
     createPaymentPlanMutation.mutate(newPlanData, {
       onSuccess: (newPlan) => {
-        console.log("New plan created:", newPlan);
         setFormData({ ...formData, paymentPlanId: newPlan.id });
         setPlanModalOpen(false);
         setNewPlanName("");
@@ -237,15 +237,20 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
       if (error) errors[name] = error;
     });
 
+    if (!isDraft) {
+      if (formData.includedItems.length === 0) {
+        errors.includedItems =
+          "Debes seleccionar al menos un 'qué incluye' para publicar.";
+      }
+      if (!formData.paymentPlanId) {
+        errors.paymentPlanId =
+          "Debes seleccionar un plan de pago para publicar.";
+      }
+    }
+
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       alert("Por favor, corrige los errores antes de guardar.");
-      return;
-    }
-
-    if (isDraft) {
-      if (isEditing) return;
-      await onSubmit(formData, true, [], []);
       return;
     }
 
@@ -264,6 +269,7 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
           throw new Error("Error uploading images");
         }
         newImagePayload = await response.json();
+        setImageFiles([]);
       } catch (error) {
         console.error("Error uploading images:", error);
         alert("No se pudo subir las imágenes. Intentalo de nuevo.");
@@ -271,12 +277,21 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
       }
     }
     try {
-      await onSubmit(formData, false, newImagePayload, imagesToRemove);
+      await onSubmit(formData, isDraft, newImagePayload, imagesToRemove);
+      setImagesToRemove([]);
     } catch (error) {
       console.error("Error saving data:", error);
     }
   };
 
+  const initialStatus = initialData?.status || "DRAFT";
+  let submitButtonText = "Publicar Viaje";
+  if (isEditing) {
+    submitButtonText =
+      initialStatus === "PUBLISHED" ? "Guardar Cambios" : "Publicar Viaje";
+  }
+  const showDraftButton =
+    !isEditing || (isEditing && initialStatus === "DRAFT");
   return (
     <div className={styles.formContainer}>
       <form
@@ -428,7 +443,7 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
               {existingImages.map((image) => (
                 <div key={image.id} className={styles.imagePreviewItem}>
                   <img
-                    src={`/images/${image.src}?size=thumbnail`}
+                    src={`/api/images/${image.src}?size=thumbnail`}
                     alt={image.alt || "thumbnail"}
                     className={styles.imageThumbnail}
                   />
@@ -477,6 +492,9 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
               +
             </button>
           </div>
+          {formErrors.includedItems && (
+            <p className={styles.errorMessage}>{formErrors.includedItems}</p>
+          )}
         </fieldset>
 
         <fieldset>
@@ -543,26 +561,35 @@ function TripForm({ initialData, onSubmit, isEditing = false }) {
                 </button>
               </div>
             </div>
+            {formErrors.paymentPlanId && (
+              <p className={styles.errorMessage}>{formErrors.paymentPlanId}</p>
+            )}
           </div>
         </fieldset>
 
         <div className={styles.formActions}>
-          <button type="submit" className={styles.primaryButton}>
-            {isEditing ? "Guardar Cambios" : "Publicar Viaje"}
+          <button
+            type="submit"
+            className={styles.primaryButton}
+            disabled={isPending}
+          >
+            {isPending ? "Guardando..." : submitButtonText}
           </button>
-          {!isEditing && (
+          {showDraftButton && (
             <button
               type="button"
               onClick={() => handleSave(true)}
               className={styles.draftButton}
+              disabled={isPending}
             >
-              Guardar Borrador
+              {isPending ? "Guardando..." : "Guardar Borrador"}
             </button>
           )}
           <button
             type="button"
             className={styles.secondaryButton}
             onClick={() => navigate({ to: "/admin/viajes" })}
+            disabled={isPending}
           >
             Cancelar
           </button>

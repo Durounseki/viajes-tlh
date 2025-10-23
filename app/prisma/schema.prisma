@@ -10,30 +10,31 @@ datasource db {
 model Trip {
   id              String         @id @default(cuid())
   destination     String
-  startDate       DateTime
-  endDate         DateTime
-  price           Int
+  status          String         @default("DRAFT")
+  startDate       DateTime?
+  endDate         DateTime?
+  price           Int?
   currency        String         @default("MXN")
-  description     String
-  itinerary       String
-  recommendations String
-  policies        String
+  description     String?
+  itinerary       String?
+  recommendations String?
+  policies        String?
   thumbnailId     String?
-  includedItems   IncludedItem[]
   notes           String?
   paymentPlanId   String?
-  paymentPlan     PaymentPlan?   @relation(fields: [paymentPlanId], references: [id])
-  images          Image[]
-  bookings        Booking[]
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
+  bookings        Booking[]
+  images          Image[]
+  paymentPlan     PaymentPlan?   @relation(fields: [paymentPlanId], references: [id])
+  includedItems   IncludedItem[] @relation("IncludedItemToTrip")
 }
 
 model IncludedItem {
   id          String  @id @default(cuid())
   name        String  @unique
   description String?
-  trips       Trip[]
+  trips       Trip[]  @relation("IncludedItemToTrip")
 }
 
 model PaymentPlan {
@@ -67,17 +68,17 @@ model User {
   name        String
   phone       String?
   createdAt   DateTime  @default(now())
-  bookings    Booking[]
   isSuscribed Boolean   @default(true)
+  bookings    Booking[]
 }
 
 model Booking {
   bookingDate DateTime  @default(now())
   notes       String?
   userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   tripId      String
   trip        Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   payments    Payment[]
 
   @@id([userId, tripId])

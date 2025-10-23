@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import TripForm from "../../../components/TripForm";
 import { paymentPlansQueryOptions } from "../../../data/paymentPlans";
 import { includedItemsQueryOptions } from "../../../data/includedItems";
+import { useCreateTrip } from "../../../data/trips";
 
 export const Route = createFileRoute("/admin/viajes/nuevo")({
   component: RouteComponent,
@@ -17,76 +18,77 @@ export const Route = createFileRoute("/admin/viajes/nuevo")({
 
 function RouteComponent() {
   const navigate = useNavigate();
+  const createTripMutation = useCreateTrip();
   const handleCreateTrip = async (
     formData,
     isDraft,
     newImagePayload,
     imagesToRemove
   ) => {
-    let dataToSubmit;
-    if (isDraft) {
-      dataToSubmit = {
-        ...formData,
-        status: "DRAFT",
-        price: parseInt(formData.price, 10) || 0,
-        startDate: formData.startDate
-          ? new Date(formData.startDate).toISOString()
-          : null,
-        endDate: formData.endDate
-          ? new Date(formData.endDate).toISOString()
-          : null,
-      };
-    } else {
-      dataToSubmit = {
-        ...formData,
-        status: "PUBLISHED",
-        price: parseInt(formData.price, 10) || 0,
-        startDate: formData.startDate
-          ? new Date(formData.startDate).toISOString()
-          : null,
-        endDate: formData.endDate
-          ? new Date(formData.endDate).toISOString()
-          : null,
-        includedItems: {
-          connect: formData.includedItems.map((id) => ({ id })),
-        },
-        images: {
-          create: newImagePayload,
-        },
-      };
-      if (dataToSubmit.images.create.length === 0) {
-        delete dataToSubmit.images;
-      }
+    const dataToSubmit = {
+      ...formData,
+      status: isDraft ? "DRAFT" : "PUBLISHED",
+      price: parseInt(formData.price, 10) || null,
+      startDate: formData.startDate
+        ? new Date(formData.startDate).toISOString()
+        : null,
+      endDate: formData.endDate
+        ? new Date(formData.endDate).toISOString()
+        : null,
+      paymentPlan: formData.paymentPlan
+        ? {
+            connect: {
+              id: formData.paymentPlan,
+            },
+          }
+        : undefined,
+      includedItems: {
+        connect: formData.includedItems.map((id) => ({ id })),
+      },
+      images: {
+        create: newImagePayload,
+      },
+    };
+    delete dataToSubmit.paymentPlanId;
+    if (
+      !dataToSubmit.includedItems.connect ||
+      dataToSubmit.includedItems.connect.length === 0
+    ) {
+      delete dataToSubmit.includedItems;
     }
-    console.log("CREATING new trip:", JSON.stringify(dataToSubmit, null, 2));
-    try {
-      const response = await fetch(`/api/viajes`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSubmit),
-      });
-      if (!response.ok) {
-        throw new Error("Error creating event");
-      }
-      const responseData = await response.json();
-      if (isDraft) {
-        alert("Borrador guardado con éxito.");
-        navigate({
-          to: "/admin/viajes/$viajeId/editar",
-          params: { viajeId: responseData.id },
-        });
-      } else {
-        alert("Viaje publicado.");
-        navigate({ to: "/admin/viajes" });
-      }
-      return responseData;
-    } catch (error) {
-      console.error("Error creating trip:", error);
-      alert("No se pudo guardar el viaje. Intentalo de nuevo.");
+    if (
+      !dataToSubmit.images.create.length ||
+      dataToSubmit.images.create.length === 0
+    ) {
+      delete dataToSubmit.images;
     }
+    createTripMutation.mutate(dataToSubmit, {
+      onSuccess: (responseData) => {
+        if (isDraft) {
+          alert("Borrador guardado con éxito.");
+          navigate({
+            to: "/admin/viajes/$viajeId/editar",
+            params: { viajeId: responseData.id },
+          });
+        } else {
+          alert("Viaje publicado.");
+          navigate({
+            to: "/viajes/$viajeId",
+            params: { viajeId: responseData.id },
+          });
+        }
+      },
+      onError: (error) => {
+        alert("No se pudo guardar el viaje:", error.message);
+      },
+    });
   };
 
-  return <TripForm onSubmit={handleCreateTrip} isEditing={false} />;
+  return (
+    <TripForm
+      onSubmit={handleCreateTrip}
+      isPending={createTripMutation.isPending}
+      isEditing={false}
+    />
+  );
 }
