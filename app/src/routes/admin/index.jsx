@@ -1,13 +1,18 @@
 import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import styles from "../../styles/Admin.module.css";
-
-import { trips, bookings, users } from "../../data/viajes-data";
+import { tripsQueryOptions, useTrips } from "../../data/trips";
+import { bookings, users } from "../../data/viajes-data";
 import { FaWhatsapp } from "react-icons/fa";
 import { formatPrice } from "../../utils/tripPrice";
 
 export const Route = createFileRoute("/admin/")({
-  component: DashboardComponent,
+  component: RouteComponent,
+  loader: async ({ context }) => {
+    const queryClient = context.queryClient;
+    await queryClient.ensureQueryData(tripsQueryOptions);
+    return {};
+  },
 });
 
 function getNextUpcomingTrip(trips) {
@@ -40,7 +45,8 @@ function getPendingPayments(bookings, trips, users) {
     .filter(Boolean);
 }
 
-function DashboardComponent() {
+function RouteComponent() {
+  const { data: trips = [] } = useTrips();
   const stats = useMemo(() => {
     const nextTrip = getNextUpcomingTrip(trips);
     const nextTripBookings = nextTrip

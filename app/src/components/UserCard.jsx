@@ -3,9 +3,9 @@ import { Link } from "@tanstack/react-router";
 import styles from "../styles/Admin.module.css";
 import { FaWhatsapp } from "react-icons/fa";
 
-import { trips, bookings } from "../data/viajes-data";
+import { bookings } from "../data/viajes-data";
 
-function UserCard({ user, onToggleSubscription }) {
+function UserCard({ user, trips, onToggleSubscription }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const [formData, setFormData] = useState({

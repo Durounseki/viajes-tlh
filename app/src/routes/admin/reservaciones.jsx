@@ -1,17 +1,31 @@
 import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import styles from "../../styles/Admin.module.css";
-import { trips, users, bookings } from "../../data/viajes-data";
+import { tripsQueryOptions, useTrips } from "../../data/trips";
+import { users, bookings } from "../../data/viajes-data";
 import BookingCard from "../../components/BookingCard";
 
 export const Route = createFileRoute("/admin/reservaciones")({
   component: RouteComponent,
+  loader: async ({ context }) => {
+    const queryClient = context.queryClient;
+    await queryClient.ensureQueryData(tripsQueryOptions);
+    return {};
+  },
 });
 
 function RouteComponent() {
-  const upcomingTrips = trips
-    .filter((t) => new Date(t.endDate) >= new Date())
-    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+  const { data: trips = [] } = useTrips();
+
+  const upcomingTrips = useMemo(() => {
+    const now = new Date();
+
+    const upcoming = trips
+      .filter((trip) => new Date(trip.endDate) >= now)
+      .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+    return upcoming;
+  }, [trips]);
 
   const [selectedTripId, setSelectedTripId] = useState(
     upcomingTrips[0]?.id || ""

@@ -3,12 +3,19 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import styles from "../../styles/Admin.module.css";
 import { users as allUsers } from "../../data/viajes-data.js";
 import UserCard from "../../components/UserCard.jsx";
+import { tripsQueryOptions, useTrips } from "../../data/trips.js";
 
 export const Route = createFileRoute("/admin/usuarios")({
   component: RouteComponent,
+  loader: async ({ context }) => {
+    const queryClient = context.queryClient;
+    await queryClient.ensureQueryData(tripsQueryOptions);
+    return {};
+  },
 });
 
 function RouteComponent() {
+  const { data: trips = [] } = useTrips();
   const [users, setUsers] = useState(allUsers);
   const [query, setQuery] = useState("");
 
@@ -51,6 +58,7 @@ function RouteComponent() {
             <UserCard
               key={user.id}
               user={user}
+              trips={trips}
               onToggleSubscription={handleToggleSubscription}
             />
           ))
