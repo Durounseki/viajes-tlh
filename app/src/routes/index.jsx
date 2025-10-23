@@ -1,6 +1,8 @@
+import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroImage from "../assets/miranda-garside-Ux2le0HiXwE-unsplash.jpg";
-import { trips, testimonials } from "../data/viajes-data";
+import { tripsQueryOptions, useTrips } from "../data/trips";
+import { testimonials } from "../data/viajes-data";
 import styles from "../styles/Home.module.css";
 import TripCard from "../components/TripCard";
 
@@ -15,23 +17,35 @@ import "swiper/css/pagination";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
+  loader: async ({ context }) => {
+    const queryClient = context.queryClient;
+    await queryClient.ensureQueryData(tripsQueryOptions);
+    return {};
+  },
 });
 
 function RouteComponent() {
-  const now = new Date();
-  const upcomingTrips = trips
-    .filter((trip) => new Date(trip.endDate) >= now)
-    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+  const { data: trips = [] } = useTrips();
+  const { upcomingTrips, pastTrips } = useMemo(() => {
+    const now = new Date();
 
-  const pastTrips = trips
-    .filter((trip) => new Date(trip.endDate) < now)
-    .sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+    const upcoming = trips
+      .filter((trip) => new Date(trip.endDate) >= now)
+      .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+    const past = trips
+      .filter((trip) => new Date(trip.endDate) < now)
+      .sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+
+    return { upcomingTrips: upcoming, pastTrips: past };
+  }, [trips]);
 
   const featuredTrip =
     upcomingTrips.length > 0 ? upcomingTrips[0] : pastTrips[0];
-  const featuredTripThumbnail =
-    featuredTrip.images.find((img) => img.id === featuredTrip.thumbnailId)
-      .src || featuredTrip.images[0].src;
+
+  console.log("featuredTrip:", featuredTrip.images[0].src);
+  const featuredTripThumbnail = featuredTrip.images[0].src;
+  console.log("featuredTripThumbnail:", featuredTripThumbnail);
   const nextTrips = upcomingTrips.slice(1);
 
   return (
@@ -86,7 +100,7 @@ function RouteComponent() {
         <h2>Nuestro Próximo Destino</h2>
         <div className={styles["trip-card"]}>
           <img
-            src={featuredTripThumbnail}
+            src={`/api/images/${featuredTripThumbnail}`}
             alt={`Viaje a ${featuredTrip.destination}`}
           />
           <div className={styles["trip-card-content"]}>
@@ -132,16 +146,15 @@ function RouteComponent() {
         >
           {pastTrips.map((trip) => (
             <SwiperSlide key={trip.id} className={styles["past-trip-slide"]}>
-              <img
-                src={
-                  trip.images.find((img) => img.id === trip.thumbnailId).src ||
-                  trip.images[0].src
-                }
-                alt={trip.destination}
-              />
-              <div className={styles["past-trip-overlay"]}>
-                <p>{trip.destination}</p>
-              </div>
+              <Link to={`/viajes/${trip.id}`}>
+                <img
+                  src={`/api/images/${trip.images[0].src}`}
+                  alt={trip.destination}
+                />
+                <div className={styles["past-trip-overlay"]}>
+                  <p>{trip.destination}</p>
+                </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
