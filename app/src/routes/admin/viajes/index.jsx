@@ -1,6 +1,10 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import styles from "../../../styles/Admin.module.css";
-import { tripsQueryOptions, useTrips } from "../../../data/trips";
+import {
+  tripsQueryOptions,
+  useTrips,
+  useDeleteTrip,
+} from "../../../data/trips";
 import TripCard from "../../../components/TripCard";
 import TripsAdminPendingComponent from "../../../components/TripsAdminPendingComponent";
 
@@ -16,13 +20,22 @@ export const Route = createFileRoute("/admin/viajes/")({
 
 function TripsAdminComponent() {
   const { data: trips = [] } = useTrips();
+  const deleteTripMutation = useDeleteTrip();
+
   const handleDelete = (trip) => {
     if (
       confirm(
         `¿Estás segura de que quieres eliminar el viaje a ${trip.destination}?`
       )
     ) {
-      console.log("Deleting trip:", trip.id);
+      deleteTripMutation.mutate(trip.id, {
+        onSuccess: () => {
+          alert("Viaje eliminado con éxito.");
+        },
+        onError: (error) => {
+          alert("No se pudo eliminar el viaje:", error.message);
+        },
+      });
     }
   };
 

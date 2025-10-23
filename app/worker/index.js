@@ -82,6 +82,21 @@ app.put("/api/viajes/:id", async (c) => {
   }
 });
 
+app.delete("/api/viajes/:id", async (c) => {
+  try {
+    const { id: tripId } = c.req.param();
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+    await prisma.trip.delete({
+      where: { id: tripId },
+    });
+    return c.json({ message: "Viaje eliminado correctamente" });
+  } catch (error) {
+    console.error("Error deleting trip:", error);
+    return c.json({ error: "Failed to delete trip" }, 500);
+  }
+});
+
 app.post("/api/viajes", async (c) => {
   try {
     const tripInfo = await c.req.json();

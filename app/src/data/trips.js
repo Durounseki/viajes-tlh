@@ -81,3 +81,24 @@ export const useUpdateTrip = () => {
     },
   });
 };
+
+export const useDeleteTrip = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (tripId) => {
+      const response = await fetch(`/api/viajes/${tripId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error(`Error deleting trip ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    },
+    onSuccess: (data, variables, context) => {
+      const { tripId } = variables;
+      queryClient.invalidateQueries({ queryKey: ["trips"] });
+      queryClient.invalidateQueries({ queryKey: ["trips", tripId] });
+    },
+  });
+};
