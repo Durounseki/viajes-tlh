@@ -3,7 +3,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import styles from "../../styles/Admin.module.css";
 import { tripsQueryOptions, useTrips } from "../../data/trips";
 import { usersQueryOptions, useUsers } from "../../data/users";
-import { bookingsQueryOptions, useBookings } from "../../data/bookings";
+import {
+  bookingsQueryOptions,
+  useBookings,
+  useUpdatePayment,
+  useDeletePayment,
+} from "../../data/bookings";
 import BookingCard from "../../components/BookingCard";
 
 export const Route = createFileRoute("/admin/reservaciones")({
@@ -30,6 +35,9 @@ function RouteComponent() {
   const { data: bookings = [] } = useBookings();
   const { tripId: urlTripId } = Route.useSearch();
 
+  const updatePaymentMutation = useUpdatePayment();
+  const deletePaymentMutation = useDeletePayment();
+
   const upcomingTrips = useMemo(() => {
     const now = new Date();
 
@@ -51,13 +59,29 @@ function RouteComponent() {
 
   const filteredBookings = useMemo(() => {
     if (!selectedTripId) return [];
+
+    const tripPrice = selectedTrip?.price || 0;
+
     return bookings
       .filter((b) => b.tripId === selectedTripId)
       .map((booking) => {
         const user = users.find((u) => u.id === booking.userId);
-        return { ...booking, user };
+        const totalPaid = booking.payments.reduce(
+          (sum, p) => sum + p.amount,
+          0
+        );
+        const balance = tripPrice - totalPaid;
+        return { ...booking, user, balance };
+      })
+      .sort((a, b) => {
+        const aHasBalance = a.balance > 0;
+        const bHasBalance = b.balance > 0;
+        if (aHasBalance !== bHasBalance) {
+          return aHasBalance ? -1 : 1;
+        }
+        return new Date(b.bookingDate) - new Date(a.bookingDate);
       });
-  }, [selectedTripId, bookings, users]);
+  }, [selectedTripId, bookings, users, selectedTrip]);
 
   const tripStats = useMemo(() => {
     const selectedTrip = trips.find((t) => t.id === selectedTripId);
@@ -124,10 +148,12 @@ function RouteComponent() {
         {filteredBookings.length > 0 ? (
           filteredBookings.map((booking) => (
             <BookingCard
-              key={booking.user.id}
+              key={booking.userId}
               booking={booking}
               user={booking.user}
               tripPrice={selectedTrip?.price || 0}
+              updatePaymentMutation={updatePaymentMutation}
+              deletePaymentMutation={deletePaymentMutation}
             />
           ))
         ) : (

@@ -77,3 +77,43 @@ export const useCreatePayment = () => {
     },
   });
 };
+
+export const useUpdatePayment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ paymentId, paymentInfo }) => {
+      const response = await fetch(`/api/payments/${paymentId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paymentInfo),
+      });
+      if (!response.ok) {
+        throw new Error(`Error updating payment ${response.status}`);
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
+export const useDeletePayment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ paymentId }) => {
+      const response = await fetch(`/api/payments/${paymentId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error(`Error deleting payment ${response.status}`);
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
