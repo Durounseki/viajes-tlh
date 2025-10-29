@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import styles from "../../../styles/Admin.module.css";
 import {
@@ -21,6 +22,37 @@ export const Route = createFileRoute("/admin/viajes/")({
 function TripsAdminComponent() {
   const { data: trips = [] } = useTrips();
   const deleteTripMutation = useDeleteTrip();
+  const [activeTab, setActiveTab] = useState("upcoming");
+
+  const { upcomingTrips, draftTrips, pastTrips } = useMemo(() => {
+    const now = new Date();
+    const upcoming = [];
+    const drafts = [];
+    const past = [];
+
+    trips.forEach((trip) => {
+      if (trip.status === "DRAFT") {
+        drafts.push(trip);
+      } else if (!trip.endDate) {
+        drafts.push(trip);
+      } else if (new Date(trip.endDate) < now) {
+        past.push(trip);
+      } else {
+        upcoming.push(trip);
+      }
+    });
+
+    upcoming.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+    past.sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+
+    return { upcomingTrips: upcoming, draftTrips: drafts, pastTrips: past };
+  }, [trips]);
+
+  const tripsToDisplay = {
+    upcoming: upcomingTrips,
+    drafts: draftTrips,
+    past: pastTrips,
+  }[activeTab];
 
   const handleDelete = (trip) => {
     if (
@@ -48,27 +80,52 @@ function TripsAdminComponent() {
         </Link>
       </div>
 
+      <div className={styles.tabBar}>
+        <button
+          className={activeTab === "upcoming" ? styles.activeTab : ""}
+          onClick={() => setActiveTab("upcoming")}
+        >
+          Próximos ({upcomingTrips.length})
+        </button>
+        <button
+          className={activeTab === "drafts" ? styles.activeTab : ""}
+          onClick={() => setActiveTab("drafts")}
+        >
+          Borradores ({draftTrips.length})
+        </button>
+        <button
+          className={activeTab === "past" ? styles.activeTab : ""}
+          onClick={() => setActiveTab("past")}
+        >
+          Pasados ({pastTrips.length})
+        </button>
+      </div>
       <div className={styles.adminTripsGrid}>
-        {trips.map((trip) => (
-          <div key={trip.id} className={styles.adminTripCard}>
-            <TripCard trip={trip} />
-
-            <div className={styles.adminTripActions}>
-              <Link
-                to={`/admin/viajes/${trip.id}/editar`}
-                className={styles.editButton}
-              >
-                Editar
-              </Link>
-              <button
-                onClick={() => handleDelete(trip)}
-                className={styles.deleteButton}
-              >
-                Eliminar
-              </button>
+        {tripsToDisplay.length > 0 ? (
+          tripsToDisplay.map((trip) => (
+            <div key={trip.id} className={styles.adminTripCard}>
+              <TripCard trip={trip} />
+              <div className={styles.adminTripActions}>
+                <Link
+                  to={`/admin/viajes/${trip.id}/editar`}
+                  className={styles.editButton}
+                >
+                  Editar
+                </Link>
+                <button
+                  onClick={() => handleDelete(trip)}
+                  className={styles.deleteButton}
+                >
+                  Eliminar
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className={styles.emptyListMessage}>
+            No hay viajes en esta sección.
+          </p>
+        )}
       </div>
     </div>
   );

@@ -2,20 +2,27 @@ import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import styles from "../../styles/Admin.module.css";
 import { tripsQueryOptions, useTrips } from "../../data/trips";
-import { users, bookings } from "../../data/viajes-data";
+import { usersQueryOptions, useUsers } from "../../data/users";
+import { bookingsQueryOptions, useBookings } from "../../data/bookings";
 import BookingCard from "../../components/BookingCard";
 
 export const Route = createFileRoute("/admin/reservaciones")({
   component: RouteComponent,
   loader: async ({ context }) => {
     const queryClient = context.queryClient;
-    await queryClient.ensureQueryData(tripsQueryOptions);
+    await Promise.all([
+      queryClient.ensureQueryData(tripsQueryOptions),
+      queryClient.ensureQueryData(usersQueryOptions),
+      queryClient.ensureQueryData(bookingsQueryOptions),
+    ]);
     return {};
   },
 });
 
 function RouteComponent() {
   const { data: trips = [] } = useTrips();
+  const { data: users = [] } = useUsers();
+  const { data: bookings = [] } = useBookings();
 
   const upcomingTrips = useMemo(() => {
     const now = new Date();
@@ -33,7 +40,7 @@ function RouteComponent() {
 
   const selectedTrip = useMemo(
     () => trips.find((t) => t.id === selectedTripId),
-    [selectedTripId]
+    [selectedTripId, trips]
   );
 
   const filteredBookings = useMemo(() => {
@@ -44,7 +51,7 @@ function RouteComponent() {
         const user = users.find((u) => u.id === booking.userId);
         return { ...booking, user };
       });
-  }, [selectedTripId]);
+  }, [selectedTripId, bookings, users]);
 
   const tripStats = useMemo(() => {
     const selectedTrip = trips.find((t) => t.id === selectedTripId);
@@ -59,7 +66,7 @@ function RouteComponent() {
       totalPaid,
       totalOwed: totalValue - totalPaid,
     };
-  }, [filteredBookings, selectedTripId]);
+  }, [filteredBookings, selectedTripId, trips]);
 
   return (
     <div className={styles.bookingsPage}>
@@ -113,6 +120,7 @@ function RouteComponent() {
             <BookingCard
               key={booking.user.id}
               booking={booking}
+              user={booking.user}
               tripPrice={selectedTrip?.price || 0}
             />
           ))

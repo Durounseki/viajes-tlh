@@ -121,7 +121,8 @@
 
 .primaryButton,
 .editButton,
-.deleteButton {
+.deleteButton,
+.secondaryButton {
   padding: 0.6rem 1rem;
   border-radius: 8px;
   border: 1px solid;
@@ -141,6 +142,12 @@
   color: #ffffff;
 }
 
+.secondaryButton {
+  background-color: transparent;
+  border-color: var(--color-secondary, #6b7280);
+  color: var(--color-secondary, #6b7280);
+}
+
 .editButton {
   flex: 1;
   background-color: var(--color-secondary);
@@ -153,7 +160,7 @@
 }
 
 .deleteButton {
-  flex: 1;
+  flex: 0;
   background-color: transparent;
   color: #d9534f;
   border-color: #d9534f;
@@ -288,6 +295,7 @@
 }
 
 .whatsappIconButton {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -426,6 +434,7 @@
 
   .bookingDetails {
     grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
 
   .addPaymentForm .formRow {
@@ -487,6 +496,7 @@
 
 .userActions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
@@ -574,17 +584,20 @@ input:checked + .slider:before {
   color: var(--color-primary);
 }
 
-.editUserForm .formGroup {
+.editUserForm .formGroup,
+.createUserForm .formGroup {
   margin-bottom: 1rem;
 }
 
-.editUserForm .formGroup label {
+.editUserForm .formGroup label,
+.createUserForm .formGroup label {
   display: block;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
-.editUserForm .formGroup input {
+.editUserForm .formGroup input,
+.createUserForm .formGroup input {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ccc;
@@ -739,7 +752,7 @@ input:checked + .slider:before {
 }
 .pendingItem {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 1rem;
   background-color: #fff;
   padding: 1rem 1.5rem;
@@ -747,6 +760,18 @@ input:checked + .slider:before {
   margin-bottom: 0.75rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
+
+.pendingItem .editButton {
+  flex: 0 0 auto;
+  min-width: 120px;
+}
+
+.paymentCardActions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 .pendingInfo {
   flex-grow: 1;
   display: flex;
@@ -770,4 +795,104 @@ input:checked + .slider:before {
   .quickActions {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modalContent {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modalContent h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.modalActions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: normal;
+}
+
+.errorMessage {
+  color: #d9534f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .userDetails .bookingHistory {
+    grid-column: 1 / -1;
+  }
+  .userDetails form:first-child:nth-last-child(2) ~ .bookingHistory {
+    grid-column: auto;
+  }
+}
+
+.tabBar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-background, #f3f4f6);
+  overflow-x: auto;
+}
+
+.tabBar button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  color: var(--color-secondary);
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.tabBar button:hover {
+  color: var(--color-text);
+}
+
+.tabBar button.activeTab {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.emptyListMessage {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: var(--color-secondary);
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  grid-column: 1 / -1;
 }

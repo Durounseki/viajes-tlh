@@ -2,15 +2,19 @@ import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import styles from "../../styles/Admin.module.css";
 import { tripsQueryOptions, useTrips } from "../../data/trips";
-import { bookings, users } from "../../data/viajes-data";
-import { FaWhatsapp } from "react-icons/fa";
-import { formatPrice } from "../../utils/tripPrice";
+import { usersQueryOptions, useUsers } from "../../data/users";
+import { bookingsQueryOptions, useBookings } from "../../data/bookings";
+import PendingPaymentCard from "../../components/PendingPaymentCard";
 
 export const Route = createFileRoute("/admin/")({
   component: RouteComponent,
   loader: async ({ context }) => {
     const queryClient = context.queryClient;
-    await queryClient.ensureQueryData(tripsQueryOptions);
+    await Promise.all([
+      queryClient.ensureQueryData(tripsQueryOptions),
+      queryClient.ensureQueryData(usersQueryOptions),
+      queryClient.ensureQueryData(bookingsQueryOptions),
+    ]);
     return {};
   },
 });
@@ -47,6 +51,9 @@ function getPendingPayments(bookings, trips, users) {
 
 function RouteComponent() {
   const { data: trips = [] } = useTrips();
+  const { data: users = [] } = useUsers();
+  const { data: bookings = [] } = useBookings();
+
   const stats = useMemo(() => {
     const nextTrip = getNextUpcomingTrip(trips);
     const nextTripBookings = nextTrip
@@ -60,7 +67,7 @@ function RouteComponent() {
       nextTripBookings,
       pendingPayments,
     };
-  }, []);
+  }, [trips, users, bookings]);
 
   return (
     <div className={styles.dashboard}>
@@ -100,29 +107,10 @@ function RouteComponent() {
         <h4>Pagos Pendientes ({stats.pendingPayments.length})</h4>
         {stats.pendingPayments.length > 0 ? (
           stats.pendingPayments.map((booking) => (
-            <div
-              key={booking.user.id + booking.tripId}
-              className={styles.pendingItem}
-            >
-              <div className={styles.pendingInfo}>
-                <span className={styles.pendingUser}>{booking.user.name}</span>
-                <span className={styles.pendingTrip}>
-                  {booking.trip.destination}
-                </span>
-                <span className={styles.pendingBalance}>
-                  Saldo: {formatPrice(booking.balance)}
-                </span>
-              </div>
-              <a
-                href={`https://wa.me/521${booking.user.phone}`}
-                className={styles.whatsappIconButton}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Enviar WhatsApp"
-              >
-                <FaWhatsapp />
-              </a>
-            </div>
+            <PendingPaymentCard
+              key={booking.userId + booking.tripId}
+              booking={booking}
+            />
           ))
         ) : (
           <p>¡Felicidades! No hay pagos pendientes.</p>

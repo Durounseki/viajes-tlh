@@ -1,11 +1,17 @@
 import { Hono } from "hono";
 import imageApp from "./images/images.js";
+import usersApp from "./db/users/users.js";
+import bookingsApp from "./db/bookings/bookings.js";
+import paymentsApp from "./db/payments/payments.js";
 import { PrismaClient } from "@prisma/client";
 import { PrismaD1 } from "@prisma/adapter-d1";
 
 const app = new Hono();
 
 app.route("/api/images", imageApp);
+app.route("/api/users", usersApp);
+app.route("/api/bookings", bookingsApp);
+app.route("/api/payments", paymentsApp);
 
 app.get("/api/viajes", async (c) => {
   try {
