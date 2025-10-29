@@ -17,12 +17,18 @@ export const Route = createFileRoute("/admin/reservaciones")({
     ]);
     return {};
   },
+  validateSearch: (search) => {
+    return {
+      tripId: search.tripId ? String(search.tripId) : undefined,
+    };
+  },
 });
 
 function RouteComponent() {
   const { data: trips = [] } = useTrips();
   const { data: users = [] } = useUsers();
   const { data: bookings = [] } = useBookings();
+  const { tripId: urlTripId } = Route.useSearch();
 
   const upcomingTrips = useMemo(() => {
     const now = new Date();
@@ -35,7 +41,7 @@ function RouteComponent() {
   }, [trips]);
 
   const [selectedTripId, setSelectedTripId] = useState(
-    upcomingTrips[0]?.id || ""
+    urlTripId || upcomingTrips[0]?.id || ""
   );
 
   const selectedTrip = useMemo(

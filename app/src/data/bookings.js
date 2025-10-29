@@ -38,6 +38,25 @@ export const useCreateBooking = () => {
   });
 };
 
+export const useDeleteBooking = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ userId, tripId }) => {
+      const response = await fetch(`/api/bookings/${userId}/${tripId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error(`Error deleting booking ${response.status}`);
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
 export const useCreatePayment = () => {
   const queryClient = useQueryClient();
   return useMutation({

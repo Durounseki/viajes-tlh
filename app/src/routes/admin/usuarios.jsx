@@ -8,6 +8,7 @@ import {
   useUpdateUser,
   useDeleteUser,
 } from "../../data/users.js";
+import { useDeleteBooking } from "../../data/bookings.js";
 import UserCard from "../../components/UserCard.jsx";
 import { tripsQueryOptions, useTrips } from "../../data/trips.js";
 
@@ -39,6 +40,7 @@ function RouteComponent() {
   const createUserMutation = useCreateUser();
   const updateUserMutation = useUpdateUser();
   const deleteUserMutation = useDeleteUser();
+  const deleteBookingMutation = useDeleteBooking();
 
   const filteredUsers = useMemo(() => {
     if (!query) return users;
@@ -129,6 +131,7 @@ function RouteComponent() {
               onToggleSubscription={handleToggleSubscription}
               updateUserMutation={updateUserMutation}
               deleteUserMutation={deleteUserMutation}
+              deleteBookingMutation={deleteBookingMutation}
             />
           ))
         ) : (
