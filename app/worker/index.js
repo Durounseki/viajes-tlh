@@ -5,8 +5,28 @@ import bookingsApp from "./db/bookings/bookings.js";
 import paymentsApp from "./db/payments/payments.js";
 import { PrismaClient } from "@prisma/client";
 import { PrismaD1 } from "@prisma/adapter-d1";
+import { seedDatabase } from "../prisma/seed.js";
 
 const app = new Hono();
+
+app.get("/api/seed", async (c) => {
+  try {
+    const adapter = new PrismaD1(c.env.DB);
+    const prisma = new PrismaClient({ adapter });
+
+    console.log("Starting seed from API...");
+    await seedDatabase(prisma);
+    console.log("Seed from API finished.");
+
+    return c.json({ message: "Database seeded successfully!" });
+  } catch (error) {
+    console.error("Error seeding database:", error);
+    return c.json(
+      { error: "Failed to seed database", message: error.message },
+      500
+    );
+  }
+});
 
 app.route("/api/images", imageApp);
 app.route("/api/users", usersApp);

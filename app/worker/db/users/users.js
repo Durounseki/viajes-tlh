@@ -46,6 +46,7 @@ app.get("/", async (c) => {
 app.post("/", async (c) => {
   try {
     const userInfo = await c.req.json();
+    console.log("creating user record:", userInfo);
     const adapter = new PrismaD1(c.env.DB);
     const prisma = new PrismaClient({ adapter });
     const newUserId = await prisma.user.create({
@@ -59,6 +60,7 @@ app.post("/", async (c) => {
         id: true,
       },
     });
+    console.log("user created with id:", newUserId);
     return c.json({ id: newUserId.id }, 201);
   } catch (error) {
     console.error("Error creating user:", error);

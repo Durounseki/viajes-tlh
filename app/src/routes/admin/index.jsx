@@ -69,8 +69,51 @@ function RouteComponent() {
     };
   }, [trips, users, bookings]);
 
+  const runSeed = async () => {
+    if (
+      !confirm(
+        "Are you sure you want to run the seed? This will wipe your database."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      console.log("Sending seed request...");
+      const response = await fetch("/api/seed");
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("¡Éxito! Database seeded successfully.");
+        console.log("Seed result:", result);
+      } else {
+        throw new Error(result.error || "Unknown error");
+      }
+    } catch (err) {
+      console.error("Seed failed:", err);
+      alert(`Seed failed: ${err.message}`);
+    }
+  };
+
   return (
     <div className={styles.dashboard}>
+      <button
+        onClick={runSeed}
+        style={{
+          backgroundColor: "#d9534f",
+          color: "white",
+          padding: "1rem",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+          width: "100%",
+          marginBottom: "1rem",
+          fontSize: "1rem",
+          fontWeight: "bold",
+        }}
+      >
+        !!! RUN DATABASE SEED (WIPES ALL DATA) !!!
+      </button>
       {stats.nextTrip ? (
         <div className={`${styles.statCard} ${styles.dashboardSpotlight}`}>
           <h3>Próximo Viaje: {stats.nextTrip.destination}</h3>

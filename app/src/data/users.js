@@ -75,7 +75,7 @@ export const useUpdateUser = () => {
       const data = await response.json();
       return data;
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables) => {
       const { userId } = variables;
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["users", userId] });
@@ -97,7 +97,7 @@ export const useDeleteUser = () => {
       const data = await response.json();
       return data;
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables) => {
       const { userId } = variables;
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["users", userId] });

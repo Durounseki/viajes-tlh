@@ -378,6 +378,6 @@ legend {
   }
 
   .inputWithAdornment input {
-    padding-right: 80px; /* More space for "días antes" */
+    padding-right: 80px;
   }
 }

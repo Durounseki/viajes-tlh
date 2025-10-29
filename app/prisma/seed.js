@@ -1,12 +1,3 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.LOCAL_DATABASE_URL,
-    },
-  },
-});
-
 const initialItems = [
   { id: "item_transporte", name: "Transporte Redondo" },
   { id: "item_hospedaje", name: "Hospedaje" },
@@ -68,18 +59,24 @@ const users = [
     name: "Laura García",
     email: "laura@email.com",
     phone: "5512345678",
+    isSuscribed: true,
+    createdAt: new Date("2025-10-29T17:57:04.880Z"),
   },
   {
     id: "user_2",
     name: "Carmen Rodríguez",
     email: "carmen@email.com",
     phone: "5587654321",
+    isSuscribed: true,
+    createdAt: new Date("2025-10-29T17:57:04.880Z"),
   },
   {
     id: "user_3",
-    name: "Isabel Martínez",
+    name: "Isabel Perez",
     email: "isabel@email.com",
     phone: "5555555555",
+    isSuscribed: true,
+    createdAt: new Date("2025-10-29T17:57:04.880Z"),
   },
 ];
 
@@ -99,9 +96,9 @@ const trips = [
     notes: "No incluye alimentos ni bebidas...",
     thumbnailId: "zacatlan_01",
     images: [
-      { id: "zacatlan_01", srcKey: "zacatlan_01.jpg", alt: "zacatlan_01" },
-      { id: "zacatlan_02", srcKey: "zacatlan_02.jpg", alt: "zacatlan_02" },
-      { id: "zacatlan_03", srcKey: "zacatlan_03.jpg", alt: "zacatlan_03" },
+      { id: "zacatlan_01", src: "zacatlan_01.jpg", alt: "zacatlan_01" },
+      { id: "zacatlan_02", src: "zacatlan_02.jpg", alt: "zacatlan_02" },
+      { id: "zacatlan_03", src: "zacatlan_03.jpg", alt: "zacatlan_03" },
     ],
     includedItems: [
       { id: "item_transporte" },
@@ -129,7 +126,7 @@ const trips = [
     images: [
       {
         id: "img_xoc_01",
-        srcKey: "xochimilco_01.jpg",
+        src: "xochimilco_01.jpg",
         alt: "Trajinera en los canales de Xochimilco",
       },
     ],
@@ -157,7 +154,7 @@ const trips = [
     images: [
       {
         id: "img_cue_01",
-        srcKey: "cuetzalan_01.jpg",
+        src: "cuetzalan_01.jpg",
         alt: "Iglesia de Cuetzalan entre la niebla",
       },
     ],
@@ -188,7 +185,7 @@ const trips = [
     images: [
       {
         id: "img_que_01",
-        srcKey: "queretaro_01.jpg",
+        src: "queretaro_01.jpg",
         alt: "Viñedos en Querétaro",
       },
     ],
@@ -218,7 +215,7 @@ const trips = [
     images: [
       {
         id: "img_mar_01",
-        srcKey: "mariposas_01.jpg",
+        src: "mariposas_01.jpg",
         alt: "Mariposas Monarca en un árbol",
       },
     ],
@@ -249,14 +246,14 @@ const trips = [
     images: [
       {
         id: "img_bar_01",
-        srcKey: "barrancas_01.jpg",
+        src: "barrancas_01.jpg",
         alt: "Tren Chepe en las Barrancas del Cobre",
       },
     ],
     includedItems: [
       { id: "item_hospedaje" },
       { id: "item_coordinador" },
-      { id: "item_seguro" },
+      { id: "item_entradas" },
     ],
     paymentPlanId: "plan_chepe",
   },
@@ -277,7 +274,7 @@ const trips = [
     images: [
       {
         id: "img_tol_01",
-        srcKey: "tolantongo_01.jpg",
+        src: "tolantongo_01.jpg",
         alt: "Pozas de aguas termales en Tolantongo",
       },
     ],
@@ -325,7 +322,7 @@ const bookings = [
   },
 ];
 
-async function main() {
+export async function seedDatabase(prisma) {
   console.log("Start seeding ...");
 
   console.log("Cleaning database...");
@@ -360,9 +357,11 @@ async function main() {
   }
 
   console.log("Seeding User...");
-  await prisma.user.createMany({
-    data: users,
-  });
+  for (const user of users) {
+    await prisma.user.create({
+      data: user,
+    });
+  }
 
   console.log("Seeding Trip...");
   for (const trip of trips) {
@@ -390,7 +389,7 @@ async function main() {
         images: {
           create: trip.images.map((img) => ({
             id: img.id,
-            src: img.srcKey,
+            src: img.src,
             alt: img.alt,
           })),
         },
@@ -419,13 +418,3 @@ async function main() {
 
   console.log("Seeding finished.");
 }
-
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });

@@ -160,7 +160,6 @@
 }
 
 .deleteButton {
-  flex: 0;
   background-color: transparent;
   color: #d9534f;
   border-color: #d9534f;
