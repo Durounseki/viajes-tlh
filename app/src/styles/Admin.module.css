@@ -997,3 +997,48 @@ input:checked + .slider:before {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   grid-column: 1 / -1;
 }
+
+.logoutButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+
+  background: none;
+  border: none;
+  color: var(--color-secondary);
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+.logoutButton:hover {
+  background-color: var(--color-background);
+  color: #d9534f;
+}
+.logoutButton svg {
+  font-size: 1.1rem;
+}
+
+.mobileLogoutButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  color: var(--color-secondary);
+  text-decoration: none;
+  font-size: 0.8rem;
+
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+.mobileLogoutButton:hover {
+  color: #d9534f;
+}

@@ -23,7 +23,7 @@
   ],
   "kv_namespaces": [
     {
-      "binding": "DRAFTS",
+      "binding": "ADMIN_KV",
       "id": "04921b2417b740aead29d2829e89e57e",
     },
   ],

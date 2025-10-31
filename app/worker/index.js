@@ -1,8 +1,9 @@
 import { Hono } from "hono";
 import imageApp from "./images/images.js";
-import usersApp from "./db/users/users.js";
-import bookingsApp from "./db/bookings/bookings.js";
-import paymentsApp from "./db/payments/payments.js";
+import usersApp from "./users/users.js";
+import bookingsApp from "./bookings/bookings.js";
+import paymentsApp from "./payments/payments.js";
+import authApp from "./auth/auth.js";
 import { PrismaClient } from "@prisma/client";
 import { PrismaD1 } from "@prisma/adapter-d1";
 import { seedDatabase } from "../prisma/seed.js";
@@ -28,6 +29,7 @@ app.get("/api/seed", async (c) => {
   }
 });
 
+app.route("/api/auth", authApp);
 app.route("/api/images", imageApp);
 app.route("/api/users", usersApp);
 app.route("/api/bookings", bookingsApp);

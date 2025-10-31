@@ -1,14 +1,32 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import styles from "../styles/Admin.module.css";
 import AdminLink from "../components/AdminLink";
-
-const adminUser = { name: "Teresa" };
+import {
+  FaHome,
+  FaPlane,
+  FaTicketAlt,
+  FaUsers,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { useAuth, authQueryOptions } from "../data/auth.js";
 
 export const Route = createFileRoute("/admin")({
+  beforeLoad: async ({ context }) => {
+    const { queryClient } = context;
+    try {
+      await queryClient.ensureQueryData(authQueryOptions);
+    } catch (error) {
+      throw redirect({
+        to: "/login",
+        search: { redirect: location.pathname },
+      });
+    }
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { logout } = useAuth();
   return (
     <main className={styles.adminLayout}>
       <aside className={styles.sidebar}>
@@ -16,16 +34,32 @@ function RouteComponent() {
           <h3>Viajeras por Siempre Admin</h3>
         </div>
         <nav className={styles.desktopNav}>
-          <AdminLink to="/admin">🏠 Inicio</AdminLink>
-          <AdminLink to="/admin/viajes">✈️ Viajes</AdminLink>
-          <AdminLink to="/admin/reservaciones">🎟️ Reservaciones</AdminLink>
-          <AdminLink to="/admin/usuarios">👥 Usuarios</AdminLink>
+          <AdminLink to="/admin">
+            <FaHome /> Inicio
+          </AdminLink>
+          <AdminLink to="/admin/viajes">
+            <FaPlane /> Viajes
+          </AdminLink>
+          <AdminLink to="/admin/reservaciones">
+            <FaTicketAlt /> Reservaciones
+          </AdminLink>
+          <AdminLink to="/admin/usuarios">
+            <FaUsers /> Usuarios
+          </AdminLink>
+          <button
+            className={styles.logoutButton}
+            onClick={() => logout.mutate()}
+            disabled={logout.isPending}
+          >
+            <FaSignOutAlt />
+            <span>{logout.isPending ? "Saliendo..." : "Cerrar Sesión"}</span>
+          </button>
         </nav>
       </aside>
 
       <div className={styles.mainContent}>
         <header className={styles.mainHeader}>
-          <h2>Bienvenida, {adminUser.name}</h2>
+          <h2>Bienvenida, Teresa</h2>
           <p>¿Qué te gustaría hacer hoy?</p>
         </header>
         <div className={styles.contentArea}>
@@ -34,10 +68,27 @@ function RouteComponent() {
       </div>
 
       <nav className={styles.mobileNav}>
-        <AdminLink to="/admin">🏠 Inicio</AdminLink>
-        <AdminLink to="/admin/viajes">✈️ Viajes</AdminLink>
-        <AdminLink to="/admin/reservaciones">🎟️ Reservaciones</AdminLink>
-        <AdminLink to="/admin/usuarios">👥 Usuarios</AdminLink>
+        <AdminLink to="/admin">
+          <FaHome /> Inicio
+        </AdminLink>
+        <AdminLink to="/admin/viajes">
+          <FaPlane /> Viajes
+        </AdminLink>
+        <AdminLink to="/admin/reservaciones">
+          <FaTicketAlt /> Reservaciones
+        </AdminLink>
+        <AdminLink to="/admin/usuarios">
+          <FaUsers /> Usuarios
+        </AdminLink>
+        <button
+          className={styles.mobileLogoutButton}
+          onClick={() => logout.mutate()}
+          disabled={logout.isPending}
+          aria-label="Cerrar Sesión"
+        >
+          <FaSignOutAlt />
+          <span style={{ fontSize: "0.8rem" }}>Salir</span>
+        </button>
       </nav>
     </main>
   );
