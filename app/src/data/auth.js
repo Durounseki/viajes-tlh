@@ -74,14 +74,49 @@ const useLogout = () => {
 const useChangePassword = () => {
   return useMutation({
     mutationFn: async ({ oldPassword, newPassword }) => {
-      const res = await fetch("/api/auth/change-password", {
-        method: "POST",
+      const res = await fetch("/api/auth/password", {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ oldPassword, newPassword }),
       });
       if (!res.ok) {
         const errData = await res.json();
         throw new Error(errData.error || "Failed to change password");
+      }
+      return await res.json();
+    },
+  });
+};
+
+const useResetPassword = () => {
+  return useMutation({
+    mutationFn: async ({ email }) => {
+      const res = await fetch("/api/auth/password-reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Error submitting request.");
+      }
+      return await res.json();
+    },
+  });
+};
+
+const useResetPasswordConfirm = () => {
+  return useMutation({
+    mutationFn: async ({ token, newPassword }) => {
+      const res = await fetch("/api/auth/password-reset-confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, newPassword }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || "Failed to reset password");
       }
       return await res.json();
     },
@@ -99,5 +134,7 @@ export const useAuth = () => {
     login: useLogin(),
     logout: useLogout(),
     changePassword: useChangePassword(),
+    resetPassword: useResetPassword(),
+    resetPasswordConfirm: useResetPasswordConfirm(),
   };
 };

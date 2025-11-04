@@ -7,6 +7,7 @@ import {
   FaTicketAlt,
   FaUsers,
   FaSignOutAlt,
+  FaCog,
 } from "react-icons/fa";
 import { useAuth, authQueryOptions } from "../data/auth.js";
 
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/admin")({
     try {
       await queryClient.ensureQueryData(authQueryOptions);
     } catch (error) {
+      console.error("Error authenticating user", error);
       throw redirect({
         to: "/login",
         search: { redirect: location.pathname },
@@ -27,6 +29,11 @@ export const Route = createFileRoute("/admin")({
 
 function RouteComponent() {
   const { logout } = useAuth();
+  const handleLogout = () => {
+    if (window.confirm("¿Estás segura de que deseas cerrar sesión?")) {
+      logout.mutate();
+    }
+  };
   return (
     <main className={styles.adminLayout}>
       <aside className={styles.sidebar}>
@@ -46,9 +53,12 @@ function RouteComponent() {
           <AdminLink to="/admin/usuarios">
             <FaUsers /> Usuarios
           </AdminLink>
+          <AdminLink to="/admin/ajustes">
+            <FaCog /> Ajustes
+          </AdminLink>
           <button
             className={styles.logoutButton}
-            onClick={() => logout.mutate()}
+            onClick={handleLogout}
             disabled={logout.isPending}
           >
             <FaSignOutAlt />
@@ -80,9 +90,13 @@ function RouteComponent() {
         <AdminLink to="/admin/usuarios">
           <FaUsers /> Usuarios
         </AdminLink>
+        <AdminLink to="/admin/ajustes">
+          <FaCog />
+          <span style={{ fontSize: "0.8rem" }}>Ajustes</span>
+        </AdminLink>
         <button
           className={styles.mobileLogoutButton}
-          onClick={() => logout.mutate()}
+          onClick={handleLogout}
           disabled={logout.isPending}
           aria-label="Cerrar Sesión"
         >

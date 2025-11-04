@@ -80,3 +80,31 @@
   border-color: #ccc;
   cursor: not-allowed;
 }
+
+.forgotPassword {
+  text-align: center;
+  font-size: 0.9em;
+  margin-bottom: 1rem;
+}
+
+.forgotPassword a {
+  color: var(--some-link-color, #007bff);
+  text-decoration: none;
+}
+
+.forgotPassword a:hover {
+  text-decoration: underline;
+}
+
+.resetPasswordMessage {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

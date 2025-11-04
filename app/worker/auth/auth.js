@@ -24,6 +24,42 @@ export const authMiddleware = async (c, next) => {
   }
 };
 
+const sendResetEmail = async (sender, receiver, resetLink, resendApiKey) => {
+  const emailHtml = `
+    <h1>Restablecer tu Contraseña</h1>
+    <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
+    <a href="${resetLink}">Restablecer Contraseña</a>
+    <p>Este enlace expirará en 1 hora.</p>
+    <p>Si no solicitaste esto, por favor ignora este correo.</p>
+  `;
+
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${resendApiKey}`,
+      },
+      body: JSON.stringify({
+        from: sender,
+        to: receiver,
+        subject: "Restablecer Contraseña",
+        html: emailHtml,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error({ message: "Error sending reset link:", errorData });
+    }
+    const data = await response.json();
+
+    console.log("Email sent successfully via Resend:", data);
+  } catch (error) {
+    console.error("Failed to send email:", error.errorData);
+  }
+};
+
 app.post("/login", async (c) => {
   try {
     const { username, password } = await c.req.json();
@@ -101,6 +137,66 @@ app.put("/password", authMiddleware, async (c) => {
   } catch (error) {
     console.error("Password change error:", error);
     return c.json({ error: "Failed to update password" }, 500);
+  }
+});
+
+app.post("/password-reset", async (c) => {
+  try {
+    const { email } = await c.req.json();
+    const userExists = await c.env.ADMIN_KV.get(email);
+
+    if (userExists) {
+      const token = crypto.randomUUID();
+      const tokenKey = `reset_${token}`;
+
+      await c.env.ADMIN_KV.put(tokenKey, email, { expirationTtl: 3600 });
+
+      const frontendUrl = c.env.FRONTEND_URL || "http://localhost:5173";
+      const resetLink = `${frontendUrl}/reset-password-confirm?token=${token}`;
+
+      await sendResetEmail(
+        c.env.SENDER_EMAIL,
+        email,
+        resetLink,
+        c.env.RESEND_API_KEY
+      );
+    }
+
+    return c.json({
+      message:
+        "Revisa tu correo y haz click en link para restaurar tu contraseña.",
+    });
+  } catch (error) {
+    console.error("Password reset request error:", error);
+    return c.json({ error: "Failed to process request" }, 500);
+  }
+});
+
+app.post("/password-reset-confirm", async (c) => {
+  try {
+    const { token, newPassword } = await c.req.json();
+
+    const tokenKey = `reset_${token}`;
+
+    const email = await c.env.ADMIN_KV.get(tokenKey);
+
+    if (!email) {
+      return c.json(
+        { error: "El link a expirado o el correo es invalido" },
+        401
+      );
+    }
+
+    const newHashedPassword = await hashPassword(newPassword);
+
+    await c.env.ADMIN_KV.put(email, newHashedPassword);
+
+    await c.env.ADMIN_KV.delete(tokenKey);
+
+    return c.json({ message: "Tu contraseña ha sido restablecida" });
+  } catch (error) {
+    console.error("Password reset confirmation error:", error);
+    return c.json({ error: "Failed to reset password" }, 500);
   }
 });
 

@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TerminosYCondicionesRouteImport } from './routes/terminos-y-condiciones'
+import { Route as ResetPasswordConfirmRouteImport } from './routes/reset-password-confirm'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PreguntasFrecuentesRouteImport } from './routes/preguntas-frecuentes'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
 import { Route as LoginRouteImport } from './routes/login'
@@ -26,6 +28,7 @@ import { Route as ViajesPasadosRouteImport } from './routes/viajes/pasados'
 import { Route as ViajesViajeIdRouteImport } from './routes/viajes/$viajeId'
 import { Route as AdminUsuariosRouteImport } from './routes/admin/usuarios'
 import { Route as AdminReservacionesRouteImport } from './routes/admin/reservaciones'
+import { Route as AdminAjustesRouteImport } from './routes/admin/ajustes'
 import { Route as AdminViajesIndexRouteImport } from './routes/admin/viajes/index'
 import { Route as AdminViajesNuevoRouteImport } from './routes/admin/viajes/nuevo'
 import { Route as AdminViajesViajeIdEditarRouteImport } from './routes/admin/viajes/$viajeId/editar'
@@ -33,6 +36,16 @@ import { Route as AdminViajesViajeIdEditarRouteImport } from './routes/admin/via
 const TerminosYCondicionesRoute = TerminosYCondicionesRouteImport.update({
   id: '/terminos-y-condiciones',
   path: '/terminos-y-condiciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordConfirmRoute = ResetPasswordConfirmRouteImport.update({
+  id: '/reset-password-confirm',
+  path: '/reset-password-confirm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PreguntasFrecuentesRoute = PreguntasFrecuentesRouteImport.update({
@@ -115,6 +128,11 @@ const AdminReservacionesRoute = AdminReservacionesRouteImport.update({
   path: '/reservaciones',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAjustesRoute = AdminAjustesRouteImport.update({
+  id: '/ajustes',
+  path: '/ajustes',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminViajesIndexRoute = AdminViajesIndexRouteImport.update({
   id: '/viajes/',
   path: '/viajes/',
@@ -142,7 +160,10 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/reset-password-confirm': typeof ResetPasswordConfirmRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/admin/ajustes': typeof AdminAjustesRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
@@ -163,7 +184,10 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/reset-password-confirm': typeof ResetPasswordConfirmRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/admin/ajustes': typeof AdminAjustesRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
@@ -186,7 +210,10 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/nosotros': typeof NosotrosRoute
   '/preguntas-frecuentes': typeof PreguntasFrecuentesRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/reset-password-confirm': typeof ResetPasswordConfirmRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
+  '/admin/ajustes': typeof AdminAjustesRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
@@ -210,7 +237,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/nosotros'
     | '/preguntas-frecuentes'
+    | '/reset-password'
+    | '/reset-password-confirm'
     | '/terminos-y-condiciones'
+    | '/admin/ajustes'
     | '/admin/reservaciones'
     | '/admin/usuarios'
     | '/viajes/$viajeId'
@@ -231,7 +261,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/nosotros'
     | '/preguntas-frecuentes'
+    | '/reset-password'
+    | '/reset-password-confirm'
     | '/terminos-y-condiciones'
+    | '/admin/ajustes'
     | '/admin/reservaciones'
     | '/admin/usuarios'
     | '/viajes/$viajeId'
@@ -253,7 +286,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/nosotros'
     | '/preguntas-frecuentes'
+    | '/reset-password'
+    | '/reset-password-confirm'
     | '/terminos-y-condiciones'
+    | '/admin/ajustes'
     | '/admin/reservaciones'
     | '/admin/usuarios'
     | '/viajes/$viajeId'
@@ -276,6 +312,8 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   NosotrosRoute: typeof NosotrosRoute
   PreguntasFrecuentesRoute: typeof PreguntasFrecuentesRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  ResetPasswordConfirmRoute: typeof ResetPasswordConfirmRoute
   TerminosYCondicionesRoute: typeof TerminosYCondicionesRoute
   ViajesViajeIdRoute: typeof ViajesViajeIdRoute
   ViajesPasadosRoute: typeof ViajesPasadosRoute
@@ -290,6 +328,20 @@ declare module '@tanstack/react-router' {
       path: '/terminos-y-condiciones'
       fullPath: '/terminos-y-condiciones'
       preLoaderRoute: typeof TerminosYCondicionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password-confirm': {
+      id: '/reset-password-confirm'
+      path: '/reset-password-confirm'
+      fullPath: '/reset-password-confirm'
+      preLoaderRoute: typeof ResetPasswordConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/preguntas-frecuentes': {
@@ -404,6 +456,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReservacionesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/ajustes': {
+      id: '/admin/ajustes'
+      path: '/ajustes'
+      fullPath: '/admin/ajustes'
+      preLoaderRoute: typeof AdminAjustesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/viajes/': {
       id: '/admin/viajes/'
       path: '/viajes'
@@ -429,6 +488,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminAjustesRoute: typeof AdminAjustesRoute
   AdminReservacionesRoute: typeof AdminReservacionesRoute
   AdminUsuariosRoute: typeof AdminUsuariosRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -438,6 +498,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAjustesRoute: AdminAjustesRoute,
   AdminReservacionesRoute: AdminReservacionesRoute,
   AdminUsuariosRoute: AdminUsuariosRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -458,6 +519,8 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   NosotrosRoute: NosotrosRoute,
   PreguntasFrecuentesRoute: PreguntasFrecuentesRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  ResetPasswordConfirmRoute: ResetPasswordConfirmRoute,
   TerminosYCondicionesRoute: TerminosYCondicionesRoute,
   ViajesViajeIdRoute: ViajesViajeIdRoute,
   ViajesPasadosRoute: ViajesPasadosRoute,

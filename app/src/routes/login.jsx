@@ -44,6 +44,7 @@ function RouteComponent() {
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            placeholder="usuario@correo.com"
             required
           />
         </div>
@@ -56,6 +57,10 @@ function RouteComponent() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+        </div>
+
+        <div className={styles.forgotPassword}>
+          <Link to="/reset-password">¿Olvidaste tu contraseña?</Link>
         </div>
 
         {login.isError && (
