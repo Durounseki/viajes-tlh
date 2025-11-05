@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import logo from "../assets/viajeras-x-siempre-light.png";
 import styles from "../styles/Header.module.css";
 import { HiMenu, HiX } from "react-icons/hi";
+import { useAuth } from "../data/auth";
 
 function Logo() {
   return (
@@ -15,6 +16,10 @@ function Logo() {
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isViajesDropdownOpen, setIsViajesDropdownOpen] = useState(false);
+
+  const { pathname } = useLocation();
+  const isViajesActive = pathname.startsWith("/viajes");
+  const { isAuthenticated } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -39,7 +44,9 @@ function Header() {
             onMouseLeave={() => setIsViajesDropdownOpen(false)}
           >
             <button
-              className={styles["dropdown-toggle"]}
+              className={`${styles["dropdown-toggle"]} ${
+                isViajesActive ? styles.activeLink : ""
+              }`}
               onClick={() => setIsViajesDropdownOpen(!isViajesDropdownOpen)}
               aria-haspopup="true"
               aria-expanded={isViajesDropdownOpen}
@@ -50,7 +57,11 @@ function Header() {
               className={`${styles["dropdown-menu"]} ${isViajesDropdownOpen ? styles["dropdown-open"] : ""}`}
             >
               <li>
-                <Link to="/viajes/" onClick={closeAllMenus}>
+                <Link
+                  to="/viajes/"
+                  onClick={closeAllMenus}
+                  activeOptions={{ exact: true }}
+                >
                   Todos
                 </Link>
               </li>
@@ -87,6 +98,13 @@ function Header() {
               Contacto
             </Link>
           </li>
+          {isAuthenticated && (
+            <li>
+              <Link to="/admin" onClick={closeAllMenus}>
+                Admin
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
 

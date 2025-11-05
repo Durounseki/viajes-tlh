@@ -62,6 +62,12 @@
   transform: scaleX(1);
 }
 
+.nav-links a[data-status="active"],
+.nav-links .dropdown-toggle.activeLink {
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
 .menu-toggle {
   display: none;
   background: none;

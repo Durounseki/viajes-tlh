@@ -94,7 +94,7 @@ app.delete("/:id", async (c) => {
   }
 });
 
-app.post("/viajes", async (c) => {
+app.post("/", async (c) => {
   try {
     const tripInfo = await c.req.json();
     const adapter = new PrismaD1(c.env.DB);

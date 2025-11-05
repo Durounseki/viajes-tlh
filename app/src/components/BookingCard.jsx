@@ -135,16 +135,25 @@ function BookingCard({
             </span>
           </div>
           <div className={styles.bookingActions}>
-            <a
-              href={`https://wa.me/521${user?.phone}`}
-              className={styles.whatsappIconButton}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Enviar WhatsApp"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaWhatsapp />
-            </a>
+            {user.phone && user.phone !== "" ? (
+              <a
+                href={`https://wa.me/521${user.phone}`}
+                className={styles.whatsappIconButton}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Enviar WhatsApp"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FaWhatsapp />
+              </a>
+            ) : (
+              <span
+                className={`${styles.whatsappIconButton} ${styles.disabled}`}
+                aria-label="No hay teléfono para WhatsApp"
+              >
+                <FaWhatsapp />
+              </span>
+            )}
             <button
               onClick={() => {
                 setIsExpanded(!isExpanded);

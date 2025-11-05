@@ -72,7 +72,6 @@ function RouteComponent() {
           className={styles.primaryButton}
           disabled={login.isPending}
         >
-          Iniciar Sesión
           {login.isPending ? "Iniciando..." : "Iniciar Sesión"}
         </button>
       </form>

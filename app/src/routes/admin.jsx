@@ -42,7 +42,7 @@ function RouteComponent() {
           <h3>Viajeras por Siempre Admin</h3>
         </div>
         <nav className={styles.desktopNav}>
-          <AdminLink to="/admin">
+          <AdminLink to="/admin" exact={true}>
             <FaHome /> Inicio
           </AdminLink>
           <AdminLink to="/admin/viajes">
@@ -82,7 +82,7 @@ function RouteComponent() {
       </div>
 
       <nav className={styles.mobileNav}>
-        <AdminLink to="/admin">
+        <AdminLink to="/admin" exact={true}>
           <FaHome /> Inicio
         </AdminLink>
         <AdminLink to="/admin/viajes">

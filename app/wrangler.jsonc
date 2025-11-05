@@ -25,6 +25,7 @@
     {
       "binding": "ADMIN_KV",
       "id": "04921b2417b740aead29d2829e89e57e",
+      "preview_id": "eac371ee39ab4ef4b0e456ec7e173591",
     },
   ],
   "r2_buckets": [
@@ -32,6 +33,7 @@
       "bucket_name": "viajeras-por-siempre-bucket",
       "binding": "BUCKET",
       "remote": true,
+      "preview_bucket_name": "viajeras-por-siempre-dev",
     },
   ],
   /**

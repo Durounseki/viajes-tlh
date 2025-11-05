@@ -7,7 +7,6 @@ import { useCreateBooking } from "../data/bookings";
 function UserCard({
   user,
   trips,
-  onToggleSubscription,
   updateUserMutation,
   deleteUserMutation,
   deleteBookingMutation,
@@ -20,8 +19,9 @@ function UserCard({
   const [formData, setFormData] = useState({
     name: user.name,
     email: user.email,
-    phone: user.phone,
+    phone: user.phone || "",
   });
+  console.log("user:", user);
 
   const [newBookingTripId, setNewBookingTripId] = useState("");
   const createBookingMutation = useCreateBooking();
@@ -43,6 +43,20 @@ function UserCard({
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleToggleSubscription = () => {
+    const updatedUserInfo = {
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      isSuscribed: !user.isSuscribed,
+    };
+
+    updateUserMutation.mutate({
+      userId: user.id,
+      userInfo: updatedUserInfo,
+    });
   };
 
   const handleEditSubmit = (e) => {
@@ -150,21 +164,31 @@ function UserCard({
                   id={`sub-${user.id}`}
                   type="checkbox"
                   checked={user.isSuscribed}
-                  onChange={() => onToggleSubscription(user.id)}
+                  onChange={handleToggleSubscription}
+                  disabled={updateUserMutation.isPending}
                 />
                 <span className={styles.slider}></span>
               </label>
             </div>
-            <a
-              href={`https://wa.me/521${user.phone}`}
-              className={styles.whatsappIconButton}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Enviar WhatsApp"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaWhatsapp />
-            </a>
+            {user.phone && user.phone !== "" ? (
+              <a
+                href={`https://wa.me/521${user.phone}`}
+                className={styles.whatsappIconButton}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Enviar WhatsApp"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FaWhatsapp />
+              </a>
+            ) : (
+              <span
+                className={`${styles.whatsappIconButton} ${styles.disabled}`}
+                aria-label="No hay teléfono para WhatsApp"
+              >
+                <FaWhatsapp />
+              </span>
+            )}
 
             <button
               onClick={() => {

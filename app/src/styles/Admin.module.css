@@ -322,6 +322,11 @@
   border-color: #1dae54;
 }
 
+.whatsappIconButton.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 .bookingDetails {
   margin-top: 1.5rem;
   padding-top: 1.5rem;

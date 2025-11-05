@@ -27,7 +27,7 @@ const faqData = [
   {
     question: "¿Qué métodos de pago aceptan?",
     answer:
-      "Aceptamos pagos mediante transferencia bancaria y depósito en tiendas de conveniencia. Para algunos viajes, podemos ofrecer enlaces de pago con tarjeta. Los detalles se proporcionan al momento de reservar.",
+      "Por el momento aceptamos pagos mediante transferencia bancaria y en efectivo. Estamos trabajando para habilitar otras formas de pago y hacer el proceso mas conveniente para ti.",
   },
   {
     question: "¿Qué pasa si necesito cancelar mi viaje?",

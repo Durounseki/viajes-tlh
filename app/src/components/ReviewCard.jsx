@@ -20,7 +20,7 @@ function ReviewCard({ review, onToggle, onDelete, isPending }) {
           onClick={() => onToggle(review)}
           disabled={isPending}
         >
-          {review.isPublished ? "Despublicar" : "Publicar"}
+          {review.isPublished ? "Remover" : "Publicar"}
         </button>
         <button
           className={styles.deleteButton}

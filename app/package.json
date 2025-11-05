@@ -7,7 +7,7 @@
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "npm run build && vite preview",
+    "preview": "npm run build && wrangler dev --config dist/viajerasporsiempre/wrangler.json",
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
