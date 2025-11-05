@@ -1,6 +1,8 @@
 .container {
+  width: 90%;
   max-width: 900px;
   padding: 5rem 1rem;
+  margin: 0 auto;
 }
 
 .carouselContainer {
@@ -179,6 +181,7 @@
 
 .otherTripsGrid a {
   text-decoration: none;
+  display: flex;
 }
 
 .smallTripCard {

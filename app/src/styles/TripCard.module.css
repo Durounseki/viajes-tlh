@@ -10,6 +10,7 @@
   color: var(--color-text);
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .tripCardImage {

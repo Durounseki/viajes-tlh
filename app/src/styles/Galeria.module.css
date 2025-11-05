@@ -1,9 +1,11 @@
 .container {
-  padding: 5rem 1rem 4rem 1rem;
+  width: 90%;
+  max-width: 900px;
+  padding: 5rem 1rem;
+  margin: 0 auto;
 }
 
 .content {
-  max-width: 650px;
   text-align: center;
   display: flex;
   flex-direction: column;
