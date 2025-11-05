@@ -1,0 +1,94 @@
+.reviewsAdmin h2 {
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+.reviewsAdmin p {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  max-width: 600px;
+}
+
+.reviewsList {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.reviewCard {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.reviewQuote {
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.reviewAuthor {
+  font-weight: bold;
+  color: var(--color-primary);
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.reviewStatus {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.published {
+  color: green;
+}
+
+.unpublished {
+  color: #888;
+}
+
+.reviewActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 1.5rem;
+}
+
+.deleteButton {
+  padding: 0.75em 1.5em;
+  background-color: #fce8e8;
+  border: 1px solid #d93025;
+  color: #d93025;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.deleteButton:hover {
+  background-color: #d93025;
+  color: #fff;
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reviewSection {
+  margin-top: 2.5rem;
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+}
+
+.reviewSection h3 {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+}

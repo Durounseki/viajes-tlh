@@ -322,6 +322,30 @@ const bookings = [
   },
 ];
 
+const initialReviews = [
+  {
+    id: "review_1",
+    quote:
+      "Fue mi primer viaje sola y me sentí segura y acompañada en todo momento. Teresa es una excelente anfitriona. ¡Ya quiero que sea el siguiente!",
+    author: "Laura G.",
+    isPublished: true,
+  },
+  {
+    id: "review_2",
+    quote:
+      "Increíble organización y los lugares que visitamos fueron mágicos. Hice nuevas amigas y me traje recuerdos para toda la vida.",
+    author: "Carmen R.",
+    isPublished: true,
+  },
+  {
+    id: "review_3",
+    quote:
+      "Recomiendo Viajeras por Siempre al 100%. Los viajes son cómodos, bien planeados y el ambiente del grupo es maravilloso.",
+    author: "Isabel M.",
+    isPublished: true,
+  },
+];
+
 export async function seedDatabase(prisma) {
   console.log("Start seeding ...");
 
@@ -334,6 +358,7 @@ export async function seedDatabase(prisma) {
   await prisma.installment.deleteMany();
   await prisma.paymentPlan.deleteMany();
   await prisma.includedItem.deleteMany();
+  await prisma.review.deleteMany();
 
   console.log("Seeding IncludedItem...");
   await prisma.includedItem.createMany({
@@ -415,6 +440,11 @@ export async function seedDatabase(prisma) {
       },
     });
   }
+
+  console.log("Seeding Review...");
+  await prisma.review.createMany({
+    data: initialReviews,
+  });
 
   console.log("Seeding finished.");
 }

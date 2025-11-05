@@ -1,11 +1,15 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroImage from "../assets/miranda-garside-Ux2le0HiXwE-unsplash.jpg";
 import { tripsQueryOptions, useTrips } from "../data/trips";
-import { testimonials } from "../data/viajes-data";
+import {
+  publishedReviewsQueryOptions,
+  usePublishedReviews,
+} from "../data/reviews";
 import styles from "../styles/Home.module.css";
 import TripCard from "../components/TripCard";
 import ProgressiveImage from "../components/ProgressiveImage";
+import ReviewModal from "../components/ReviewModal";
 
 import { formatTripDate } from "../utils/tripDate";
 import { formatPrice } from "../utils/tripPrice";
@@ -20,13 +24,18 @@ export const Route = createFileRoute("/")({
   component: RouteComponent,
   loader: async ({ context }) => {
     const queryClient = context.queryClient;
-    await queryClient.ensureQueryData(tripsQueryOptions);
+    await Promise.all([
+      queryClient.ensureQueryData(tripsQueryOptions),
+      queryClient.ensureQueryData(publishedReviewsQueryOptions),
+    ]);
     return {};
   },
 });
 
 function RouteComponent() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: trips = [] } = useTrips();
+  const { data: reviews = [] } = usePublishedReviews();
   const { upcomingTrips, pastTrips } = useMemo(() => {
     const now = new Date();
 
@@ -160,9 +169,11 @@ function RouteComponent() {
             {pastTrips.map((trip) => (
               <SwiperSlide key={trip.id} className={styles["past-trip-slide"]}>
                 <Link to={`/viajes/${trip.id}`}>
-                  <img
-                    src={`/api/images/${trip.images[0].src}`}
+                  <ProgressiveImage
+                    srcKey={trip.images[0].src}
                     alt={trip.destination}
+                    className={styles.pastTripImage}
+                    sizes="70vw"
                   />
                   <div className={styles["past-trip-overlay"]}>
                     <p>{trip.destination}</p>
@@ -179,27 +190,39 @@ function RouteComponent() {
 
       <section className={styles["testimonials-section"]}>
         <h2>Lo Que Dicen Nuestras Viajeras</h2>
-        <Swiper
-          modules={[Navigation, Pagination]}
-          navigation={true}
-          pagination={{ clickable: true }}
-          spaceBetween={50}
-          slidesPerView={1}
-          loop={true}
-          className={styles["testimonial-carousel"]}
+        {reviews.length > 0 ? (
+          <Swiper
+            modules={[Navigation, Pagination]}
+            navigation={true}
+            pagination={{ clickable: true }}
+            spaceBetween={50}
+            slidesPerView={1}
+            loop={true}
+            className={styles["testimonial-carousel"]}
+          >
+            {reviews.map((review) => (
+              <SwiperSlide key={review.id}>
+                <blockquote className={styles["testimonial-quote"]}>
+                  "{review.quote}"
+                </blockquote>
+                <p className={styles["testimonial-author"]}>
+                  - {review.author}
+                </p>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <p>Aún no hay reseñas. ¡Sé la primera!</p>
+        )}
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className={styles["secondary-button"]}
+          style={{ borderColor: "var(--color-primary)", marginTop: "2rem" }}
         >
-          {testimonials.map((testimonial) => (
-            <SwiperSlide key={testimonial.id}>
-              <blockquote className={styles["testimonial-quote"]}>
-                "{testimonial.cita}"
-              </blockquote>
-              <p className={styles["testimonial-author"]}>
-                - {testimonial.autora}
-              </p>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          Deja tu Reseña
+        </button>
       </section>
+      {isModalOpen && <ReviewModal onClose={() => setIsModalOpen(false)} />}
     </main>
   );
 }

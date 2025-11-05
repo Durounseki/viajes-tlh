@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const fetchTrips = async () => {
-  const response = await fetch(`/api/viajes`, {
+  const response = await fetch(`/api/trips`, {
     method: "GET",
   });
   if (!response.ok) {
@@ -19,7 +19,7 @@ export const useTrips = () => {
 };
 
 const fetchTrip = async (tripId) => {
-  const response = await fetch(`/api/viajes/${tripId}`, {
+  const response = await fetch(`/api/trips/${tripId}`, {
     method: "GET",
   });
   if (!response.ok) {
@@ -40,7 +40,7 @@ export const useCreateTrip = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (tripData) => {
-      const response = await fetch(`/api/viajes`, {
+      const response = await fetch(`/api/trips`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tripData),
@@ -63,7 +63,7 @@ export const useUpdateTrip = () => {
   return useMutation({
     mutationFn: async (variables) => {
       const { tripData, tripId } = variables;
-      const response = await fetch(`/api/viajes/${tripId}`, {
+      const response = await fetch(`/api/trips/${tripId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tripData),
@@ -86,7 +86,7 @@ export const useDeleteTrip = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (tripId) => {
-      const response = await fetch(`/api/viajes/${tripId}`, {
+      const response = await fetch(`/api/trips/${tripId}`, {
         method: "DELETE",
       });
       if (!response.ok) {

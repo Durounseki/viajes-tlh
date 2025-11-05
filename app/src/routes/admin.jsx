@@ -8,6 +8,7 @@ import {
   FaUsers,
   FaSignOutAlt,
   FaCog,
+  FaStar,
 } from "react-icons/fa";
 import { useAuth, authQueryOptions } from "../data/auth.js";
 
@@ -53,6 +54,9 @@ function RouteComponent() {
           <AdminLink to="/admin/usuarios">
             <FaUsers /> Usuarios
           </AdminLink>
+          <AdminLink to="/admin/reseñas">
+            <FaStar /> Reseñas
+          </AdminLink>
           <AdminLink to="/admin/ajustes">
             <FaCog /> Ajustes
           </AdminLink>
@@ -89,6 +93,10 @@ function RouteComponent() {
         </AdminLink>
         <AdminLink to="/admin/usuarios">
           <FaUsers /> Usuarios
+        </AdminLink>
+        <AdminLink to="/admin/reseñas">
+          <FaStar />
+          <span style={{ fontSize: "0.8rem" }}>Reseñas</span>
         </AdminLink>
         <AdminLink to="/admin/ajustes">
           <FaCog />

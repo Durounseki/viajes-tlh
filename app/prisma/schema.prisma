@@ -94,3 +94,11 @@ model Payment {
   bookingTripId String
   booking       Booking  @relation(fields: [bookingUserId, bookingTripId], references: [userId, tripId], onDelete: Cascade)
 }
+
+model Review {
+  id          String   @id @default(cuid())
+  author      String
+  quote       String
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
