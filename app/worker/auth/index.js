@@ -52,9 +52,6 @@ const sendResetEmail = async (sender, receiver, resetLink, resendApiKey) => {
       const errorData = await response.json();
       throw new Error({ message: "Error sending reset link:", errorData });
     }
-    const data = await response.json();
-
-    console.log("Email sent successfully via Resend:", data);
   } catch (error) {
     console.error("Failed to send email:", error.errorData);
   }

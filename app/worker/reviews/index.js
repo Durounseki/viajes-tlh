@@ -8,7 +8,6 @@ app.get("/published", async (c) => {
   try {
     const adapter = new PrismaD1(c.env.DB);
     const prisma = new PrismaClient({ adapter });
-    console.log("Prisma:", prisma);
     const reviews = await prisma.review.findMany({
       where: { isPublished: true },
       orderBy: { createdAt: "desc" },

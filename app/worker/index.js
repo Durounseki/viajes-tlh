@@ -8,30 +8,8 @@ import tripsApp from "./trips/index.js";
 import reviewsApp from "./reviews/index.js";
 import paymentPlansApp from "./payment-plans/index.js";
 import includedItemsApp from "./included-items/index.js";
-import { PrismaClient } from "@prisma/client";
-import { PrismaD1 } from "@prisma/adapter-d1";
-import { seedDatabase } from "../prisma/seed.js";
 
 const app = new Hono();
-
-app.get("/api/seed", async (c) => {
-  try {
-    const adapter = new PrismaD1(c.env.DB);
-    const prisma = new PrismaClient({ adapter });
-
-    console.log("Starting seed from API...");
-    await seedDatabase(prisma);
-    console.log("Seed from API finished.");
-
-    return c.json({ message: "Database seeded successfully!" });
-  } catch (error) {
-    console.error("Error seeding database:", error);
-    return c.json(
-      { error: "Failed to seed database", message: error.message },
-      500
-    );
-  }
-});
 
 app.route("/api/auth", authApp);
 app.route("/api/images", imageApp);

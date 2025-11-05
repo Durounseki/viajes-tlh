@@ -597,13 +597,6 @@ input:checked + .slider:before {
   transform: translateX(22px);
 }
 
-/* @media (min-width: 768px) {
-  .userListItem {
-    flex-direction: row;
-    align-items: center;
-  }
-} */
-
 .userHeader {
   display: flex;
   flex-direction: column;
