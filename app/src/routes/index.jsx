@@ -5,6 +5,7 @@ import { tripsQueryOptions, useTrips } from "../data/trips";
 import { testimonials } from "../data/viajes-data";
 import styles from "../styles/Home.module.css";
 import TripCard from "../components/TripCard";
+import ProgressiveImage from "../components/ProgressiveImage";
 
 import { formatTripDate } from "../utils/tripDate";
 import { formatPrice } from "../utils/tripPrice";
@@ -40,12 +41,8 @@ function RouteComponent() {
     return { upcomingTrips: upcoming, pastTrips: past };
   }, [trips]);
 
-  const featuredTrip =
-    upcomingTrips.length > 0 ? upcomingTrips[0] : pastTrips[0];
+  const featuredTrip = upcomingTrips.length > 0 ? upcomingTrips[0] : null;
 
-  console.log("featuredTrip:", featuredTrip.images[0].src);
-  const featuredTripThumbnail = featuredTrip.images[0].src;
-  console.log("featuredTripThumbnail:", featuredTripThumbnail);
   const nextTrips = upcomingTrips.slice(1);
 
   return (
@@ -99,24 +96,39 @@ function RouteComponent() {
       <section className={styles["upcoming-trip-section"]}>
         <h2>Nuestro Próximo Destino</h2>
         <div className={styles["trip-card"]}>
-          <img
-            src={`/api/images/${featuredTripThumbnail}`}
-            alt={`Viaje a ${featuredTrip.destination}`}
-          />
-          <div className={styles["trip-card-content"]}>
-            <h3>{featuredTrip.destination}</h3>
-            <p className={styles["trip-details"]}>
-              📅 {formatTripDate(featuredTrip.startDate, featuredTrip.endDate)}{" "}
-              <br />
-              {formatPrice(featuredTrip.price)} por persona
-            </p>
-            <Link
-              to={`/viajes/${featuredTrip.id}`}
-              className={styles["cta-button"]}
-            >
-              Ver Detalles del Viaje
-            </Link>
-          </div>
+          {featuredTrip ? (
+            <>
+              <ProgressiveImage
+                srcKey={featuredTrip.images[0].src}
+                alt={`Viaje a ${featuredTrip.destination}`}
+                className={styles.tripCardImage}
+                sizes="(min-width: 900px) 300px,100vw"
+              />
+              <div className={styles["trip-card-content"]}>
+                <h3>{featuredTrip.destination}</h3>
+                <p className={styles["trip-details"]}>
+                  📅{" "}
+                  {formatTripDate(featuredTrip.startDate, featuredTrip.endDate)}{" "}
+                  <br />
+                  {formatPrice(featuredTrip.price)} por persona
+                </p>
+                <Link
+                  to={`/viajes/${featuredTrip.id}`}
+                  className={styles["cta-button"]}
+                >
+                  Ver Detalles del Viaje
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div className={styles["trip-card-content"]}>
+              <h3>Próximamente</h3>
+              <p>
+                No hay viajes planeados por el momento. ¡Vuelve pronto para ver
+                nuevas aventuras!
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -133,35 +145,37 @@ function RouteComponent() {
         </section>
       )}
 
-      <section className={styles["past-trips-section"]}>
-        <h2>Aventuras Pasadas</h2>
-        <Swiper
-          modules={[Pagination]}
-          pagination={{ clickable: true }}
-          spaceBetween={30}
-          slidesPerView={"auto"}
-          centeredSlides={true}
-          loop={true}
-          className={styles["trip-carousel"]}
-        >
-          {pastTrips.map((trip) => (
-            <SwiperSlide key={trip.id} className={styles["past-trip-slide"]}>
-              <Link to={`/viajes/${trip.id}`}>
-                <img
-                  src={`/api/images/${trip.images[0].src}`}
-                  alt={trip.destination}
-                />
-                <div className={styles["past-trip-overlay"]}>
-                  <p>{trip.destination}</p>
-                </div>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <Link to="/galeria" className={styles["secondary-button"]}>
-          Ver Galería Completa
-        </Link>
-      </section>
+      {pastTrips.length > 0 ? (
+        <section className={styles["past-trips-section"]}>
+          <h2>Aventuras Pasadas</h2>
+          <Swiper
+            modules={[Pagination]}
+            pagination={{ clickable: true }}
+            spaceBetween={30}
+            slidesPerView={"auto"}
+            centeredSlides={true}
+            loop={true}
+            className={styles["trip-carousel"]}
+          >
+            {pastTrips.map((trip) => (
+              <SwiperSlide key={trip.id} className={styles["past-trip-slide"]}>
+                <Link to={`/viajes/${trip.id}`}>
+                  <img
+                    src={`/api/images/${trip.images[0].src}`}
+                    alt={trip.destination}
+                  />
+                  <div className={styles["past-trip-overlay"]}>
+                    <p>{trip.destination}</p>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <Link to="/galeria" className={styles["secondary-button"]}>
+            Ver Galería Completa
+          </Link>
+        </section>
+      ) : null}
 
       <section className={styles["testimonials-section"]}>
         <h2>Lo Que Dicen Nuestras Viajeras</h2>

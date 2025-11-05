@@ -12,10 +12,9 @@
   flex-direction: column;
 }
 
-.trip-card img {
+.tripCardImage {
   width: 100%;
   height: 200px;
-  object-fit: cover;
 }
 
 .card-content {
@@ -47,9 +46,10 @@
   font-weight: bold;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   user-select: none;
+  z-index: 3;
 }
 
-.past-trip-card img {
+.past-trip-card .tripCardImage {
   filter: saturate(0.2) opacity(0.8);
 }
 
