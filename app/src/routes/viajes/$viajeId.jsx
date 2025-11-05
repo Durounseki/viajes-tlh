@@ -159,7 +159,7 @@ function RouteComponent() {
                   <>
                     <p>{item.content}</p>
                     <a
-                      href="https://wa.me/5215500000000"
+                      href="https://wa.me/5215579008125"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.ctaButton}

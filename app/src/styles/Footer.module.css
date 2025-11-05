@@ -67,6 +67,10 @@
   margin-bottom: 1rem;
 }
 
+.footer-contact ul {
+  grid-template-columns: max-content 1fr;
+}
+
 .footer-links a,
 .legal-links a {
   color: var(--color-background);

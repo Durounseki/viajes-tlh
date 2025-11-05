@@ -99,13 +99,13 @@ function RouteComponent() {
           <ul>
             <li>
               <a
-                href="https://wa.me/5215500000000"
+                href="https://wa.me/5215579008125"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <FaWhatsapp />{" "}
                 <span>
-                  <strong>WhatsApp:</strong> 55 1234 5678
+                  <strong>WhatsApp:</strong> 55 7900 8125
                 </span>
               </a>
             </li>

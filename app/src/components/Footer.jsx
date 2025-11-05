@@ -35,7 +35,7 @@ export function Footer() {
               <FaInstagram />
             </a>
             <a
-              href="https://wa.me/5215500000000"
+              href="https://wa.me/5215579008125"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -76,7 +76,7 @@ export function Footer() {
           </p>
           <ul>
             <li>
-              <FaWhatsapp /> <span>55 1234 5678</span>
+              <FaWhatsapp /> <span>55 7900 8125</span>
             </li>
             <li>
               ✉️ <span>contacto@viajerasporsiempre.com</span>
