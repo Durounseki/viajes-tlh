@@ -79,7 +79,10 @@ export function Footer() {
               <FaWhatsapp /> <span>55 7900 8125</span>
             </li>
             <li>
-              ✉️ <span>contacto@viajerasporsiempre.com</span>
+              ✉️{" "}
+              <span className={styles.emailText}>
+                contacto@viajerasporsiempre.com
+              </span>
             </li>
           </ul>
         </div>

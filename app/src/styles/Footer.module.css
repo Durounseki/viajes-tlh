@@ -71,6 +71,10 @@
   grid-template-columns: max-content 1fr;
 }
 
+.emailText {
+  word-break: break-all;
+}
+
 .footer-links a,
 .legal-links a {
   color: var(--color-background);
