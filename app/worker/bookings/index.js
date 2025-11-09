@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client";
 import { PrismaD1 } from "@prisma/adapter-d1";
+import { authMiddleware } from "../auth/index";
 
 const app = new Hono();
 
@@ -27,7 +28,7 @@ app.get("/", async (c) => {
   }
 });
 
-app.post("/", async (c) => {
+app.post("/", authMiddleware, async (c) => {
   try {
     const { userId, tripId, notes } = await c.req.json();
     if (!userId || !tripId) {
@@ -81,7 +82,7 @@ app.get("/:userId/:tripId", async (c) => {
   }
 });
 
-app.delete("/:userId/:tripId", async (c) => {
+app.delete("/:userId/:tripId", authMiddleware, async (c) => {
   try {
     const { userId, tripId } = c.req.param();
     const adapter = new PrismaD1(c.env.DB);

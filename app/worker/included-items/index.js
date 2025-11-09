@@ -1,10 +1,11 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client";
 import { PrismaD1 } from "@prisma/adapter-d1";
+import { authMiddleware } from "../auth/index";
 
 const app = new Hono();
 
-app.get("/", async (c) => {
+app.get("/", authMiddleware, async (c) => {
   try {
     const adapter = new PrismaD1(c.env.DB);
     const prisma = new PrismaClient({ adapter });
@@ -16,7 +17,7 @@ app.get("/", async (c) => {
   }
 });
 
-app.post("/", async (c) => {
+app.post("/", authMiddleware, async (c) => {
   try {
     const itemData = await c.req.json();
     const adapter = new PrismaD1(c.env.DB);
