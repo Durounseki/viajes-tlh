@@ -9,7 +9,7 @@ import {
 import styles from "../../styles/AdminReviews.module.css";
 import ReviewCard from "../../components/ReviewCard.jsx";
 
-export const Route = createFileRoute("/admin/reseñas")({
+export const Route = createFileRoute("/admin/reseñas")({
   loader: ({ context }) =>
     context.queryClient.ensureQueryData(allReviewsQueryOptions),
   component: RouteComponent,

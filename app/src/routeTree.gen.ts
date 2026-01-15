@@ -27,8 +27,8 @@ import { Route as ViajesProximosRouteImport } from './routes/viajes/proximos'
 import { Route as ViajesPasadosRouteImport } from './routes/viajes/pasados'
 import { Route as ViajesViajeIdRouteImport } from './routes/viajes/$viajeId'
 import { Route as AdminUsuariosRouteImport } from './routes/admin/usuarios'
-import { Route as AdminReseChar241asRouteImport } from './routes/admin/reseñas'
 import { Route as AdminReservacionesRouteImport } from './routes/admin/reservaciones'
+import { Route as AdminResenChar771asRouteImport } from './routes/admin/reseñas'
 import { Route as AdminAjustesRouteImport } from './routes/admin/ajustes'
 import { Route as AdminViajesIndexRouteImport } from './routes/admin/viajes/index'
 import { Route as AdminViajesNuevoRouteImport } from './routes/admin/viajes/nuevo'
@@ -124,14 +124,14 @@ const AdminUsuariosRoute = AdminUsuariosRouteImport.update({
   path: '/usuarios',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminReseChar241asRoute = AdminReseChar241asRouteImport.update({
-  id: '/reseñas',
-  path: '/reseñas',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminReservacionesRoute = AdminReservacionesRouteImport.update({
   id: '/reservaciones',
   path: '/reservaciones',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminResenChar771asRoute = AdminResenChar771asRouteImport.update({
+  id: '/reseñas',
+  path: '/reseñas',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAjustesRoute = AdminAjustesRouteImport.update({
@@ -170,8 +170,8 @@ export interface FileRoutesByFullPath {
   '/reset-password-confirm': typeof ResetPasswordConfirmRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/admin/ajustes': typeof AdminAjustesRoute
+  '/admin/reseñas': typeof AdminResenChar771asRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
-  '/admin/reseñas': typeof AdminReseChar241asRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
@@ -195,8 +195,8 @@ export interface FileRoutesByTo {
   '/reset-password-confirm': typeof ResetPasswordConfirmRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/admin/ajustes': typeof AdminAjustesRoute
+  '/admin/reseñas': typeof AdminResenChar771asRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
-  '/admin/reseñas': typeof AdminReseChar241asRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
@@ -222,8 +222,8 @@ export interface FileRoutesById {
   '/reset-password-confirm': typeof ResetPasswordConfirmRoute
   '/terminos-y-condiciones': typeof TerminosYCondicionesRoute
   '/admin/ajustes': typeof AdminAjustesRoute
+  '/admin/reseñas': typeof AdminResenChar771asRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
-  '/admin/reseñas': typeof AdminReseChar241asRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/viajes/$viajeId': typeof ViajesViajeIdRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
@@ -250,8 +250,8 @@ export interface FileRouteTypes {
     | '/reset-password-confirm'
     | '/terminos-y-condiciones'
     | '/admin/ajustes'
+    | '/admin/reseñas'
     | '/admin/reservaciones'
-    | '/admin/reseñas'
     | '/admin/usuarios'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
@@ -275,8 +275,8 @@ export interface FileRouteTypes {
     | '/reset-password-confirm'
     | '/terminos-y-condiciones'
     | '/admin/ajustes'
+    | '/admin/reseñas'
     | '/admin/reservaciones'
-    | '/admin/reseñas'
     | '/admin/usuarios'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
@@ -301,8 +301,8 @@ export interface FileRouteTypes {
     | '/reset-password-confirm'
     | '/terminos-y-condiciones'
     | '/admin/ajustes'
+    | '/admin/reseñas'
     | '/admin/reservaciones'
-    | '/admin/reseñas'
     | '/admin/usuarios'
     | '/viajes/$viajeId'
     | '/viajes/pasados'
@@ -461,18 +461,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsuariosRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/reseñas': {
-      id: '/admin/reseñas'
-      path: '/reseñas'
-      fullPath: '/admin/reseñas'
-      preLoaderRoute: typeof AdminReseChar241asRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/reservaciones': {
       id: '/admin/reservaciones'
       path: '/reservaciones'
       fullPath: '/admin/reservaciones'
       preLoaderRoute: typeof AdminReservacionesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reseñas': {
+      id: '/admin/reseñas'
+      path: '/reseñas'
+      fullPath: '/admin/reseñas'
+      preLoaderRoute: typeof AdminResenChar771asRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/ajustes': {
@@ -508,8 +508,8 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAjustesRoute: typeof AdminAjustesRoute
+  AdminResenChar771asRoute: typeof AdminResenChar771asRoute
   AdminReservacionesRoute: typeof AdminReservacionesRoute
-  AdminReseChar241asRoute: typeof AdminReseChar241asRoute
   AdminUsuariosRoute: typeof AdminUsuariosRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminViajesNuevoRoute: typeof AdminViajesNuevoRoute
@@ -519,8 +519,8 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAjustesRoute: AdminAjustesRoute,
+  AdminResenChar771asRoute: AdminResenChar771asRoute,
   AdminReservacionesRoute: AdminReservacionesRoute,
-  AdminReseChar241asRoute: AdminReseChar241asRoute,
   AdminUsuariosRoute: AdminUsuariosRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminViajesNuevoRoute: AdminViajesNuevoRoute,

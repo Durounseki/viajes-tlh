@@ -5,7 +5,7 @@ import { authMiddleware } from "../auth/index";
 
 const app = new Hono();
 
-app.get("/", authMiddleware, async (c) => {
+app.get("/", async (c) => {
   try {
     const adapter = new PrismaD1(c.env.DB);
     const prisma = new PrismaClient({ adapter });
