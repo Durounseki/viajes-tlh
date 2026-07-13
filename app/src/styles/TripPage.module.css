@@ -26,6 +26,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .concludedOverlay {
@@ -110,7 +111,7 @@
 }
 
 .accordionContent.open {
-  max-height: 500px;
+  max-height: max-content;
 }
 
 .accordionInner {
@@ -229,4 +230,76 @@
 
 .preserve-lines {
   white-space: pre-line;
+}
+
+.lightbox {
+  border: none;
+  background: transparent;
+  padding: 0;
+  outline: none;
+  overflow: visible;
+  width: 90vw;
+  height: 85vh;
+  max-width: 1000px;
+  max-height: 800px;
+}
+
+.lightbox::backdrop {
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.lightboxContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightboxCarousel {
+  width: 100%;
+  height: 100%;
+  --swiper-navigation-color: #fff;
+  --swiper-pagination-color: #fff;
+  --swiper-navigation-size: 35px;
+}
+
+.lightboxSlide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  cursor: zoom-out;
+}
+
+.lightboxImage {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.closeButton {
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 3rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  z-index: 101;
+}
+
+.closeButton:hover {
+  opacity: 1;
 }

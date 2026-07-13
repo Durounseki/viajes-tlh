@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import {
   tripsQueryOptions,
@@ -53,6 +53,29 @@ function RouteComponent() {
   const { data: allItems = [] } = useIncludedItems();
 
   const [openItem, setOpenItem] = useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (selectedImageIndex !== null) {
+      if (!dialog.open) {
+        dialog.showModal();
+      }
+    } else {
+      if (dialog.open) {
+        dialog.close();
+      }
+    }
+  }, [selectedImageIndex]);
+
+  const handleDialogClick = (e) => {
+    if (e.target === dialogRef.current) {
+      setSelectedImageIndex(null);
+    }
+  };
 
   const isPastTrip = new Date(trip.endDate) < new Date();
 
@@ -120,6 +143,7 @@ function RouteComponent() {
               <img
                 src={`/api/images/${image.src}`}
                 alt={image.alt || `${trip.destination} - imagen ${index + 1}`}
+                onClick={() => setSelectedImageIndex(index)}
               />
             </SwiperSlide>
           ))}
@@ -188,6 +212,47 @@ function RouteComponent() {
           </div>
         </section>
       )}
+      <dialog
+        ref={dialogRef}
+        onClose={() => setSelectedImageIndex(null)}
+        onClick={handleDialogClick}
+        className={styles.lightbox}
+      >
+        {selectedImageIndex !== null && (
+          <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+            <button
+              className={styles.closeButton}
+              onClick={() => setSelectedImageIndex(null)}
+              aria-label="Cerrar vista de imagen"
+            >
+              &times;
+            </button>
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              initialSlide={selectedImageIndex}
+              loop={true}
+              className={styles.lightboxCarousel}
+            >
+              {trip.images.map((image, index) => (
+                <SwiperSlide
+                  key={image.id}
+                  className={styles.lightboxSlide}
+                  onClick={() => setSelectedImageIndex(null)}
+                >
+                  <img
+                    src={`/api/images/${image.src}`}
+                    alt={image.alt || `${trip.destination} - imagen ${index + 1}`}
+                    className={styles.lightboxImage}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        )}
+      </dialog>
     </main>
   );
 }
