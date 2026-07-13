@@ -69,9 +69,8 @@ app.get("/viajes/:slug", async (c) => {
   if (slug.includes(".")) {
     if (c.env.ASSETS) {
       return c.env.ASSETS.fetch(c.req.raw);
-    } else {
-      return fetch(c.req.raw);
     }
+    return c.notFound();
   }
 
   const adapter = new PrismaD1(c.env.DB);
