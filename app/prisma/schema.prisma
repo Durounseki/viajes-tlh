@@ -9,6 +9,7 @@ datasource db {
 
 model Trip {
   id              String         @id @default(cuid())
+  slug            String?        @unique
   destination     String
   status          String         @default("DRAFT")
   startDate       DateTime?

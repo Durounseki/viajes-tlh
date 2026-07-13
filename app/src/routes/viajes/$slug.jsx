@@ -25,36 +25,86 @@ import TripPendingComponent from "../../components/TripPendingComponent";
 
 import PaymentPlan from "../../components/PaymentPlan";
 
-export const Route = createFileRoute("/viajes/$viajeId")({
+export const Route = createFileRoute("/viajes/$slug")({
   loader: async ({ context, params }) => {
     const queryClient = context.queryClient;
     await Promise.all([
       queryClient.ensureQueryData(tripsQueryOptions),
-      queryClient.ensureQueryData(tripQueryOptions(params.viajeId)),
+      queryClient.ensureQueryData(tripQueryOptions(params.slug)),
       queryClient.ensureQueryData(includedItemsQueryOptions),
     ]);
 
     const trip = queryClient.getQueryData(
-      tripQueryOptions(params.viajeId).queryKey
+      tripQueryOptions(params.slug).queryKey
     );
     if (!trip) {
       throw notFound();
     }
-    return {};
+    return { trip };
+  },
+  meta: ({ loaderData }) => {
+    const trip = loaderData?.trip;
+    if (!trip) {
+      return [{ title: "Viaje no encontrado | Viajeras por Siempre" }];
+    }
+    const canonicalUrl = `https://viajerasporsiempre.com/viajes/${trip.slug || trip.id}`;
+    return [
+      { title: `${trip.destination} | Viajeras por Siempre` },
+      { name: "description", content: trip.description || "" },
+      { property: "og:title", content: `${trip.destination} | Viajeras por Siempre` },
+      { property: "og:description", content: trip.description || "" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
+      {
+        property: "og:image",
+        content: trip.images?.[0]?.src
+          ? `https://viajerasporsiempre.com/api/images/${trip.images[0].src}`
+          : "https://viajerasporsiempre.com/social-share.png",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: `${trip.destination} | Viajeras por Siempre` },
+      { name: "twitter:description", content: trip.description || "" }
+    ];
   },
   pendingComponent: TripPendingComponent,
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { viajeId } = Route.useParams();
-  const { data: trip } = useTrip(viajeId);
+  const { slug } = Route.useParams();
+  const { data: trip } = useTrip(slug);
   const { data: trips = [] } = useTrips();
   const { data: allItems = [] } = useIncludedItems();
 
-  const [openItem, setOpenItem] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const dialogRef = useRef(null);
+
+  const jsonLd = useMemo(() => {
+    if (!trip) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "TouristTrip",
+      "name": trip.destination,
+      "description": trip.description || "",
+      "touristType": "Group Travel / Open to Everyone",
+      "offers": {
+        "@type": "Offer",
+        "price": trip.price || "",
+        "priceCurrency": trip.currency || "MXN",
+        "availability": "https://schema.org/InStock"
+      }
+    };
+  }, [trip]);
+
+  useEffect(() => {
+    if (trip) {
+      document.title = `${trip.destination} | Viajeras por Siempre`;
+      const descEl = document.querySelector('meta[name="description"]');
+      if (descEl) {
+        descEl.setAttribute("content", trip.description || "");
+      }
+    }
+  }, [trip]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -124,12 +174,26 @@ function RouteComponent() {
     });
   }
 
-  const handleToggle = (index) => {
-    setOpenItem(openItem === index ? null : index);
+  const handleToggle = (event) => {
+    if (event.currentTarget.open) {
+      const detailsElement = event.currentTarget;
+      setTimeout(() => {
+        detailsElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 50);
+    }
   };
 
   return (
     <main className={styles.container}>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
       <div className={styles.carouselContainer}>
         <Swiper
           modules={[Navigation, Pagination]}
@@ -165,19 +229,17 @@ function RouteComponent() {
 
       <section className={styles.accordion}>
         {accordionData.map((item, index) => (
-          <div key={index} className={styles.accordionItem}>
-            <button
-              onClick={() => handleToggle(index)}
-              className={styles.accordionTitle}
-            >
+          <details
+            key={index}
+            name="trip-accordion"
+            className={styles.accordionItem}
+            onToggle={handleToggle}
+          >
+            <summary className={styles.accordionTitle}>
               <span>{item.title}</span>
-              <HiChevronDown
-                className={`${styles.chevron} ${openItem === index ? styles.open : ""}`}
-              />
-            </button>
-            <div
-              className={`${styles.accordionContent} ${openItem === index ? styles.open : ""}`}
-            >
+              <HiChevronDown className={styles.chevron} />
+            </summary>
+            <div className={styles.accordionContent}>
               <div className={styles.accordionInner}>
                 {item.title === "Reservar Ahora" ? (
                   <>
@@ -196,7 +258,7 @@ function RouteComponent() {
                 )}
               </div>
             </div>
-          </div>
+          </details>
         ))}
       </section>
 
@@ -205,7 +267,7 @@ function RouteComponent() {
           <h2>Descubre Otros Destinos</h2>
           <div className={styles.otherTripsGrid}>
             {otherTrips.slice(0, 3).map((otherTrip) => (
-              <Link to={`/viajes/${otherTrip.id}`} key={otherTrip.id}>
+              <Link to={`/viajes/${otherTrip.slug || otherTrip.id}`} key={otherTrip.id}>
                 <TripCard trip={otherTrip} />
               </Link>
             ))}

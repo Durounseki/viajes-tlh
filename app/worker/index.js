@@ -8,6 +8,7 @@ import tripsApp from "./trips/index.js";
 import reviewsApp from "./reviews/index.js";
 import paymentPlansApp from "./payment-plans/index.js";
 import includedItemsApp from "./included-items/index.js";
+import seoApp from "./seo/index.js";
 
 const app = new Hono();
 
@@ -20,5 +21,6 @@ app.route("/api/reviews", reviewsApp);
 app.route("/api/trips", tripsApp);
 app.route("/api/payment-plans", paymentPlansApp);
 app.route("/api/included-items", includedItemsApp);
+app.route("/", seoApp);
 
 export default app;

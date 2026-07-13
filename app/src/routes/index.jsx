@@ -22,6 +22,14 @@ import "swiper/css/pagination";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
+  meta: () => {
+    return [
+      { title: "Viajeras por Siempre | Viajes en Grupo para Mujeres en México" },
+      { name: "description", content: "Descubre viajes en grupo para mujeres con Viajeras por Siempre. Experiencias inolvidables, seguras y en un ambiente de compañerismo." },
+      { property: "og:title", content: "Viajeras por Siempre | Viajes en Grupo para Mujeres" },
+      { property: "og:description", content: "Descubre viajes en grupo para mujeres con Viajeras por Siempre. Experiencias inolvidables, seguras y en un ambiente de compañerismo." }
+    ];
+  },
   loader: async ({ context }) => {
     const queryClient = context.queryClient;
     await Promise.all([
@@ -122,7 +130,7 @@ function RouteComponent() {
                   {formatPrice(featuredTrip.price)} por persona
                 </p>
                 <Link
-                  to={`/viajes/${featuredTrip.id}`}
+                  to={`/viajes/${featuredTrip.slug || featuredTrip.id}`}
                   className={styles["cta-button"]}
                 >
                   Ver Detalles del Viaje
@@ -146,7 +154,7 @@ function RouteComponent() {
           <h2>Más Aventuras Próximamente</h2>
           <div className={styles["other-trips-list"]}>
             {nextTrips.map((trip) => (
-              <Link to={`/viajes/${trip.id}`} key={trip.id}>
+              <Link to={`/viajes/${trip.slug || trip.id}`} key={trip.id}>
                 <TripCard trip={trip} />
               </Link>
             ))}
@@ -168,7 +176,7 @@ function RouteComponent() {
           >
             {pastTrips.map((trip) => (
               <SwiperSlide key={trip.id} className={styles["past-trip-slide"]}>
-                <Link to={`/viajes/${trip.id}`}>
+                <Link to={`/viajes/${trip.slug || trip.id}`}>
                   <ProgressiveImage
                     srcKey={trip.images[0].src}
                     alt={trip.destination}

@@ -77,9 +77,15 @@
 
 .accordionItem {
   border-bottom: 1px solid #ddd;
+  scroll-margin-top: 80px;
+}
+
+.accordionTitle::-webkit-details-marker {
+  display: none;
 }
 
 .accordionTitle {
+  list-style: none;
   width: 100%;
   background: none;
   border: none;
@@ -100,7 +106,7 @@
   transition: transform 0.3s ease;
 }
 
-.chevron.open {
+.accordionItem[open] .chevron {
   transform: rotate(180deg);
 }
 
@@ -110,8 +116,8 @@
   transition: max-height 0.4s ease-in-out;
 }
 
-.accordionContent.open {
-  max-height: max-content;
+.accordionItem[open] .accordionContent {
+  max-height: 1000px;
 }
 
 .accordionInner {

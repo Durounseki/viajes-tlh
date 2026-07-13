@@ -42,7 +42,7 @@ function RouteComponent() {
         <h2 className={styles["section-title"]}>Próximos Viajes</h2>
         <div className={styles["trips-grid"]}>
           {upcomingTrips.slice(0, limit).map((trip) => (
-            <Link key={trip.id} to={`/viajes/${trip.id}`}>
+            <Link key={trip.id} to={`/viajes/${trip.slug || trip.id}`}>
               <TripCard trip={trip} />
             </Link>
           ))}
@@ -64,7 +64,7 @@ function RouteComponent() {
         </p>
         <div className={styles["trips-grid"]}>
           {pastTrips.slice(0, limit).map((trip) => (
-            <Link key={trip.id} to={`/viajes/${trip.id}`}>
+            <Link key={trip.id} to={`/viajes/${trip.slug || trip.id}`}>
               <TripCard trip={trip} />
             </Link>
           ))}

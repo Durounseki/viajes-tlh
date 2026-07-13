@@ -5,6 +5,25 @@ import { authMiddleware } from "../auth/index";
 
 const app = new Hono();
 
+function generateSlug(destination, startDate) {
+  let base = destination
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+
+  if (startDate) {
+    try {
+      const dateStr = new Date(startDate).toISOString().split("T")[0];
+      base = `${base}-${dateStr}`;
+    } catch (e) {
+    }
+  }
+  return base;
+}
+
 app.get("/", async (c) => {
   try {
     const adapter = new PrismaD1(c.env.DB);
@@ -12,6 +31,7 @@ app.get("/", async (c) => {
     const trips = await prisma.trip.findMany({
       select: {
         id: true,
+        slug: true,
         destination: true,
         startDate: true,
         endDate: true,
@@ -41,8 +61,13 @@ app.get("/:id", async (c) => {
     const { id: tripId } = c.req.param();
     const adapter = new PrismaD1(c.env.DB);
     const prisma = new PrismaClient({ adapter });
-    const trip = await prisma.trip.findUnique({
-      where: { id: tripId },
+    const trip = await prisma.trip.findFirst({
+      where: {
+        OR: [
+          { id: tripId },
+          { slug: tripId }
+        ]
+      },
       include: {
         images: true,
         includedItems: true,
@@ -67,6 +92,9 @@ app.put("/:id", authMiddleware, async (c) => {
     delete tripData.id;
     delete tripData.createdAt;
     delete tripData.updatedAt;
+    if (!tripData.slug && tripData.destination) {
+      tripData.slug = generateSlug(tripData.destination, tripData.startDate);
+    }
     const adapter = new PrismaD1(c.env.DB);
     const prisma = new PrismaClient({ adapter });
     const updatedTrip = await prisma.trip.update({
@@ -98,6 +126,9 @@ app.delete("/:id", authMiddleware, async (c) => {
 app.post("/", authMiddleware, async (c) => {
   try {
     const tripInfo = await c.req.json();
+    if (!tripInfo.slug && tripInfo.destination) {
+      tripInfo.slug = generateSlug(tripInfo.destination, tripInfo.startDate);
+    }
     const adapter = new PrismaD1(c.env.DB);
     const prisma = new PrismaClient({ adapter });
     const newTripId = await prisma.trip.create({

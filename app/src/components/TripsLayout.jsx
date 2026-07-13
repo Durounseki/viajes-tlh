@@ -16,7 +16,7 @@ function TripsLayout({
       <p className={styles["page-subtitle"]}>{subtitle}</p>
       <div className={styles["trips-grid"]}>
         {trips.map((trip) => (
-          <Link to={`/viajes/${trip.id}`} key={trip.id}>
+          <Link to={`/viajes/${trip.slug || trip.id}`} key={trip.id}>
             <TripCard trip={trip} />
           </Link>
         ))}

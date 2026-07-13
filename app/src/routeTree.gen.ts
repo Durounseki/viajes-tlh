@@ -25,7 +25,7 @@ import { Route as ViajesIndexRouteImport } from './routes/viajes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ViajesProximosRouteImport } from './routes/viajes/proximos'
 import { Route as ViajesPasadosRouteImport } from './routes/viajes/pasados'
-import { Route as ViajesViajeIdRouteImport } from './routes/viajes/$viajeId'
+import { Route as ViajesSlugRouteImport } from './routes/viajes/$slug'
 import { Route as AdminUsuariosRouteImport } from './routes/admin/usuarios'
 import { Route as AdminReservacionesRouteImport } from './routes/admin/reservaciones'
 import { Route as AdminResenChar771asRouteImport } from './routes/admin/reseñas'
@@ -114,9 +114,9 @@ const ViajesPasadosRoute = ViajesPasadosRouteImport.update({
   path: '/viajes/pasados',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ViajesViajeIdRoute = ViajesViajeIdRouteImport.update({
-  id: '/viajes/$viajeId',
-  path: '/viajes/$viajeId',
+const ViajesSlugRoute = ViajesSlugRouteImport.update({
+  id: '/viajes/$slug',
+  path: '/viajes/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminUsuariosRoute = AdminUsuariosRouteImport.update({
@@ -173,7 +173,7 @@ export interface FileRoutesByFullPath {
   '/admin/reseñas': typeof AdminResenChar771asRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
-  '/viajes/$viajeId': typeof ViajesViajeIdRoute
+  '/viajes/$slug': typeof ViajesSlugRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
   '/admin/': typeof AdminIndexRoute
@@ -198,7 +198,7 @@ export interface FileRoutesByTo {
   '/admin/reseñas': typeof AdminResenChar771asRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
-  '/viajes/$viajeId': typeof ViajesViajeIdRoute
+  '/viajes/$slug': typeof ViajesSlugRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
   '/admin': typeof AdminIndexRoute
@@ -225,7 +225,7 @@ export interface FileRoutesById {
   '/admin/reseñas': typeof AdminResenChar771asRoute
   '/admin/reservaciones': typeof AdminReservacionesRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
-  '/viajes/$viajeId': typeof ViajesViajeIdRoute
+  '/viajes/$slug': typeof ViajesSlugRoute
   '/viajes/pasados': typeof ViajesPasadosRoute
   '/viajes/proximos': typeof ViajesProximosRoute
   '/admin/': typeof AdminIndexRoute
@@ -253,7 +253,7 @@ export interface FileRouteTypes {
     | '/admin/reseñas'
     | '/admin/reservaciones'
     | '/admin/usuarios'
-    | '/viajes/$viajeId'
+    | '/viajes/$slug'
     | '/viajes/pasados'
     | '/viajes/proximos'
     | '/admin/'
@@ -278,7 +278,7 @@ export interface FileRouteTypes {
     | '/admin/reseñas'
     | '/admin/reservaciones'
     | '/admin/usuarios'
-    | '/viajes/$viajeId'
+    | '/viajes/$slug'
     | '/viajes/pasados'
     | '/viajes/proximos'
     | '/admin'
@@ -304,7 +304,7 @@ export interface FileRouteTypes {
     | '/admin/reseñas'
     | '/admin/reservaciones'
     | '/admin/usuarios'
-    | '/viajes/$viajeId'
+    | '/viajes/$slug'
     | '/viajes/pasados'
     | '/viajes/proximos'
     | '/admin/'
@@ -327,7 +327,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResetPasswordConfirmRoute: typeof ResetPasswordConfirmRoute
   TerminosYCondicionesRoute: typeof TerminosYCondicionesRoute
-  ViajesViajeIdRoute: typeof ViajesViajeIdRoute
+  ViajesSlugRoute: typeof ViajesSlugRoute
   ViajesPasadosRoute: typeof ViajesPasadosRoute
   ViajesProximosRoute: typeof ViajesProximosRoute
   ViajesIndexRoute: typeof ViajesIndexRoute
@@ -447,11 +447,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViajesPasadosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/viajes/$viajeId': {
-      id: '/viajes/$viajeId'
-      path: '/viajes/$viajeId'
-      fullPath: '/viajes/$viajeId'
-      preLoaderRoute: typeof ViajesViajeIdRouteImport
+    '/viajes/$slug': {
+      id: '/viajes/$slug'
+      path: '/viajes/$slug'
+      fullPath: '/viajes/$slug'
+      preLoaderRoute: typeof ViajesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/usuarios': {
@@ -543,7 +543,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   ResetPasswordConfirmRoute: ResetPasswordConfirmRoute,
   TerminosYCondicionesRoute: TerminosYCondicionesRoute,
-  ViajesViajeIdRoute: ViajesViajeIdRoute,
+  ViajesSlugRoute: ViajesSlugRoute,
   ViajesPasadosRoute: ViajesPasadosRoute,
   ViajesProximosRoute: ViajesProximosRoute,
   ViajesIndexRoute: ViajesIndexRoute,
