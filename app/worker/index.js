@@ -23,4 +23,23 @@ app.route("/api/payment-plans", paymentPlansApp);
 app.route("/api/included-items", includedItemsApp);
 app.route("/", seoApp);
 
+app.get("*", async (c) => {
+  const url = new URL(c.req.url);
+  // If requesting a static file with an extension, fetch directly from assets
+  if (url.pathname.includes(".")) {
+    if (c.env.ASSETS) {
+      return c.env.ASSETS.fetch(c.req.raw);
+    } else {
+      return fetch(c.req.raw);
+    }
+  }
+
+  // Otherwise serve index.html as the SPA fallback
+  if (c.env.ASSETS) {
+    return c.env.ASSETS.fetch(new URL("/index.html", c.req.url));
+  } else {
+    return fetch(new URL("/index.html", c.req.url));
+  }
+});
+
 export default app;
