@@ -59,7 +59,7 @@ ${urls
 
 app.get("/robots.txt", (c) => {
   return c.text(
-    "User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /api/\n\nSitemap: https://viajerasporsiempre.com/sitemap.xml"
+    "User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: https://viajerasporsiempre.com/sitemap.xml"
   );
 });
 
